@@ -6,12 +6,15 @@ export const Store = createContext();
 
 const initialState = {
   url: 'http://localhost/TOM-A/backend/models/',
+  token:''
 }
 
 function reducer(state, action) {
   switch (action.type) {
     case 'SET_URL':
       return { ...state, url: action.payload };
+    case 'SET_TOKEN':
+      return { ...state, token: action.payload };
     default:
       return state;
   }
