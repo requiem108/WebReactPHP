@@ -6,6 +6,7 @@ import React  from 'react';
 
 import LoginScreen from "./screens/LoginScreen";
 import AdminScreen from "./screens/AdminScreen";
+import '@coreui/coreui/dist/css/coreui.min.css'
 
 function App() {
   return (
