@@ -1,12 +1,12 @@
 import React from 'react';
 import { createContext, useReducer } from 'react';
 
-
 export const Store = createContext();
 
 const initialState = {
   url: 'http://localhost/TOM-A/backend/models/',
-  token:''
+  token:'',
+  sidebarShow: true,
 }
 
 function reducer(state, action) {
@@ -15,6 +15,10 @@ function reducer(state, action) {
       return { ...state, url: action.payload };
     case 'SET_TOKEN':
       return { ...state, token: action.payload };
+    case 'SET_BAR':      
+      debugger
+      return { ...state, sidebarShow: action.sidebarShow };
+      
     default:
       return state;
   }
@@ -25,3 +29,6 @@ export function StoreProvider(props) {
   const value = { state, dispatch };
   return <Store.Provider value={value}>{props.children} </Store.Provider>;
 }
+
+
+

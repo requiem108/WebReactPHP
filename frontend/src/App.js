@@ -10,12 +10,13 @@ import '@coreui/coreui/dist/css/coreui.min.css'
 
 function App() {
   return (
+    
     <BrowserRouter>
       <div className="App">
       
       </div> 
       <main>
-        <Container>
+        <Container fluid className='containerScreens'>
           <Routes>
             <Route path="/login" element={<LoginScreen />} />   
             <Route path="/admin" element={<AdminScreen />} />         
@@ -23,7 +24,7 @@ function App() {
         </Container>   
       </main>   
     </BrowserRouter>
-    
+   
   );
 }
 
