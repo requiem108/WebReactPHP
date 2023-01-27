@@ -6,6 +6,7 @@ import React  from 'react';
 
 import LoginScreen from "./screens/LoginScreen";
 import AdminScreen from "./screens/AdminScreen";
+import HomeScreen from "./screens/HomeScreen";
 import '@coreui/coreui/dist/css/coreui.min.css'
 
 function App() {
@@ -15,10 +16,11 @@ function App() {
       
       </div> 
       <main>
-        <Container>
+        <Container fluid className='p-0'>
           <Routes>
+            <Route path="/" element={<HomeScreen/>} />            
             <Route path="/login" element={<LoginScreen />} />   
-            <Route path="/admin" element={<AdminScreen />} />         
+            <Route path="/admin" element={<AdminScreen />} />                    
           </Routes>
         </Container>   
       </main>   

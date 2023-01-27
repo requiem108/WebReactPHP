@@ -1,14 +1,16 @@
  import React from 'react'
 
  import { Link,useNavigate } from 'react-router-dom';
- import { useEffect, useReducer } from "react";
+ import { useEffect, useReducer,useState } from "react";
 
  import { Store } from '../Store';
  import { useContext } from 'react';
 
+ import AppBarHead from '../components/AppBarHead';
+ import AppSideBar from '../components/AppSideBar';
  
 
- import { CSidebar, CSidebarBrand, CSidebarNav, CSidebarToggler,CNavTitle,CNavItem,CNavGroup } from '@coreui/react'
+ 
 
  export default function AdminScreen(){
 
@@ -25,35 +27,53 @@
 
     }, []);   
 
-    
+    //estados
+    const [mostrar, setMostrar]= useState(true)
+
+    useEffect(() => {
+        if (mostrar) {         
+          //console.log("mostrar has changed to true");
+        }
+      }, [mostrar]); // Only re-run the effect if mostrar changes
+  
+      var opciones = {
+        titulo:'Pantallas',
+        items:
+        [
+            {
+                id:'0',
+                tipo:'link',
+                texto:'Noticias',
+            },
+            {
+                id:'1',
+                tipo:'group',
+                texto:'Productos',
+                items:[{item:'productos1'},{item:'productos2'}]
+            }
+        ]
+            
+        };
+
+    const activateOpcion = (e) => {
+        //al activar la opcion muestra el contenido
+        console.log('activateOpcion'+e);
+    }
 
     return(
-        <div> 
-            <CSidebar>
-  <CSidebarBrand>Sidebar Brand</CSidebarBrand>
-  <CSidebarNav>
-    <CNavTitle>Nav Title</CNavTitle>
-    <CNavItem href="#">     
-      Nav item
-    </CNavItem>
-    <CNavItem href="#">      
-      With badge      
-    </CNavItem>
-    <CNavGroup toggler="Nav dropdown">
-      <CNavItem href="#">
-         Nav dropdown item
-      </CNavItem>
-      <CNavItem href="#">
-        Nav dropdown item
-      </CNavItem>
-    </CNavGroup>
-  </CSidebarNav>
-  <CSidebarToggler />
-</CSidebar>   
-            <div>
-                <h1>Admin</h1>
+        <div>         
+
+            <AppBarHead setMostrar={setMostrar}/>           
+
+            <div className='d-flex'> 
+                <AppSideBar mostrar={mostrar} opciones={opciones} activateOpcion={activateOpcion} setMostrar={setMostrar}/> 
+                <div>
+                    <h1>Admin</h1>
+                </div>
             </div>
+
         </div>
+        
         
     )
  }
