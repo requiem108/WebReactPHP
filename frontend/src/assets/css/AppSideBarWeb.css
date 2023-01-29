@@ -1,0 +1,23 @@
+.sidebar-light{
+    background-color: #fff;
+    color: var(--mas-azul)
+}
+
+.sidebar-light .sidebar-brand{
+    background: #fff;
+}
+
+.sidebar-light .nav-item a{
+    font-weight: bold;
+    color: var(--mas-azul)
+}
+
+.sidebar-light .nav-item a:hover{
+    
+    color: var(--mas-berde)
+}
+
+.sidebar-light .nav-item .sidebar-light-active{
+    
+    color: var(--mas-berde)
+}

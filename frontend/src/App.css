@@ -1,6 +1,19 @@
+/*
+VARIABLES
+*/
+
+:root{
+  --mas-azul:#3884c2;
+  --mas-azulB:#2170ad;
+  --mas-berde:#4fa937;
+  --mas-berdeB:#016a41;
+}
 .App {
   text-align: center;
 }
+ .App *{
+  font-family: Nunito, sans-serif!important;
+ }
 
 .App-logo {
   height: 40vmin;
@@ -28,11 +41,32 @@
   color: #61dafb;
 }
 
+a {
+  color: inherit;
+  text-decoration: none !important;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
   }
   to {
     transform: rotate(360deg);
+  }
+}
+
+
+
+.main-container{
+  max-width: 992px !important;  
+}
+
+@media (min-width: 992px) {
+  .main-container{
+    margin: 20px auto!important;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
+
   }
 }

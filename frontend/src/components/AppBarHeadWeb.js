@@ -1,4 +1,5 @@
 import React from 'react'
+import '../assets/css/AppBarHeadWeb.css'
 import { 
     CNavItem,   
     CHeader,
@@ -6,18 +7,20 @@ import {
     CHeaderToggler,    
     CHeaderNav
     } from '@coreui/react'
+import { Link } from 'react-router-dom';
+import { BsList } from "react-icons/bs";
 
-
-export default function AppBarHeadWeb({setMostrar,opciones}) {
+export default function AppBarHeadWeb({setMostrar,opciones,marcar,setMarcar}) {
+   
     
     return (
-        <CHeader className="mb-0">
+        <CHeader className="mb-0 header-nav">
                 <CContainer fluid>
                     <CHeaderToggler
                     className="ps-1 d-xs-block  d-md-none"
                     onClick={() => setMostrar(true)}
                     >
-                        <i className="fas fa-bars"></i>
+                       <BsList/>
                     </CHeaderToggler>
                     <CContainer className="col-12 d-none d-md-flex d-flex justify-content-between m-0">
                     
@@ -27,12 +30,16 @@ export default function AppBarHeadWeb({setMostrar,opciones}) {
                             </CNavItem>
                         </CHeaderNav>
                             
-                        <div className="col-6 d-md-flex justify-content-center">
+                        <div className="col-7 d-md-flex justify-content-center">
                         {
                             opciones.items.map((opcion) => (
                                 <CHeaderNav key={opcion.id} className="d-md-flex align-items-center me-auto">
                                     <CNavItem>
-                                        {opcion.texto}
+                                        <Link to={opcion.link} 
+                                            onClick={() => setMarcar(opcion.texto)}
+                                            className={marcar === opcion.texto? 'header-nav-a-selected':''}>
+                                                {opcion.texto}
+                                        </Link> 
                                     </CNavItem>
                                 </CHeaderNav>
                             ))

@@ -1,7 +1,7 @@
  import React from 'react'
 
- import { Link,useNavigate } from 'react-router-dom';
- import { useEffect, useReducer,useState } from "react";
+ import { useNavigate } from 'react-router-dom';
+ import { useEffect,useState } from "react";
 
  import { Store } from '../Store';
  import { useContext } from 'react';
@@ -14,7 +14,7 @@
 
  export default function AdminScreen(){
 
-    const navigate = useNavigate();
+    //const navigate = useNavigate();
     const {state, dispatch: ctxDispatch} = useContext(Store);
    
 
@@ -34,26 +34,26 @@
         if (mostrar) {         
           //console.log("mostrar has changed to true");
         }
-      }, [mostrar]); // Only re-run the effect if mostrar changes
+    }, [mostrar]); // Only re-run the effect if mostrar changes
   
-      var opciones = {
-        titulo:'Pantallas',
-        items:
-        [
-            {
-                id:'0',
-                tipo:'link',
-                texto:'Noticias',
-            },
-            {
-                id:'1',
-                tipo:'group',
-                texto:'Productos',
-                items:[{item:'productos1'},{item:'productos2'}]
-            }
-        ]
-            
-        };
+    var opciones = {
+    titulo:'Pantallas',
+    items:
+    [
+        {
+            id:'0',
+            tipo:'link',
+            texto:'Noticias',
+        },
+        {
+            id:'1',
+            tipo:'group',
+            texto:'Productos',
+            items:[{item:'productos1'},{item:'productos2'}]
+        }
+    ]
+        
+    };
 
     const activateOpcion = (e) => {
         //al activar la opcion muestra el contenido

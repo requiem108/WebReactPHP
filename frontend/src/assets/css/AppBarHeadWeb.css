@@ -1,0 +1,14 @@
+.header-nav a {
+    color: var(--mas-azul);
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+.header-nav a:hover {
+    color: var(--mas-berde);
+}
+
+.header-nav .header-nav-a-selected{
+    color: var(--mas-berde);
+    
+}
