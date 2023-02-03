@@ -3,10 +3,12 @@ VARIABLES
 */
 
 :root{
+  --mas-blanco:#fff;
   --mas-azul:#3884c2;
   --mas-azulB:#2170ad;
   --mas-berde:#4fa937;
   --mas-berdeB:#016a41;
+  --mas-grey:#8f8f8f;
 }
 .App {
   text-align: center;
@@ -69,4 +71,30 @@ a {
     box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
 
   }
+}
+
+/*BOTONES--------------------------*/
+.btn{
+  background-color: var(--mas-grey)!important;
+  border-color: var(--mas-grey)!important;
+  height: 35px;
+  border-radius: 12px!important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 10px !important;
+}
+.btn:hover{
+  background-color: var(--mas-azul)!important;
+  border-color: var(--mas-azul)!important;
+  color: #fff!important;
+}
+.btn-primary{
+  background-color: var(--mas-azul)!important;
+  border-color: var(--mas-azul)!important;  
+}
+.btn-primary:hover{
+  background-color: var(--mas-azulB)!important;
+  border-color: var(--mas-azulB)!important;
+  color: #fff!important;
 }

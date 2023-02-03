@@ -50,3 +50,94 @@
     }
     
 }
+
+
+
+/*HOME SECTION A Withe---------------------------------*/
+.homeA-container .container:nth-child(1){
+    padding: 0;    
+    position: relative;
+}
+.homeA-productE{    
+    width: 200px;
+    z-index: 10;
+}
+.homeA-productE-circle{
+    position: absolute;
+    /*
+    width: 55vw;
+    height: 55vw;*/
+    width: 290px;
+    height: 290px;
+    border-radius: 50%;
+    background-color: var(--mas-berde);
+    background: linear-gradient(0deg, var(--mas-berdeB) 0%, var(--mas-berde) 35%, var(--mas-berde) 100%);
+    bottom: 12px;
+    z-index: 0;
+}
+.homeA-container .container:nth-child(2) h2{
+    color: var(--mas-berde);
+    margin: 0;
+    padding: 0;
+}
+.homeA-container .container:nth-child(2) hr{
+    width: 350px ;
+    height: 2px;
+    background-color: var(--mas-grey);;
+    border: 0 none;
+    color: var(--mas-grey);; 
+    height: 2px;
+    margin: 0;
+}
+.homeA-container .container:nth-child(2) p{
+    color: var(--mas-grey);
+    font-weight: bold;
+}
+.homeA-container .container:nth-child(2) .btn{
+    width: 170px !important;
+    display: flex;
+    justify-content: space-around;
+    font-weight: bold !important;;
+}
+.homeA-container .container:nth-child(2) .btn div{
+    width:20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: var(--mas-blanco);
+    color: var(--mas-grey);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+}
+
+@media (max-width: 768px){   
+
+    .homeA-productE{    
+        width: 100px;       
+    }    
+    .homeA-productE-circle{
+        width: 150px;
+        height: 150px;
+    }
+    .homeA-container .container:nth-child(2) h2{
+        font-size: 1.5rem;
+    }
+    .homeA-container .container:nth-child(2) p{
+        font-size: .8rem;
+    }
+}
+
+@media (max-width: 576px){   
+
+    .homeA-container .container:nth-child(2) hr{
+        display: none;
+    }
+    .homeA-container .container:nth-child(2) h2{
+        text-align: center;
+    }
+    .homeA-container .container:nth-child(2){
+        justify-content: center!important;
+        align-items: center!important;
+    }
+}

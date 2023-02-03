@@ -14,6 +14,7 @@ import AppBarHeadWeb from './components/AppBarHeadWeb';
 import AppSideBarWeb from './components/AppSideBarWeb';
 
 import { useEffect,useState } from "react";
+import ProductsScreen from './screens/ProductsScreen';
 
 function App() {
   //estados
@@ -83,11 +84,11 @@ function App() {
 
         <Container fluid className='p-0 p-lg-2 main-container'>        
           <Routes>
-            <Route path="/" element={<HomeScreen/>} />            
+            <Route path="/" element={<HomeScreen setMarcar={setMarcar}/>} />            
             <Route path="/login" element={<LoginScreen />} />   
             <Route path="/admin" element={<AdminScreen />} /> 
-            <Route path="/somos" element={<HomeScreen/>} />
-            <Route path="/productos" element={<HomeScreen/>} />
+            <Route path="/somos" element={<HomeScreen setMarcar={setMarcar}/>} />
+            <Route path="/productos" element={<ProductsScreen/>} />
             <Route path="/noticias" element={<NoticiasScreen/>} />                   
           </Routes>
         </Container> 
