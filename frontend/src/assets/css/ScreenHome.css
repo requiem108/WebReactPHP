@@ -54,6 +54,16 @@
 
 
 /*HOME SECTION A Withe---------------------------------*/
+.homeA-container{
+    width: 100%;
+    background-color: var(--mas-blanco);
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    padding: 50px 0;
+    min-height: 300px;
+    margin-top: 10px;
+}
 .homeA-container .container:nth-child(1){
     padding: 0;    
     position: relative;
@@ -74,6 +84,7 @@
     background: linear-gradient(0deg, var(--mas-berdeB) 0%, var(--mas-berde) 35%, var(--mas-berde) 100%);
     bottom: 12px;
     z-index: 0;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
 .homeA-container .container:nth-child(2) h2{
     color: var(--mas-berde);
@@ -140,4 +151,55 @@
         justify-content: center!important;
         align-items: center!important;
     }
+}
+
+
+
+/*HOME SECTION B BLUE---------------------------------*/
+.homeB-container{
+    width: 100%;
+    background-color: var(--mas-azul);    
+    background: -webkit-linear-gradient(to top, var(--mas-azulB), var(--mas-azul)); /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to top, var(--mas-azulB), var(--mas-azul)); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    
+}
+.slideHome-lab{
+    width: 100% !important;
+    height: 100%;
+    min-height: 300px;
+    display: flex;
+    justify-content: space-evenly;   
+}
+
+.slideHome-lab div img {
+    width: 100px !important;
+    margin: 10px 20px;    
+    filter: grayscale(150%);   
+}
+
+/*HOME SECTIOn CLASIFICACION */
+.homeA-clasificacion {
+    color: var(--mas-blanco);
+    font-size: 1.7rem;
+}
+.homeA-clasificacion div{
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: flex;    
+    justify-content: space-around;
+    align-items: center;
+    background-color: var(--mas-berde);
+    background: linear-gradient(0deg, var(--mas-berdeB) 0%, var(--mas-berde) 35%, var(--mas-berde) 100%);
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    margin: 10px;
+}
+
+.homeA-clasificacion h3{
+    color: var(--mas-berde);
+    font-weight: bold;
+    font-size: 1.2rem;
+    margin: 0;
+    padding: 0;
+    text-align: center;
 }
