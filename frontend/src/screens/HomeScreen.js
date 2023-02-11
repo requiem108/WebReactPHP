@@ -39,6 +39,7 @@ export default  function HomeScreen({setMarcar}) {
             </Container> 
 
             <Container className="homeB-container" fluid>
+                <h2>Laboratorios</h2>
                 <SlideHomeLaboratorios/>
             </Container>   
 
@@ -71,7 +72,7 @@ export default  function HomeScreen({setMarcar}) {
                </Row>
             </Container> 
             
-            <ContactoScreen/>                  
+            <ContactoScreen/>           
 
           
         </div>

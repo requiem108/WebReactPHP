@@ -8,7 +8,9 @@ VARIABLES
   --mas-azulB:#2170ad;
   --mas-berde:#4fa937;
   --mas-berdeB:#016a41;
+  --mas-greyL:#f0f0f0;
   --mas-grey:#8f8f8f;
+  --mas-amarillo:#ada938;
 }
 .App {
   text-align: center;
@@ -97,4 +99,8 @@ a {
   background-color: var(--mas-azulB)!important;
   border-color: var(--mas-azulB)!important;
   color: #fff!important;
+}
+
+h2{
+  font-weight: bold !important;
 }

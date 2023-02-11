@@ -6,7 +6,13 @@
     font-size: 1.6rem;
     margin: 20px 0;
     flex-direction: column;
-    justify-content: start;
+    justify-content: space-evenly;
+    padding: 0;
+    
+    /*Eliminar si no aprueban el form*/
+    margin: 0;
+    background: rgb(66,161,112);
+    background: linear-gradient(270deg, rgba(66,161,112,1) 0%, rgba(92,206,147,1) 50%, rgba(92,206,147,1) 100%);
 }
 
 .contacto-detalles div{
@@ -28,17 +34,25 @@
 
 .contacto-detalles div div p,
 .contacto-detalles div div a{
+    text-decoration: none;
+    text-decoration-color: none !important;
     font-size: 1rem;
     font-weight: bold;
     color: var(--mas-grey);
     margin: 0;
     text-align: start;
     width: 100%;
+
+    /*Eliminar si no aprueban el form*/
+    color: var(--mas-blanco)!important;
+    font-weight: 600;
 }
 
 .contacto-detalles svg{
-    color: var(--mas-berde);    
+    color: var(--mas-berde);  
 
+     /*Eliminar si no aprueban el form*/
+     color: var(--mas-blanco);
 }
 
 @media (max-width: 768px){ 
@@ -47,7 +61,7 @@
         justify-content: space-around;
     }
     .contacto-detalles div div p,
-    .contacto-detalles div div a{
+    .contacto-detalles div div a{       
         font-size: .6rem;
         text-align: center;
     }
@@ -60,4 +74,27 @@
     .contacto-detalles div div{
         margin: 0;
     }
+}
+
+
+/*FORMULARIO*/
+.contacto-formulario{
+   /*
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;*/
+   
+}
+.contacto-formulario input,
+.contacto-formulario textarea{
+    background: var(--mas-greyL)!important;
+    border: 0 none;
+}
+
+.recaptcha{
+    max-width: 270px !important;
+    margin: 0;
+    transform:scale(0.87);
+    transform-origin:0 0;
 }

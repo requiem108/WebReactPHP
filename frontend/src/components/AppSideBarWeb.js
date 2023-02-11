@@ -31,6 +31,7 @@ export default function AppSideBarWeb(props) {
                                     className={props.marcar === item.texto? 'sidebar-light-active':''}
                                     onClick={()=>{
                                         props.setMarcar(item.texto);
+                                        props.setMostrar(false)
                                         navigate(`${item.link}`)
                                         }}>
                                     {item.texto}

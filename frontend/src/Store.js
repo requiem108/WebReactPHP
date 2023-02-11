@@ -6,7 +6,8 @@ export const Store = createContext();
 
 const initialState = {
   url: 'http://localhost/TOM-A/backend/models/',
-  token:''
+  token:'',
+  usuario: '',
 }
 
 function reducer(state, action) {

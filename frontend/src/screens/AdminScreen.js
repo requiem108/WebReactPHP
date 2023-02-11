@@ -1,6 +1,6 @@
  import React from 'react'
 
- import { useNavigate } from 'react-router-dom';
+ import '../assets/css/AdminScreen.css'
  import { useEffect,useState } from "react";
 
  import { Store } from '../Store';
@@ -9,6 +9,10 @@
  import AppBarHead from '../components/AppBarHead';
  import AppSideBar from '../components/AppSideBar';
  
+ import {BrowserRouter,Routes, Route} from 'react-router-dom'
+ import Container from 'react-bootstrap/esm/Container';
+
+ import UsuariosAdmin from '../componentsAdmin/UsuariosAdmin';
 
  
 
@@ -43,7 +47,8 @@
         {
             id:'0',
             tipo:'link',
-            texto:'Noticias',
+            texto:'Usuarios',
+            link:'/admin/usuarios'
         },
         {
             id:'1',
@@ -65,11 +70,14 @@
 
             <AppBarHead setMostrar={setMostrar}/>           
 
-            <div className='d-flex'> 
+            <div className='d-flex mt-0'> 
                 <AppSideBar mostrar={mostrar} opciones={opciones} activateOpcion={activateOpcion} setMostrar={setMostrar}/> 
-                <div>
+                <Container className='sm-col-12'>
                     <h1>Admin</h1>
-                </div>
+                    <Routes>
+                        <Route path='/usuarios' element={<UsuariosAdmin/>} />
+                    </Routes>
+                </Container>
             </div>
 
         </div>

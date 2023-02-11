@@ -90,6 +90,7 @@
     color: var(--mas-berde);
     margin: 0;
     padding: 0;
+    font-weight: bold;
 }
 .homeA-container .container:nth-child(2) hr{
     width: 350px ;
@@ -163,6 +164,11 @@
     background: linear-gradient(to top, var(--mas-azulB), var(--mas-azul)); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
     
 }
+.homeB-container h2{
+    text-align: center;
+    color: var(--mas-blanco);
+}
+
 .slideHome-lab{
     width: 100% !important;
     height: 100%;

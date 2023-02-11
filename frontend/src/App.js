@@ -8,13 +8,16 @@ import LoginScreen from "./screens/LoginScreen";
 import AdminScreen from "./screens/AdminScreen";
 import HomeScreen from "./screens/HomeScreen";
 import NoticiasScreen from "./screens/NoticiasScreen";
+import ContactoScreen from "./screens/ContactoScreen";
 import '@coreui/coreui/dist/css/coreui.min.css'
 
 import AppBarHeadWeb from './components/AppBarHeadWeb';
 import AppSideBarWeb from './components/AppSideBarWeb';
+import AppFooterWeb from './components/AppFooterWeb';
 
 import { useEffect,useState } from "react";
 import ProductsScreen from './screens/ProductsScreen';
+import SomosScreen from './screens/SomosScreen';
 
 function App() {
   //estados
@@ -72,10 +75,14 @@ function App() {
 
   return (
     <BrowserRouter>
-      <div className="App">
-        <i className="fas fa-chevron-circle-down"></i>
-        <AppBarHeadWeb setMostrar={setMostrar} opciones={opciones} marcar={marcar} setMarcar={setMarcar}/> 
-      </div> 
+    
+      { window.location.pathname.substring(0,6) !== "/admin"?        
+        <div className="App">
+          <i className="fas fa-chevron-circle-down"></i>
+          <AppBarHeadWeb setMostrar={setMostrar} opciones={opciones} marcar={marcar} setMarcar={setMarcar}/> 
+        </div> 
+        :''}
+
       <main>
 
         <Container className='d-md-none'>
@@ -86,12 +93,17 @@ function App() {
           <Routes>
             <Route path="/" element={<HomeScreen setMarcar={setMarcar}/>} />            
             <Route path="/login" element={<LoginScreen />} />   
-            <Route path="/admin" element={<AdminScreen />} /> 
-            <Route path="/somos" element={<HomeScreen setMarcar={setMarcar}/>} />
+            <Route path="/admin/*" element={<AdminScreen />} /> 
+            <Route path="/somos" element={<SomosScreen/>} />
             <Route path="/productos" element={<ProductsScreen/>} />
-            <Route path="/noticias" element={<NoticiasScreen/>} />                   
+            <Route path="/noticias" element={<NoticiasScreen/>} /> 
+            <Route path="/contacto" element={<ContactoScreen/>} />                  
           </Routes>
         </Container> 
+
+        <Container className='' fluid>
+          { window.location.pathname.substring(0,6) !== "/admin" && <AppFooterWeb /> }          
+        </Container>
           
       </main>   
     </BrowserRouter>

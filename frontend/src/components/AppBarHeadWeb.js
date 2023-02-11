@@ -14,7 +14,7 @@ export default function AppBarHeadWeb({setMostrar,opciones,marcar,setMarcar}) {
    
     
     return (
-        <CHeader className="mb-0 header-nav">
+        <CHeader className="mb-0 header-nav ">
                 <CContainer fluid>
                     <CHeaderToggler
                     className="ps-1 d-xs-block  d-md-none"
