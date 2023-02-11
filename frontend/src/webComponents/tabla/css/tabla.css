@@ -1,0 +1,305 @@
+tabla-uc3g{   
+    display: block;
+    padding: 10px;
+}
+
+tabla-uc3g table thead tr:first-child{
+    /*display: flex;
+    width: 100%;*/
+}
+
+tabla-uc3g thead tr:first-child th div:nth-child(1){
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/*HEADER*/
+tabla-uc3g .showHeader{
+    max-height: 500px;    
+}
+
+/*FLECHAS BUSCAR*/
+
+.tablauc3g-order-up{
+    /*flechas para ordenar */
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 0 4px 8px 4px;
+    border-color: transparent transparent #dcdcdc transparent;
+    margin:1px 10px;
+    cursor: pointer;
+}
+.tablauc3g-order-down{
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 8px 4px 0 4px;
+    border-color: #dcdcdc transparent transparent transparent;
+    margin:1px 10px;
+    cursor: pointer;
+}
+
+.titulouc3g_active_up{
+    border-color: transparent transparent #7e84de transparent;    
+}
+.titulouc3g_active_down{
+    border-color: #7e84de transparent transparent transparent;    
+}
+
+/*BUSCAR*/
+.tabla-uc3g-boton-search{
+    border: solid #383838 1px;
+    padding: 0 0 0 5px;
+    border-radius: 10px;
+    background: #525252;
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
+    height: 28px;
+    align-items: center;
+    margin:10px auto;
+    width: 100px;
+    cursor: pointer;
+    display: none;
+    box-shadow: rgb(0 0 0 / 12%) 0px 1px 3px, rgb(0 0 0 / 24%) 0px 1px 2px;
+}
+/*
+.tabla-uc3g-boton-search div{
+    background: #424242;
+    height: 100%;
+    width: 60px;
+    border-radius: 0 10px 10px 0;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    color: #fff;
+}*/
+.tablauc3g-search-down{
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 8px 4px 0 4px;
+    border-color: #dcdcdc transparent transparent transparent;
+    margin:1px 10px;  
+    transition: all .5s;  
+}
+
+/*BODY FILAS*/
+tabla-uc3g table tbody td{
+    color:#514c4c; 
+    font-family: Verdana,sans-serif;
+    font-size: 15px;
+}
+tabla-uc3g table tbody tr:nth-child(2n+1) {
+    background-color: #fff;
+}
+
+tabla-uc3g table tbody td:nth-child(2n) {
+    background-color: rgba(255, 255, 255, .8)
+}
+
+tabla-uc3g table tbody tr:nth-child(2n+1) {
+    background-color: #f1f1f1;
+}
+
+tabla-uc3g .tabla-uc3g-fila-btn-mas{
+    background-color: #424242;
+    color: #fff;
+    display: none;    
+    justify-content: center;
+    align-items: center;
+    padding: 8px;
+    border-radius: 4px;
+    margin: -10px auto 5px 5px;
+    height: 10px;
+    cursor: pointer;
+    width: 50px;
+}
+
+tabla-uc3g .tabla-uc3g-fila-btn-mas div{
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 8px 4px 0 4px;
+    border-color: #dcdcdc transparent transparent transparent;
+    margin:1px 10px;  
+    transition: all .5s;  
+}
+
+
+/*INFO*/
+tabla-info-uc3g{
+    text-align: center;
+    display: block;
+}
+
+/*PAGINADOR*/
+tabla-pag-uc3g{
+    display: flex;
+    justify-content: center;
+    margin: 10px 0px;
+    flex-wrap: wrap;
+}
+tabla-pag-uc3g .tabla-btopag-uc3g{
+
+    box-sizing: border-box;
+    display: inline-block;
+    min-width: 1.5em;
+    padding: 0.5em 1em;
+    margin-left: 2px;
+    text-align: center;
+    text-decoration: none !important;
+    cursor: pointer;
+    *cursor: hand;
+    color: #333;
+    border: 1px solid transparent;
+    border-radius: 2px;
+    margin: 1px;
+
+}
+
+tabla-pag-uc3g .tabla-btopag-uc3g:hover{
+    background-color: #514c4c ;
+    color: #fff;
+    border: solid 1px #333
+}
+
+tabla-pag-uc3g .tablauc3g-btn-selected{
+    border: 1px solid #979797;
+    background: linear-gradient(to bottom, #fff 0%, #dcdcdc 100%);
+}
+
+tabla-pag-uc3g .tablauc3g-btn-selected:hover{
+    color: #333;
+    border: 1px solid #333;    
+}
+
+tabla-pag-uc3g span{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+
+@media screen and (max-width: 768px) {
+    tabla-uc3g{
+        background-color: #fff
+    }
+
+    tabla-uc3g table *{
+        margin: 0;
+        padding: 0;
+        border: 0;        
+        font: inherit;
+        vertical-align: baseline
+    }
+
+    .tabla-uc3g-boton-search{
+        display: flex;
+    }
+
+    /*HEAD------------------------------------*/
+    /*TITULO*/
+    tabla-uc3g thead{
+        display: flex;
+        overflow: hidden;
+        height: auto;        
+        max-height: 0px;
+        transition: all 1s;
+    }
+
+    tabla-uc3g thead tr{
+        display: flex;
+        flex-direction: column;
+        width: 50%;
+        font-size: 12px;  
+        justify-content: space-around;  
+    }
+
+    tabla-uc3g thead tr th div:nth-child(1){
+        display: flex;
+        flex-direction: row-reverse;
+        justify-content: center;
+        align-items: center;        
+    }
+
+    tabla-uc3g thead th{
+        border-style: none !important;
+        align-items: flex-start;
+        display: flex;
+        padding: 5px;
+        text-align: left;
+    }
+    
+    tabla-uc3g thead input, tabla-uc3g thead select{
+        width: 100%;
+        border:solid 1px #424242;
+        padding: 2px;
+        border-radius: 4px;
+    }
+    /*FILTROS RESPOSIVO-------------*/
+    tabla-uc3g thead tr:nth-child(2) th{
+        width: 80%!important;     
+    }
+    tabla-uc3g thead tr:nth-child(2){
+        display: flex;      
+    }
+
+    /*BODY------------------------*/
+    tabla-uc3g tbody{
+        display: block;
+    }
+
+    tabla-uc3g tbody *{
+        font-size: 12px;
+
+    }
+    
+
+    tabla-uc3g table tbody tr{
+        /*border-bottom: 1px solid #ddd;*/
+        display: block;
+        margin-bottom: .625em;
+        border: solid 1px #ddd;
+        border-radius: 6px;
+        overflow: hidden;
+        transition: all 1s;
+        max-height: 47px;
+       /* max-height: attr(data-max-height);*/
+    }
+
+    tabla-uc3g .tabla-uc3g-trshow{
+        /*border-bottom: 1px solid #ddd;*/       
+        max-height: 470px;
+    }
+
+    /*la primera fila es de altura fija*/
+    tabla-uc3g table tbody tr td:nth-child(1){
+        min-height: 44px;
+    }
+
+    tabla-uc3g table tbody tr td{
+        border-bottom: 1px solid #ddd;
+        display: block;
+        font-size: .8em;
+        text-align: right;
+        background-color: #fff;
+    }
+
+    tabla-uc3g table td::before {       
+        content: attr(data-label);
+        float: left;
+        font-weight: bold;
+        text-transform: uppercase;
+    }
+    
+    tabla-uc3g table td:last-child {
+        border-bottom: 0;
+    }
+
+    tabla-uc3g .tabla-uc3g-fila-btn-mas{
+        display: flex;
+    }
+}

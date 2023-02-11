@@ -25,7 +25,9 @@ function App() {
   //estados de los links
   const [marcar, setMarcar]= useState('Inicio')
 
- 
+  const srcAdmin = ['/admin','/login'];
+
+  //console.log(window.location.pathname.substring(0,6))
 
   useEffect(() => {
       if (mostrar) {      
@@ -76,7 +78,7 @@ function App() {
   return (
     <BrowserRouter>
     
-      { window.location.pathname.substring(0,6) !== "/admin"?        
+      { !srcAdmin.includes(window.location.pathname.substring(0,6))?        
         <div className="App">
           <i className="fas fa-chevron-circle-down"></i>
           <AppBarHeadWeb setMostrar={setMostrar} opciones={opciones} marcar={marcar} setMarcar={setMarcar}/> 
@@ -102,7 +104,7 @@ function App() {
         </Container> 
 
         <Container className='' fluid>
-          { window.location.pathname.substring(0,6) !== "/admin" && <AppFooterWeb /> }          
+          { !srcAdmin.includes(window.location.pathname.substring(0,6)) && <AppFooterWeb /> }          
         </Container>
           
       </main>   
