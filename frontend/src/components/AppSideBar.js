@@ -46,7 +46,7 @@ export default function AppSideBar(props) {
                 }
               
             </CSidebarNav>
-            <CSidebarToggler />
+            
         </CSidebar>  
       );
 

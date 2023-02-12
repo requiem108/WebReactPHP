@@ -3,8 +3,11 @@ import Axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useEffect,useContext } from 'react';
 import { Store } from '../Store';
-import '../webComponents/hellow.js'
 import '../webComponents/tabla/main.js?v=4'
+import '../webComponents/tabla/css/tabla.css?v=5'
+import '../webComponents/Spin/css/spin.css?v=4'
+
+
 
 export default function UsuariosAdmin() {
     //const navigate = useNavigate();
@@ -21,11 +24,18 @@ export default function UsuariosAdmin() {
         var JSONTable = [
             {
               titulo:`Usuario`,
-              name:`nombre`,
+              name:`usuario`,
               orderable:true,
               bOrder:`asc`,
               search:[{tipo:`input`,value:``,type:`text`,propierties:``}],
-              width:`50%`         
+              width:`20%`         
+            },
+            {
+              titulo:`clave`,
+              name:`clave`,
+              orderable:false,              
+              
+              width:`20%`         
             },
             {
               titulo:`Estado`,
@@ -42,26 +52,25 @@ export default function UsuariosAdmin() {
               width:`20%`
             },
             {
-              titulo:`Avance`,
-              name:`avance`,
+              titulo:`Tipo de cuenta`,
+              name:`tipo`,
               orderable:true,        
               search:[{tipo:`select`,value:``,propierties:``,
                 options:[
                   {value:``,propierties:``,text:`TODOS`},
-                  {value:`99.99`,propierties:``,text:`Menores a 100`},                
-                  {value:`90.01`,propierties:``,text:`Menores a 90`},
-                  {value:`80.01`,propierties:``,text:`Menores a 80`},
-                  {value:`50.01`,propierties:``,text:`Menores a 50`}
+                  {value:`administrador`,propierties:``,text:`Administrador`},                
+                  {value:`invitado`,propierties:``,text:`Invitado`}
+                 
                   ]
               }],  
-              width:`15%`       
+              width:`20%`       
             },
             {
               titulo:``,
               name:``,
               orderable:false,       
               
-              width:`15%`       
+              width:`20%`       
             }
         
           ]
@@ -80,10 +89,15 @@ export default function UsuariosAdmin() {
             //console.log(data);
         }
         fetchData();*/
-        debugger
+        
         const JSONTable = getJsonTable();
         const tablaUC3G = document.querySelector('tabla-uc3g');
-        tablaUC3G.url = `http://10.10.10.74/UC3G/views/tbl/mo17_tbl.php`
+        tablaUC3G.data_personalizada = [
+          {name:`action`,value:`getUsuarios`},
+          {name:`token`,value: window.btoa(state.token)},
+          {name:`usuario`,value: window.btoa(state.usuario)}
+        ]
+        tablaUC3G.url = `${state.url}usuarios.php`
         tablaUC3G.setEstructuraJson(JSONTable,true)
         
     }, [])
@@ -94,8 +108,7 @@ export default function UsuariosAdmin() {
 
     return (
         <div>
-            <h1>Usuarios PRUEBAS</h1>
-            <hello-world></hello-world>
+            <h5>Cuentas de Usuario</h5>            
             <tabla-uc3g></tabla-uc3g>
         </div>
     )

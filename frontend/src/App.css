@@ -62,10 +62,10 @@ a {
 
 
 .main-container{
-  max-width: 992px !important;  
+  max-width: 1000px !important;  
 }
 
-@media (min-width: 992px) {
+@media (min-width: 1000px) {
   .main-container{
     margin: 20px auto!important;
     border: 1px solid #ccc;
