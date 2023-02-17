@@ -19,6 +19,7 @@ import { useEffect,useState } from "react";
 import ProductsScreen from './screens/ProductsScreen';
 import SomosScreen from './screens/SomosScreen';
 
+
 function App() {
   //estados
   const [mostrar, setMostrar]= useState(true)
@@ -76,8 +77,9 @@ function App() {
     };
 
   return (
-    <BrowserRouter>
     
+    <BrowserRouter> 
+       
       { !srcAdmin.includes(window.location.pathname.substring(0,6))?        
         <div className="App">
           <i className="fas fa-chevron-circle-down"></i>
@@ -86,7 +88,7 @@ function App() {
         :''}
 
       <main>
-
+        
         <Container className='d-md-none'>
           <AppSideBarWeb mostrar={mostrar} setMostrar={setMostrar} opciones={opciones} marcar={marcar} setMarcar={setMarcar}/>
         </Container>

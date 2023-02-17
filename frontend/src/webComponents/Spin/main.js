@@ -7,7 +7,7 @@
 // Last Update        : 
 //============================================================================================+
 
-import {loadCSS} from '../loadCss/main.js'
+//import {loadCSS} from '../loadCss/main.js'
 
 const SpinLoad = async ()=>{ 
 	class Spin extends HTMLElement{
@@ -30,7 +30,7 @@ const SpinLoad = async ()=>{
 	  
 		//Renderea el componente y su contenido
         connectedCallback(){            
-            loadCSS('genericos/Spin','spin.css','4')
+            //loadCSS('genericos/Spin','spin.css','4')
             this.classList.add('UC3G_loading')      		
 
          

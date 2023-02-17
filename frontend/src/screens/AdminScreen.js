@@ -13,27 +13,26 @@
  import Container from 'react-bootstrap/esm/Container';
 
  import UsuariosAdmin from '../componentsAdmin/UsuariosAdmin';
- //import { useNavigate } from 'react-router-dom';
+ import { useNavigate } from 'react-router-dom';
 
  
 
  export default function AdminScreen(){
 
-    //const navigate = useNavigate();
-    const {state, dispatch: ctxDispatch} = useContext(Store);
-   
-
+    const navigate = useNavigate();
+    const {state, dispatch: ctxDispatch} = useContext(Store);   
+    
     useEffect(() => {    
         
         //Validate exist token in store
         if(state.token === ''){
-            //navigate('/login');            
+            navigate('/login');            
         }
 
     }, []);   
 
     //estados
-    const [mostrar, setMostrar]= useState(true)
+    const [mostrar, setMostrar]= useState(false)
 
     useEffect(() => {
         if (mostrar) {         
@@ -64,11 +63,12 @@
     const activateOpcion = (e) => {
         //al activar la opcion muestra el contenido
         console.log('activateOpcion'+e);
+        setMostrar(false)
     }
 
     return(
         <div>         
-
+           
             <AppBarHead setMostrar={setMostrar}/>           
 
             <div className='d-flex mt-0'> 

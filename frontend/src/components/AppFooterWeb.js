@@ -2,10 +2,15 @@ import React from "react";
 import Container from "react-bootstrap/esm/Container";
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import { Link } from 'react-router-dom';
 
 import '../assets/css/AppFooterWeb.css';
 
-import { BsFillGeoAltFill,BsFillTelephoneFill,BsFillEnvelopeFill} from "react-icons/bs";
+import { BsFillGeoAltFill,
+    BsFillTelephoneFill,
+    BsFillEnvelopeFill,
+    BsFillGearFill
+} from "react-icons/bs";
 
 
 export default function AppFooterWeb(){
@@ -37,9 +42,12 @@ export default function AppFooterWeb(){
                         </div>
                     </Col>
                 </Row>
-                <Row className="footer-web-sl d-flex justify-content-around flex-wrap align-items-center">
+                <Row className="position-relative footer-web-sl d-flex justify-content-around flex-wrap align-items-center">
                     <Col xs={12} md={3} className="d-flex justify-content-center mt-3" >
                         <h1>LOGO</h1>
+                        <Link to="/admin">
+                            <BsFillGearFill className="position-absolute bottom-0 start-0 m-2"/>
+                        </Link> 
                     </Col>
                     <Col xs={3}>
                         <h2>Nosotros</h2>

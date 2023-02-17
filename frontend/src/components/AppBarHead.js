@@ -14,7 +14,7 @@ export default function AppBarHead(props) {
         <CHeader position="sticky" className="mb-0">
                 <CContainer fluid>
                     <CHeaderToggler
-                    className="ps-1 d-xs-block  d-md-none"
+                    className="ps-1 d-xs-block "
                     onClick={() => props.setMostrar(true)}
                     >
                     <BsList/>

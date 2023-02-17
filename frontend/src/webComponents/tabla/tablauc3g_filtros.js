@@ -101,6 +101,7 @@ export class TablaUC3G_FILTROS extends HTMLTableRowElement{
 
   addEventsInputs(cont){ 
     //Agregamos los eventos a los filtros
+    this.inputs = []
     for (let index = 0; index < cont; index++) {
       let input = this.children[index].children[0]      
 

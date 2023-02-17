@@ -16,7 +16,7 @@ export default function AppSideBarWeb(props) {
     
 
     return (
-        <CSidebar className="sidebar-light" visible={props.mostrar} onVisibleChange= {(visible)=>{props.setMostrar(visible)}}>
+        <CSidebar className="sidebar-light"  visible={props.mostrar} onVisibleChange= {(visible)=>{props.setMostrar(visible)}}>
             <CSidebarBrand>
                 <img src="images/logo.png" width={100} alt="logo" className="logo" />
             </CSidebarBrand>

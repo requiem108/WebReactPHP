@@ -3,9 +3,18 @@ import Axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useEffect,useContext } from 'react';
 import { Store } from '../Store';
+
+import Card from 'react-bootstrap/Card';
+import Button from 'react-bootstrap/Button';
+import { toast } from 'react-toastify';
+import { getError } from '../utils';
+
 import '../webComponents/tabla/main.js?v=4'
 import '../webComponents/tabla/css/tabla.css?v=5'
 import '../webComponents/Spin/css/spin.css?v=4'
+import '../webComponents/inputfetch/main.js?v=4'
+import '../webComponents/inputfetch/css/inputfeth.css?v=4'
+import '../webComponents/selectfetch/main.js?v=4'
 
 
 
@@ -49,7 +58,7 @@ export default function UsuariosAdmin() {
                   {value:`I`,propierties:``,text:`Inactivo`}
                   ]
               }],
-              width:`20%`
+              width:`30%`
             },
             {
               titulo:`Tipo de cuenta`,
@@ -70,7 +79,7 @@ export default function UsuariosAdmin() {
               name:``,
               orderable:false,       
               
-              width:`20%`       
+              width:`10%`       
             }
         
           ]
@@ -78,38 +87,59 @@ export default function UsuariosAdmin() {
         return JSONTable;
     }
 
-    useEffect(() => {
-        /*
-        const fetchData = async () => {
-            /*const { data } = await Axios.post(`${state.url}usuarios.php`,
-            {action: 'getUsuarios',
-            usuario: state.usuario,
-            token: state.token
-            });
-            //console.log(data);
-        }
-        fetchData();*/
+    useEffect(() => {      
         
-        const JSONTable = getJsonTable();
-        const tablaUC3G = document.querySelector('tabla-uc3g');
-        tablaUC3G.data_personalizada = [
-          {name:`action`,value:`getUsuarios`},
-          {name:`token`,value: window.btoa(state.token)},
-          {name:`usuario`,value: window.btoa(state.usuario)}
-        ]
-        tablaUC3G.url = `${state.url}usuarios.php`
-        tablaUC3G.setEstructuraJson(JSONTable,true)
-        
+       cargarUsuarios()
+         
     }, [])
 
-    
-   
+    const cargarUsuarios = async()=>{
+      const JSONTable = getJsonTable();
+      const tablaUC3G = document.querySelector('tabla-uc3g');
+      tablaUC3G.data_personalizada = [
+        {name:`action`,value:`getUsuarios`},
+        {name:`token`,value: window.btoa(state.token)},
+        {name:`usuario`,value: window.btoa(state.usuario)}
+      ]
+      tablaUC3G.url = `${state.url}usuarios.php`
+      await tablaUC3G.setEstructuraJson(JSONTable,true)     
+      //toast.error('Carga completa') 
+    }
+
+    const addUsuario = async()=>{
+      
+      const tablaUC3G = document.querySelector('tabla-uc3g');
+      try {
+        const { data } = await Axios.post(`${state.url}usuarios.php`,{
+          action: 'addUser',
+          usuario: state.usuario,
+          token: state.token,
+        });
+        
+        //toast.success('Usuario agregado correctamente')      
+        await tablaUC3G.filtrar()
+        document.querySelectorAll('mas-admin-usuarios').forEach((element) => {
+          element.url = `${state.url}usuarios.php`
+        })
+        //toast.error('Usuario agregado correctamente') 
+      } catch (err) {
+        //toast.error(getError(err));
+      }
+    }
+     
     
 
     return (
-        <div>
-            <h5>Cuentas de Usuario</h5>            
-            <tabla-uc3g></tabla-uc3g>
-        </div>
+      <Card className='p-1 m-1 admin '>
+        <Card.Header className='d-flex justify-content-around flex-wrap'>
+          <h5>Cuentas de Usuario Administrador</h5> 
+          <Button onClick={addUsuario} className="btn">
+            Agregar Usuario
+          </Button>
+        </Card.Header>
+        <Card.Body>                       
+          <tabla-uc3g></tabla-uc3g>
+        </Card.Body>
+    </Card>
     )
 }

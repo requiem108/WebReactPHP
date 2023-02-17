@@ -1,0 +1,8 @@
+.inputfetch-ERROR{
+    border: solid rgb(255 0 0 / 50%) 1px;
+    background: #fff3f3;
+}
+
+.inputfetch-ERROR:before{
+    content: 'HOLA';
+}

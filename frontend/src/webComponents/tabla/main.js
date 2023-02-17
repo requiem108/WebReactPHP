@@ -8,7 +8,7 @@
 // Uso(Pantalla)      : main
 //============================================================================================+
 
-import {loadCSS} from '../loadCss/main.js'
+//import {loadCSS} from '../loadCss/main.js'
 import {Obj_fetch} from '../peticiones_fetch/main.js'
 import '../Spin/main.js'
 import { TablaUC3G_TH } from "./tablauc3g_titulos.js"
@@ -173,7 +173,7 @@ const TablaUC3G = async ()=>{
 				data+=`${item.name}=${item.value}`
 			})
 
-			//Columnas
+			//Columnas			
 			let contador = 0
 			this.FILTROS.inputs.forEach((item)=>{
 				data += `&columns[${contador}][data]=${contador}
@@ -246,7 +246,7 @@ const TablaUC3G = async ()=>{
 
 
 
-await loadCSS('genericos/tabla','tabla.css','0.10')
+//await loadCSS('genericos/tabla','tabla.css','0.10')
 //await Spin() 
 
 window.customElements.define("tabla-titulo-uc3g",TablaUC3G_TH,{extends: "tr"}) 
