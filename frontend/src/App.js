@@ -78,6 +78,7 @@ function App() {
 
   return (
     
+<<<<<<< HEAD
     <BrowserRouter> 
        
       { !srcAdmin.includes(window.location.pathname.substring(0,6))?        
@@ -94,6 +95,14 @@ function App() {
         </Container>
 
         <Container fluid className='p-0 p-lg-2 main-container'>        
+=======
+    <BrowserRouter>
+      <div className="App">
+      
+      </div> 
+      <main>
+        <Container fluid className='containerScreens'>
+>>>>>>> 26a0903f23791d82147b78c522353443e5f30bab
           <Routes>
             <Route path="/" element={<HomeScreen setMarcar={setMarcar}/>} />            
             <Route path="/login" element={<LoginScreen />} />   
@@ -111,7 +120,7 @@ function App() {
           
       </main>   
     </BrowserRouter>
-    
+   
   );
 }
 

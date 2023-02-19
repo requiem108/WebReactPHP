@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /*
 VARIABLES
 */
@@ -14,6 +15,14 @@ VARIABLES
   --mas-red:#e55353;
   --mas-redB:#c43c3c;
 }
+=======
+.containerScreens{
+  padding: 0px !important;
+}
+
+
+/*
+>>>>>>> 26a0903f23791d82147b78c522353443e5f30bab
 .App {
   text-align: center;
 }
@@ -59,6 +68,7 @@ a {
   to {
     transform: rotate(360deg);
   }
+<<<<<<< HEAD
 }
 
 
@@ -118,3 +128,6 @@ a {
 h2{
   font-weight: bold !important;
 }
+=======
+}*/
+>>>>>>> 26a0903f23791d82147b78c522353443e5f30bab
