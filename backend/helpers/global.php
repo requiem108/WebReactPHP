@@ -3,6 +3,9 @@
 
 class _Global_
 {
+    //variable global que tiene una url
+    public static $url_models = 'http://localhost/TOM-A/backend/models/';
+
     //function to create a web token
     public static function createWebToken(){
         $token = bin2hex(random_bytes(32));
@@ -49,26 +52,42 @@ class _Global_
     //function validate token 2 days
     public static function validateToken($token,$usuario,$db){
         $res = array();
-        $stmt = $db->prepare("SELECT * FROM Token_Usuario 
-        WHERE token = :token 
-            AND id_usuario_fk = :usuario
-            AND estado = 'A' 
-            AND fecha_creacion >= DATE_SUB(NOW(), INTERVAL 2 DAY) LIMIT 1");
-        $stmt->bindParam(':usuario', $usuario);
-        $stmt->bindParam(':token', $token);
-        $stmt->execute();
-        $result = $stmt->fetch(PDO::FETCH_ASSOC);
-        if ($result) {
-            $res['comentario'] = 'Token valido';
+        try {
+            $stmt = $db->prepare("SELECT * FROM Token_Usuario 
+            WHERE token = :token 
+                AND id_usuario_fk = :usuario
+                AND estado = 'A' 
+                AND fecha_creacion >= DATE_SUB(NOW(), INTERVAL 2 DAY) LIMIT 1");
+            $stmt->bindParam(':usuario', $usuario);
+            $stmt->bindParam(':token', $token);
+            $stmt->execute();
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            if ($result) {
+                $res['comentario'] = 'Token valido';
+                return $res;
+            } else {
+                $res['comentario'] = 'Token invalido';
+                
+                $stmt = $db->prepare("UPDATE Token_Usuario SET estado = 'I' WHERE id_token = :id_token");
+                $stmt->bindParam(':id_token', $token);
+                $ok = $stmt->execute();
+                if ($ok) {
+                    $res['comentario'] = 'Exito';
+                  
+                } else {
+                    $res['comentario'] = 'Error no actualizo tokens';
+                    
+                }                
+            }
             return $res;
-        } else {
-            $res['comentario'] = 'Token invalido';
-            $this->changeStateToken($result['id_token'],$db);
-            return $res;
+        } catch (Exception $th) {
+            return $res['comentario'] = 'Error Token invalido';
         }
+        
+        
     }
 
-    private function changeStateToken($id_token,$db){
+    private static function changeStateToken($id_token,$db){
         $res = array();
         $stmt = $db->prepare("UPDATE Token_Usuario SET estado = 'I' WHERE id_token = :id_token");
         $stmt->bindParam(':id_token', $id_token);
@@ -94,6 +113,46 @@ class _Global_
         } else {
             return 'Error al inactivar tokens';
         }     
+    }
+
+    public static function limpiaId($Cadena,$Llave){
+        return substr($Cadena,(strrpos($Cadena,$Llave)+1));
+    }
+
+    //funcion para subir imagenes al servidor recibe la variable $_FILES y la ruta donde se guardara
+    public static function uploadImage($file, $ruta, $nombre) {
+        $res = array();
+        $nombreCompleto = $nombre . '.' . pathinfo($file['name'], PATHINFO_EXTENSION);
+        $rutaCompleta = $ruta . $nombreCompleto;
+        
+        // Verificar si el archivo es una imagen
+        $mime = mime_content_type($file['tmp_name']);
+        if (strpos($mime, 'image/') !== 0) {
+            $res['error'] = 'El archivo no es una imagen válida';
+            return $res;
+        }
+        
+        // Verificar si el archivo existe y borrarlo
+        if (file_exists($rutaCompleta)) {
+            unlink($rutaCompleta);
+        }
+        
+        // Verificar el tamaño del archivo
+        if ($file['size'] > 5 * 1024 * 1024) {
+            $res['error'] = 'El archivo es demasiado grande (máximo 5 MB)';
+            return $res;
+        }
+        
+        // Mover el archivo a la ruta especificada
+        if (!move_uploaded_file($file['tmp_name'], $rutaCompleta)) {
+            $res['error'] = 'No se pudo mover el archivo al servidor';
+            return $res;
+        }
+        
+        $res['success'] = true;
+        $res['ruta'] = $rutaCompleta;
+        $res['nombre'] = $nombreCompleto;
+        return $res;
     }
 }
 

@@ -11,6 +11,8 @@ VARIABLES
   --mas-greyL:#f0f0f0;
   --mas-grey:#8f8f8f;
   --mas-amarillo:#ada938;
+  --mas-red:#e55353;
+  --mas-redB:#c43c3c;
 }
 .App {
   text-align: center;
@@ -99,6 +101,17 @@ a {
 .btn-primary:hover{
   background-color: var(--mas-azulB)!important;
   border-color: var(--mas-azulB)!important;
+  color: #fff!important;
+}
+
+.btn-danger{
+  background-color: var(--mas-red)!important;
+  border-color: var(--mas-red)!important;
+}
+
+.btn-danger:hover{
+  background-color: var(--mas-red)!important;
+  border-color: var(--mas-red)!important;
   color: #fff!important;
 }
 

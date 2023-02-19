@@ -1,4 +1,5 @@
  import React from 'react'
+ import Axios from 'axios';
 
  import '../assets/css/AdminScreen.css'
  import { useEffect,useState } from "react";
@@ -13,6 +14,7 @@
  import Container from 'react-bootstrap/esm/Container';
 
  import UsuariosAdmin from '../componentsAdmin/UsuariosAdmin';
+ import LaboratoriosAdmin from '../componentsAdmin/LaboratoriosAdmin';
  import { useNavigate } from 'react-router-dom';
 
  
@@ -22,19 +24,38 @@
     const navigate = useNavigate();
     const {state, dispatch: ctxDispatch} = useContext(Store);   
     
-    useEffect(() => {    
-        
+    useEffect(() => {       
         //Validate exist token in store
         if(state.token === ''){
             navigate('/login');            
         }
-
     }, []);   
 
     //estados
     const [mostrar, setMostrar]= useState(false)
+    const [items, setItems]= useState([])
 
     useEffect(() => {
+
+        const fetchData = async () => {
+            try {
+                //Obtener las opciones de sidebar
+                const {data} = await Axios.post(`${state.url}usuarios.php`, {
+                    action: 'getPantallas',
+                    usuario: state.usuario,
+                    token: state.token,
+                })
+              setItems(data);
+
+            } catch (error) {
+              console.error(error);
+            }
+          };
+        
+          fetchData();
+        
+       
+
         if (mostrar) {         
           //console.log("mostrar has changed to true");
         }
@@ -42,22 +63,7 @@
   
     var opciones = {
     titulo:'Pantallas',
-    items:
-    [
-        {
-            id:'0',
-            tipo:'link',
-            texto:'Usuarios',
-            link:'/admin/usuarios'
-        },
-        {
-            id:'1',
-            tipo:'group',
-            texto:'Productos',
-            items:[{item:'productos1'},{item:'productos2'}]
-        }
-    ]
-        
+    items: items        
     };
 
     const activateOpcion = (e) => {
@@ -65,7 +71,7 @@
         console.log('activateOpcion'+e);
         setMostrar(false)
     }
-
+   
     return(
         <div>         
            
@@ -77,6 +83,7 @@
                     <h1>Admin</h1>
                     <Routes>
                         <Route path='/usuarios' element={<UsuariosAdmin/>} />
+                        <Route path='/laboratorios' element={<LaboratoriosAdmin/>} />
                     </Routes>
                 </Container>
             </div>

@@ -102,7 +102,8 @@ export default function UsuariosAdmin() {
         {name:`usuario`,value: window.btoa(state.usuario)}
       ]
       tablaUC3G.url = `${state.url}usuarios.php`
-      await tablaUC3G.setEstructuraJson(JSONTable,true)     
+      await tablaUC3G.setEstructuraJson(JSONTable,true) 
+      tablaUC3G.functionSuccess = ()=>{btnEliminarConfig() }   
       //toast.error('Carga completa') 
     }
 
@@ -127,6 +128,22 @@ export default function UsuariosAdmin() {
       }
     }
      
+    const btnEliminarConfig = () => {
+      document.querySelectorAll('.admin-user-eliminar').forEach((element) => {
+        element.addEventListener('click', async (e) => {
+          e.preventDefault();
+          const tablaUC3G = document.querySelector('tabla-uc3g');
+          const { data } = await Axios.post(`${state.url}usuarios.php`,{
+            action: 'deleteUser',
+            usuario: state.usuario,
+            token: state.token,
+            id: e.target.dataset.id,
+          });
+          toast.success('Usuario eliminado correctamente')      
+          await tablaUC3G.filtrar()
+        })
+      })//fin del foreach
+    }
     
 
     return (
