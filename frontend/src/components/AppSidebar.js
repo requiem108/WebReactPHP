@@ -1,50 +1,54 @@
-import React from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import React from "react";
 
-import { CSidebar, CSidebarBrand, CSidebarNav, CSidebarToggler } from '@coreui/react'
-import CIcon from '@coreui/icons-react'
+import { CSidebar,
+    CSidebarBrand,
+    CSidebarNav,
+    CSidebarToggler,
+    CNavTitle,
+    CNavItem,
+    CNavGroup
+    } from '@coreui/react'
+import {useNavigate} from 'react-router-dom'
 
-import { AppSidebarNav } from './AppSidebarNav'
+export default function AppSideBar(props) {
+    const navigate = useNavigate();
+    
 
-import { logoNegative } from 'src/assets/brand/logo-negative'
-import { sygnet } from 'src/assets/brand/sygnet'
+    return (
+        <CSidebar visible={props.mostrar} onVisibleChange= {(visible)=>{props.setMostrar(visible)}}>
+            <CSidebarBrand>Nombre de la empresa</CSidebarBrand>
+            <CSidebarNav>
+                <CNavTitle>{props.opciones.titulo}</CNavTitle>
+                {
+                    props.opciones.items.map((item)=>{
+                        
+                        if(item.tipo === 'link'){
+                            return <CNavItem key={`${item.id}-nav`} href="#" 
+                            onClick={()=>{
+                                props.activateOpcion()
+                                navigate(`${item.link}`)
+                                }
+                            }
+                            >{item.texto}</CNavItem>
+                        }
+                        if(item.tipo === 'group'){
+                            return(
+                                <CNavGroup key={item.id} toggler={item.texto}>
+                                    {                                        
+                                        item.items.map((item2)=>{
+                                            return <CNavItem key={`${item.id}-${item2.item}`} href="#">{item2.item}</CNavItem>
+                                        })
+                                    }                                
+                                </CNavGroup>
+                            )
+                        }
+                    })
+                }
+              
+            </CSidebarNav>
+            
+        </CSidebar>  
+      );
 
-import SimpleBar from 'simplebar-react'
-import 'simplebar/dist/simplebar.min.css'
-
-// sidebar nav config
-import navigation from '../_nav'
-
-export default AppSidebar = () => {
-  const dispatch = useDispatch()
-  const unfoldable = useSelector((state) => state.sidebarUnfoldable)
-  const sidebarShow = useSelector((state) => state.sidebarShow)
-
-  return (
-    <CSidebar
-      position="fixed"
-      unfoldable={unfoldable}
-      visible={sidebarShow}
-      onVisibleChange={(visible) => {
-        debugger
-        dispatch({ type: 'set', sidebarShow: visible })
-      }}
-    >
-      <CSidebarBrand className="d-none d-md-flex" to="/">
-        <CIcon className="sidebar-brand-full" icon={logoNegative} height={35} />
-        <CIcon className="sidebar-brand-narrow" icon={sygnet} height={35} />
-      </CSidebarBrand>
-      <CSidebarNav>
-        <SimpleBar>
-          <AppSidebarNav items={navigation} />
-        </SimpleBar>
-      </CSidebarNav>
-      <CSidebarToggler
-        className="d-none d-lg-flex"
-        onClick={() => dispatch({ type: 'set', sidebarUnfoldable: !unfoldable })}
-      />
-    </CSidebar>
-  )
+    
 }
-
-
