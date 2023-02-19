@@ -11,7 +11,7 @@
  import { useContext } from 'react';
 
  import AppBarHead from '../components/AppBarHead';
- import AppSideBar from '../components/AppSidebar';
+ import AppSideBar from '../components/AppSideBar';
  
  import {Routes, Route} from 'react-router-dom'
  import Container from 'react-bootstrap/esm/Container';
