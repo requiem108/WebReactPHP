@@ -15,7 +15,7 @@ export default function AppSideBar(props) {
     
 
     return (
-        <CSidebar visible={props.mostrar} onVisibleChange= {(visible)=>{props.setMostrar(visible)}}>
+        <CSidebar overlaid={true} visible={props.mostrar} onVisibleChange= {(visible)=>{props.setMostrar(visible)}}>
             <CSidebarBrand>Nombre de la empresa</CSidebarBrand>
             <CSidebarNav>
                 <CNavTitle>{props.opciones.titulo}</CNavTitle>
