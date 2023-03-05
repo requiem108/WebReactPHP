@@ -37,7 +37,7 @@ export default function LaboratoriosAdmin() {
                 name:`nombre`,
                 orderable:true,
                 bOrder:`asc`,
-                search:[{tipo:`input`,value:``,type:`text`,propierties:``}],
+                search:[{tipo:`input`,value:``,type:`text`,properties:`class="tabla-filtrosAdm-uc3g"`}],
                 width:`45%`         
             },
             {

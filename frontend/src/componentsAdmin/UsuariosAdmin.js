@@ -36,7 +36,7 @@ export default function UsuariosAdmin() {
               name:`usuario`,
               orderable:true,
               bOrder:`asc`,
-              search:[{tipo:`input`,value:``,type:`text`,propierties:``}],
+              search:[{tipo:`input`,value:``,type:`text`,properties:`class="tabla-filtrosAdm-uc3g"`}],
               width:`20%`         
             },
             {
@@ -51,7 +51,7 @@ export default function UsuariosAdmin() {
               name:`estado`,
               orderable:true,
               value:``,
-              search:[{tipo:`select`,value:``,propierties:``,
+              search:[{tipo:`select`,value:``,properties:`class="tabla-filtrosAdm-uc3g"`,
                 options:[
                   {value:``,propierties:``,text:`Estado`},
                   {value:`A`,propierties:``,text:`Activo`},                
@@ -64,7 +64,7 @@ export default function UsuariosAdmin() {
               titulo:`Tipo de cuenta`,
               name:`tipo`,
               orderable:true,        
-              search:[{tipo:`select`,value:``,propierties:``,
+              search:[{tipo:`select`,value:``,properties:` class="tabla-filtrosAdm-uc3g"`,
                 options:[
                   {value:``,propierties:``,text:`TODOS`},
                   {value:`administrador`,propierties:``,text:`Administrador`},                

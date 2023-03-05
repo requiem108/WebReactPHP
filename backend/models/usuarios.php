@@ -366,7 +366,7 @@ function listUsuarios($db,$tipo,$url_models,$token,$usuarioToken){
                         <option value="A" '.($Fila['TIPO'] == 'ADMINISTRADOR'? 'selected' : '').'>Administrador</option>
                         <option value="U" '.($Fila['TIPO'] == 'AUXILIAR'? 'selected' : '').'>Auxiliar</option>
                       </select>';
-        $botones='<div d-md-flex justify-content-center><button data-id="'.$Fila['ID_USUARIO'].'" style="width:33px;" class="btn btn-danger rounded-pill admin-user-eliminar">X</button></div>';
+        $botones='<div class="d-md-flex justify-content-center tabla-admin-botones"><button data-id="'.$Fila['ID_USUARIO'].'" style="width:33px;" class="btn btn-danger rounded-pill admin-user-eliminar">X</button></div>';
       }else{
         //Auxiliar
         $usuario_c = '<span class="" title="">'.$Fila['USUARIO'].'</span>';

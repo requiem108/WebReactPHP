@@ -197,9 +197,9 @@ function deleteLaboratorio($db,$dataObject){
 
 function uploadImage($db,$dataObject){
     $pruebas = true;
-    print("<pre>".print_r($dataObject,true)."</pre>");  
+    //print("<pre>".print_r($dataObject,true)."</pre>");  
     $nombreArchivo = 'LabID'.$dataObject->idLaboratorios;
-    print("<pre>".print_r($_FILES['file'],true)."</pre>");
+    //print("<pre>".print_r($_FILES['file'],true)."</pre>");
     $rutaIMG = '../images/imgLogos/';
  
     try
@@ -284,7 +284,7 @@ function listLaboratorios($db, $tipo, $url_models, $token, $usuarioToken) {
 
     // --- FILTRADO POR COLUMNA --- //
     $ColumnasFiltro = $_GET['columns'];
-    $sWhere = "";
+    $sWhere = "Where idLaboratorios <> 0 ";
     foreach($ColumnasFiltro as $IdColumna => $aColumna){
       if(isset($aColumna['searchable']) and $aColumna['searchable'] == 'true' and  $aColumna['search']['value'] != ''){
         if( $sWhere == "" ){
@@ -390,7 +390,7 @@ function listLaboratorios($db, $tipo, $url_models, $token, $usuarioToken) {
           }                 
            
           $botones='
-            <div class="d-md-flex justify-content-center">                
+            <div class="d-md-flex justify-content-center tabla-admin-botones">                
                 <button data-id="'.$Fila['IDLABORATORIOS'].'" style="width:33px;" class="btn btn-danger rounded-pill admin-Lab-eliminar">X</button>
             </div>';
         }else{
@@ -413,6 +413,6 @@ function listLaboratorios($db, $tipo, $url_models, $token, $usuarioToken) {
       
       //var_dump($output);
       return json_encode($output);
-  }
+}
   
 ?>

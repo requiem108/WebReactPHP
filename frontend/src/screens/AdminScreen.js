@@ -18,6 +18,8 @@
 
  import UsuariosAdmin from '../componentsAdmin/UsuariosAdmin';
  import LaboratoriosAdmin from '../componentsAdmin/LaboratoriosAdmin';
+ import ProductosAdmin from '../componentsAdmin/ProductosAdmin';
+ import NoticiasAdmin from '../componentsAdmin/NoticiasAdmin';
  import { useNavigate } from 'react-router-dom';
 
  
@@ -87,6 +89,8 @@
                     <Routes>
                         <Route path='/usuarios' element={<UsuariosAdmin/>} />
                         <Route path='/laboratorios' element={<LaboratoriosAdmin/>} />
+                        <Route path='/productos' element={<ProductosAdmin/>} />
+                        <Route path='/noticias' element={<NoticiasAdmin/>} />
                     </Routes>
                 </Container>
             </div>
