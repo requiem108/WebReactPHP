@@ -1,193 +1,207 @@
-/*import { useState } from "react";
-import { Container, Button, Modal, Form } from "react-bootstrap";
-
-function NoticiasAdmin() {
-  const [showModal, setShowModal] = useState(false);
-  const [noticias, setNoticias] = useState([]);
-
-  const handleCloseModal = () => setShowModal(false);
-  const handleShowModal = () => setShowModal(true);
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const form = event.currentTarget;
-    const titulo = form.titulo.value;
-    const cuerpo = form.cuerpo.value;
-    const nuevaNoticia = { titulo, cuerpo };
-    setNoticias([...noticias, nuevaNoticia]);
-    handleCloseModal();
-  };
-
-  return (
-    <Container>
-      <h1>Administración de Noticias</h1>
-      <Button variant="primary" onClick={handleShowModal}>
-        Nueva Noticia
-      </Button>
-      <br />
-      <br />
-      <ul>
-        {noticias.map((noticia, index) => (
-          <li key={index}>
-            <h2>{noticia.titulo}</h2>
-            <p>{noticia.cuerpo}</p>
-          </li>
-        ))}
-      </ul>
-      <Modal show={showModal} onHide={handleCloseModal}>
-        <Modal.Header closeButton>
-          <Modal.Title>Nueva Noticia</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form onSubmit={handleSubmit}>
-            <Form.Group controlId="titulo">
-              <Form.Label>Título</Form.Label>
-              <Form.Control type="text" placeholder="Ingrese el título" required />
-            </Form.Group>
-            <Form.Group controlId="cuerpo">
-              <Form.Label>Cuerpo</Form.Label>
-              <Form.Control as="textarea" placeholder="Ingrese el cuerpo de la noticia" required />
-            </Form.Group>
-            <Button variant="primary" type="submit">
-              Crear Noticia
-            </Button>
-          </Form>
-        </Modal.Body>
-      </Modal>
-    </Container>
-  );
-}
-
-export default NoticiasAdmin;
-*/
-
-
-
-
-
-
-
-import { useState, useEffect } from "react";
+import React from "react";
+import { useState, useEffect, useContext } from "react";
 import { Container, Row, Col, Button} from "react-bootstrap";
 import axios from "axios";
 import ModalNoticias from "../components/ModalNoticias";
+import { Store } from '../Store';
+import CardNoticia from "../components/CardNoticia";
 
 export default function NoticiasAdmin() {
+
+  const {state, dispatch: ctxDispatch} = useContext(Store);
+   //validamos si el token esta vacion regresa a login
+  if(state.token === ''){
+    // navigate('/login');
+  }
+
   const [showModal, setShowModal] = useState(false);
   const [titulo, setTitulo] = useState("");
   const [cuerpo, setCuerpo] = useState("");
   const [imagen, setImagen] = useState(null);
-  const [noticias, setNoticias] = useState([]);
-  const [showNoticias, setShowNoticias] = useState(2);
+  const [noticiasAD, setNoticiasAD] = useState([]);
+  const [autor, setAutor] = useState(""); 
+  const [ni, setNi] = useState(0);
+  const [nf, setNf] = useState(2);
+  const [crearNuevaNoticia, setCrearNuevaNoticia] = useState(false);
+  const [id_noticiasSeleccionada, setIdNoticiasSeleccionada] = useState(null);
+
 
   useEffect(() => {
-    getNoticias();
-  }, [showNoticias]);
+    getNoticias(false);
+  }, []);
 
   const handleCloseModal = () => {
+    //Al cerrar Modal
     setShowModal(false);
     setTitulo("");
     setCuerpo("");
     setImagen(null);
+    setAutor("");
+    setIdNoticiasSeleccionada(null);    
   };
 
-  const handleShowModal = () => setShowModal(true);
+  const handleShowModal = () =>{
+    setCrearNuevaNoticia(true);
+    setShowModal(true);
+  }
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
+    
+    let action = crearNuevaNoticia ? 'addNoticia' : 'updateNoticia';
     const formData = new FormData();
+    formData.append("token", window.btoa(state.token));
+    formData.append("action", action);    
     formData.append("titulo", titulo);
-    formData.append("cuerpo", cuerpo);
-    if (imagen) {
-      formData.append("imagen", imagen);
-    }
+    formData.append("contenido", cuerpo);
+    formData.append("imagen", imagen);
+    formData.append("autor", autor);
+    formData.append("usuario", window.btoa(state.usuario));
+    formData.append("crearNuevaNoticia", crearNuevaNoticia);
+    formData.append("id_noticias", id_noticiasSeleccionada);
 
     try {
-      const response = await axios.post("/api/noticias", formData, {
+      const response = await axios.post(`${state.url}noticias.php`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
-      });
+      });      
+      
+      await handleCloseModal();
+      const nuevaNoticia = response.data;//Noticia modificada o nueva
+      if(crearNuevaNoticia){
+        setNoticiasAD([nuevaNoticia,...noticiasAD]);
+      }else{       
 
-      const nuevaNoticia = response.data;
-      setNoticias([...noticias, nuevaNoticia]);
-      handleCloseModal();
+        //actualizar noticiasAD
+        let noticiasTemp = []
+        noticiasAD.map((noticia)=>{
+          if(noticia.id_noticias === id_noticiasSeleccionada){
+            noticiasTemp.push(nuevaNoticia)
+          }else{
+            noticiasTemp.push(noticia)
+          }
+          
+        })
+        setNoticiasAD(noticiasTemp)
+      }
+      
+      
     } catch (error) {
       console.error(error);
     }
   };
 
   const handleSelectNoticia = async (id, estado) => {
+    //Actualizar estado de la noticia
     try {
-      await axios.put(`/api/noticias/${id}`, { estado });
-      const noticiasActualizadas = noticias.map((noticia) =>
-        noticia.id === id ? { ...noticia, estado } : noticia
-      );
-      setNoticias(noticiasActualizadas);
+      const formData = new FormData();
+      formData.append("token", window.btoa(state.token));
+      formData.append("action", 'updateEstado');    
+      formData.append("usuario", window.btoa(state.usuario));      
+      formData.append("estado", estado);
+      formData.append("id_noticia", id);
+
+      const response = await axios.post(`${state.url}noticias.php`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });  
+
+      //actualizar noticiasAD
+      let noticiasTemp = []
+      debugger
+      noticiasAD.map((noticia)=>{
+        if(noticia.id_noticias === id){
+          noticia.estado = estado
+          noticia.fecha_publicacion = response.data.fecha
+          noticiasTemp.push(noticia)
+        }else{
+          noticiasTemp.push(noticia)
+        }
+      });
+      setNoticiasAD(noticiasTemp)
+      
     } catch (error) {
       console.error(error);
     }
   };
 
-  const getNoticias = async () => {
+  const getNoticias = async (vermas) => {
+    
     try {
-      const response = await axios.get("/api/noticias", {
-        params: { estado: "publicado" },
+      const response = await axios.get(`${state.url}noticias.php`, {
+        params: { 
+          token: window.btoa(state.token),
+          action: 'getNoticias',
+          usuario: window.btoa(state.usuario),
+          ni: ni,
+          nf: nf, },
       });
-      const noticias = response.data;
-      setNoticias(noticias);
+      
+      const noticias = response.data.data;
+      if(noticias.length>0){
+        if(vermas){
+          setNoticiasAD(noticiasAD.concat(noticias));
+        }else{
+          setNoticiasAD(noticias); 
+        }
+        setNi(ni+2)
+        setNf(nf+2)
+      }
+            
+
     } catch (error) {
       console.error(error);
     }
   };
+
+  const editNoticia = (id_noticia) => {   
+  
+    noticiasAD.map((noticia) => {
+      if(noticia.id_noticias == id_noticia){
+        setTitulo(noticia.titulo);
+        setCuerpo(noticia.contenido);
+        setAutor(noticia.autor);
+        setIdNoticiasSeleccionada(noticia.id_noticias);
+      }
+    });
+    setShowModal(true);  
+    setCrearNuevaNoticia(false); /* para que no se cree una nueva noticia */    
+  }
 
   return (
     <Container>
-      <h1>Administración de Noticias</h1>
+      <h5>Administración de Noticias</h5>
       <Button variant="primary" onClick={handleShowModal}>
         Nueva Noticia
       </Button>
       <br />
       <br />
       <Row>
-        {noticias.map((noticia) => (
-          <Col key={noticia.id} xs={12} md={6} lg={4}>
-            <div className="card mb-4">
-              {noticia.imagen && (
-                <img src={noticia.imagen.url} className="card-img-top" alt={noticia.titulo} />
-              )}
-              <div className="card-body">
-                <h2 className="card-title">{noticia.titulo}</h2>
-                <p className="card-text">{noticia.cuerpo}</p>
-                <select
-                  className="form-select"
-                  value={noticia.estado}
-                  onChange={(event) => handleSelectNoticia(noticia.id, event.target.value)}
-                >
-                <option value="borrador">Borrador</option>
-                <option value="publicado">Publicado</option>
-            </select>
-          </div>
-        </div>
-      </Col>
-    ))}
-  </Row>
+        {noticiasAD.map((noticia) => (          
+          <CardNoticia noticia={noticia} key={`noticia_${noticia.id_noticias}`} id={noticia.id_noticias} editNoticia={editNoticia} handleSelectNoticia={handleSelectNoticia} />
+        ))}
+      </Row>
   
-  <div className="text-center">
-    <Button variant="primary" onClick={() => setShowNoticias(showNoticias + 2)}>
-      Cargar Más Noticias
+  <div className="text-center mb-4">
+    <Button variant="primary" onClick={async () => {      
+      getNoticias(true)
+      }}>
+      Ver noticias anteriores
     </Button>
   </div>
 
     <ModalNoticias handleCloseModal={handleCloseModal}
-     handleSubmit={handleSubmit} 
-     showModal={showModal}
-     titulo={titulo}
-        cuerpo={cuerpo}        
-        setTitulo={setTitulo}
-        setCuerpo={setCuerpo}
-        setImagen={setImagen}
+      handleSubmit={handleSubmit} 
+      showModal={showModal}
+      titulo={titulo}
+      cuerpo={cuerpo}        
+      setTitulo={setTitulo}
+      setCuerpo={setCuerpo}
+      setImagen={setImagen}
+      setAutor={setAutor}
+      autor={autor}
      />
 </Container>
 

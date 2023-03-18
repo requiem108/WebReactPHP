@@ -124,6 +124,7 @@ class _Global_
         $res = array();
         $nombreCompleto = $nombre . '.' . pathinfo($file['name'], PATHINFO_EXTENSION);
         $rutaCompleta = $ruta . $nombreCompleto;
+        $res['success'] = false;
         
         // Verificar si el archivo es una imagen
         $mime = mime_content_type($file['tmp_name']);

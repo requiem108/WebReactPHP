@@ -11,3 +11,17 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+
+
+.noticias-contenido{
+  font-size: 1rem ;
+ 
+}
+
+@media (max-width: 768px) {
+  .noticias-contenido{
+      font-size: .8rem ;
+      
+  }
+}

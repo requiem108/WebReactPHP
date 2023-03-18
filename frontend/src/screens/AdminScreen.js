@@ -57,10 +57,7 @@
             }
           };
         
-          fetchData();
-        
-       
-
+          fetchData();  
         if (mostrar) {         
           //console.log("mostrar has changed to true");
         }
