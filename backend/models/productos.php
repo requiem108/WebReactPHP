@@ -139,6 +139,7 @@ function getProductosAdmin($db,$dataObject){
     }
     catch (Exception $e)
     {
+       $res['ERROR'] = 'ERROR';
        $res['error'] = $e->getMessage();
        $res['data_usuario'] = array();
     }
@@ -310,13 +311,13 @@ function listProductos($db, $tipo, $url_models, $dataObject) {
         }
         /* FILTRAR POR TIPO DE DATO AUTOMATICAMENTE */
         if(is_numeric($aColumna['search']['value'])){
-          $sWhere .= $aColumnas[$IdColumna]." <= '".$aColumna['search']['value']."'";
+          $sWhere .= $aColumna['name']." <= '".$aColumna['search']['value']."'";
         } else {
           if (DateTime::createFromFormat('Y-m-d H:i:s', $aColumna['search']['value']) !== FALSE) {
             // it's a date
             $sWhere .= $aColumnas[$IdColumna]." = to_date('".$aColumna['search']['value']."','dd/mm/yyyy')";
           } else {
-            $sWhere .= "upper(".$aColumnas[$IdColumna].") like upper('%".$aColumna['search']['value']."%')";
+            $sWhere .= "upper(".$aColumna['name'].") like upper('%".$aColumna['search']['value']."%')";
           }
         }
       }

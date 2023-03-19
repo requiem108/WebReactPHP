@@ -15,7 +15,7 @@ import '../webComponents/inputfetch/main.js?v=4'
 import '../webComponents/inputfetch/css/inputfeth.css?v=4'
 import '../webComponents/selectfetch/main.js?v=4'
 
-export default function LaboratoriosAdmin() {
+export default function LaboratoriosAdmin({manejeadorError}) {
 
     const navigate = useNavigate();
     const {state, dispatch: ctxDispatch} = useContext(Store);
@@ -79,15 +79,31 @@ export default function LaboratoriosAdmin() {
         ]
         tablaUC3G.url = `${state.url}laboratorios.php`
         await tablaUC3G.setEstructuraJson(JSONTable,true) 
-        tablaUC3G.functionSuccess = ()=>{addEventsBotones()}    
+        tablaUC3G.functionSuccess = (respuesta)=>{addEventsBotones(respuesta)}    
         toast.success('Carga completa') 
     }
 
-    const addEventsBotones = async()=>{
-      btnEliminarLab()
-      btnSubirLogo()
+    const addEventsBotones = async(respuesta)=>{
+      debugger
+      if(respuesta.ERROR === 'ERROR'){
+        manejeadorError(respuesta.error)
+      }else{
+        inpustFunctionError()
+        btnEliminarLab()
+        btnSubirLogo()
+      }
+      
     }
-    
+
+    const inpustFunctionError = async()=>{
+      let lista = document.querySelectorAll(`tabla-uc3g input`)
+      lista.forEach((input)=>{
+        if(input.functionError !== null){
+          input.functionError = (message)=>{manejeadorError(message)}
+        }
+      })
+    }
+
     const addLaboratorio = async()=>{
       
       const tablaUC3G = document.querySelector('tabla-uc3g');
@@ -97,12 +113,16 @@ export default function LaboratoriosAdmin() {
           usuario: state.usuario,
           token: state.token,
         });
-        
+        debugger
+        if(data.error !==''){
+          throw new Error(data.error)
+        }
+
         toast.success('Laboratorio agregado correctamente')      
         await tablaUC3G.filtrar()       
         tablaUC3G.functionSuccess = ()=>{addEventsBotones()}          
-      } catch (err) {
-        toast.error(err);
+      } catch ({message}) {        
+        manejeadorError(message)
       }
     }
 
@@ -126,7 +146,7 @@ export default function LaboratoriosAdmin() {
             tablaUC3G.functionSuccess = ()=>{addEventsBotones()}  
             
           } catch (err) {
-            toast.error(err);
+            manejeadorError(err)
           }
         })
       })
@@ -164,7 +184,7 @@ export default function LaboratoriosAdmin() {
         tablaUC3G.functionSuccess = ()=>{addEventsBotones()} 
         toast.success('Imagen subida correctamente')
       } catch (err) {
-        toast.error(err);
+        manejeadorError(err)
       }
     };
 

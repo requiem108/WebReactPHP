@@ -24,8 +24,9 @@ export default function LoginScreen() {
     
     useEffect(() => {       
         //Validate exist token in cooky
+        debugger
         if(state.token === ''){
-            debugger
+            //debugger
             if(cookies.tokenmas !== undefined){
                 let tokenc = cookies.tokenmas
                 ctxDispatch({ type: 'SET_TOKEN', payload: tokenc.token });

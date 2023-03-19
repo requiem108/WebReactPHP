@@ -89,6 +89,7 @@ function getLaboratorios($db,$dataObject){
     }
     catch (Exception $e)
     {
+      $res['ERROR'] = 'ERROR';
        $res['error'] = $e->getMessage();
        $res['data_usuario'] = array();
     }
@@ -122,6 +123,7 @@ function addLaboratorio(PDO $db,$dataObject){
     }
     catch (Exception $e)
     {
+      $res['ERROR'] = 'ERROR';
        $res['error'] = $e->getMessage();
        $res['data_usuario'] = array();
     }
@@ -155,9 +157,9 @@ function actualizarNombre(PDO $db, $dataObject) {
         $res['ERROR'] = '';
         $res['comentario'] = "Laboratorio actualizado correctamente";
        
-    } catch (PDOException $e) {        
+    } catch (Exception $e) {        
         $res['ERROR'] = 'ERROR';
-        $res['comentario'] = "Error: " . $e->getMessage() . "<br>"."Query: " . $stmt->queryString;
+        $res['comentario'] = $e->getMessage();
     }
     return json_encode($res);
 }

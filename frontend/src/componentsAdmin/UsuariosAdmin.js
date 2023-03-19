@@ -8,6 +8,7 @@ import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import { toast } from 'react-toastify';
 import { getError } from '../utils';
+import { useNavigate } from 'react-router-dom';
 
 import '../webComponents/tabla/main.js?v=4'
 import '../webComponents/tabla/css/tabla.css?v=5'
@@ -18,14 +19,14 @@ import '../webComponents/selectfetch/main.js?v=4'
 
 
 
-export default function UsuariosAdmin() {
-    //const navigate = useNavigate();
+export default function UsuariosAdmin({manejeadorError}) {
+    const navigate = useNavigate();
 
     const {state, dispatch: ctxDispatch} = useContext(Store);
 
     //validamos si el token esta vacion regresa a login
     if(state.token === ''){
-       // navigate('/login');
+       navigate('/login');
     }
 
     const getJsonTable = () => {
@@ -104,7 +105,13 @@ export default function UsuariosAdmin() {
       ]
       tablaUC3G.url = `${state.url}usuarios.php`
       await tablaUC3G.setEstructuraJson(JSONTable,true) 
-      tablaUC3G.functionSuccess = ()=>{btnEliminarConfig() }   
+      tablaUC3G.functionSuccess = (respuesta)=>{       
+        if(respuesta.ERROR === 'ERROR'){
+          manejeadorError(respuesta.error)
+        }else{
+          btnEliminarConfig() 
+        }
+      }   
       //toast.error('Carga completa') 
     }
 

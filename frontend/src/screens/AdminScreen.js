@@ -23,6 +23,7 @@
 
  import 'react-toastify/dist/ReactToastify.css';
  import { useCookies } from 'react-cookie';
+ import { toast } from 'react-toastify';
  
 
  export default function AdminScreen(){
@@ -33,6 +34,7 @@
     
     useEffect(() => {       
         //Validate exist token in store
+        //debugger
         if(state.token === ''){
             navigate('/login');            
         }
@@ -80,12 +82,19 @@
     }
 
     const Salir = ()=>{
-        debugger        
+        //debugger        
         // Para eliminar la cookie
-        removeCookie('tokenmas');
+        removeCookie('tokenmas',{path:'/'});        
         ctxDispatch({ type: 'SET_TOKEN', payload: '' });
         ctxDispatch({ type: 'SET_USUARIO', payload: '' });
         navigate('/login'); 
+    }
+
+    const manejeadorError = (error)=>{        
+        toast.error(error)        
+        if(error === 'Token invalido'){
+            Salir()
+        }
     }
    
     return(
@@ -98,11 +107,11 @@
                 <Container className='sm-col-12'>
                    
                     <Routes>
-                        <Route path='/' element={<HomeAdmin/>} />
-                        <Route path='/usuarios' element={<UsuariosAdmin/>} />
-                        <Route path='/laboratorios' element={<LaboratoriosAdmin/>} />
-                        <Route path='/productos' element={<ProductosAdmin/>} />
-                        <Route path='/noticias' element={<NoticiasAdmin/>} />
+                        <Route path='/' element={<HomeAdmin manejeadorError={manejeadorError}/>} />
+                        <Route path='/usuarios' element={<UsuariosAdmin manejeadorError={manejeadorError}/>} />
+                        <Route path='/laboratorios' element={<LaboratoriosAdmin manejeadorError={manejeadorError}/>} />
+                        <Route path='/productos' element={<ProductosAdmin manejeadorError={manejeadorError}/>} />
+                        <Route path='/noticias' element={<NoticiasAdmin manejeadorError={manejeadorError}/>} />
                     </Routes>
                 </Container>
             </div>

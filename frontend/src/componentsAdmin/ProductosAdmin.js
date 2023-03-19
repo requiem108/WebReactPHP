@@ -20,7 +20,7 @@ import '../webComponents/selectfetch/main.js?v=4'
 import '../webComponents/textareafetch/main.js?v=4'
 import { useNavigate } from 'react-router-dom';
 
-export default function ProductosAdmin() {
+export default function ProductosAdmin({manejeadorError}) {
 
     const navigate = useNavigate();
     const {state, dispatch: ctxDispatch} = useContext(Store);
@@ -95,14 +95,20 @@ export default function ProductosAdmin() {
         ]
         tablaUC3G.url = `${state.url}productos.php`
         await tablaUC3G.setEstructuraJson(JSONTable,true) 
-        tablaUC3G.functionSuccess = ()=>{addEventsBotones()}    
+        
+        tablaUC3G.functionSuccess = (respuesta)=>{addEventsBotones(respuesta)}    
         toast.success('Carga completa') 
     }
 
-    const addEventsBotones = () => {
-      btnSubirIMG()
-      btnVerIMG()
-      btnEliminar()
+    const addEventsBotones = (respuesta) => {
+      
+      if(respuesta.ERROR === 'ERROR'){        
+        manejeadorError(respuesta.error)
+      }else{
+        btnSubirIMG()
+        btnVerIMG()
+        btnEliminar()
+      }
     }
 
     const addProducto = async() => {

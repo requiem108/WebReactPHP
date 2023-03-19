@@ -93,6 +93,7 @@ function getUsuarios($db,$dataObject){
     }
     catch (Exception $e)
     {
+      $res['ERROR'] = 'ERROR';
        $res['error'] = $e->getMessage();
        $res['data_usuario'] = array();
     }

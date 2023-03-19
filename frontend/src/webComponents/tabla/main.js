@@ -145,6 +145,7 @@ const TablaUC3G = async ()=>{
 			//debugger	
 			this.BODY.innerHTML = `<tr><td colspan="${this.campos.length}" style="min-height:60px"><uc3g-spin></uc3g-spin></div></tr>`							
 			const respuesta = await this.descargarFilasBD()
+			//debugger
 			this.INFO.hoja = (this.PAG.pagina_actual*this.filas_x_hoja)-this.filas_x_hoja
 			this.INFO.totalmostrado = respuesta != null? respuesta.iTotalDisplayRecords : '0'
 			this.INFO.total = respuesta != null? respuesta.iTotalRecords : '0'
@@ -156,7 +157,7 @@ const TablaUC3G = async ()=>{
 			respuesta != null? this.renderBody(respuesta.aaData) : this.BODY.innerHTML = `<tr><td colspan="${this.campos.length}"></td></tr>`
 
 			if(this.functionSuccess !== ''){
-				this.functionSuccess()
+				this.functionSuccess(respuesta)
 			}
 		}
 		
@@ -211,7 +212,12 @@ const TablaUC3G = async ()=>{
 		async renderBody(aaData){
 			//debugger
 			let html = ''	
-			let filacount=1					
+			let filacount=1	
+
+			if(aaData == null){
+				return
+			}		
+
 			aaData.forEach((fila)=>{
 				html += `<tr data-max-height="47">`
 				let cont = 0

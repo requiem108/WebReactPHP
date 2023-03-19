@@ -5,13 +5,16 @@ import axios from "axios";
 import ModalNoticias from "../components/ModalNoticias";
 import { Store } from '../Store';
 import CardNoticia from "../components/CardNoticia";
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
-export default function NoticiasAdmin() {
+export default function NoticiasAdmin({manejeadorError}) {
 
+  const navigate = useNavigate();
   const {state, dispatch: ctxDispatch} = useContext(Store);
    //validamos si el token esta vacion regresa a login
   if(state.token === ''){
-    // navigate('/login');
+    navigate('/login');
   }
 
   const [showModal, setShowModal] = useState(false);
@@ -50,13 +53,13 @@ export default function NoticiasAdmin() {
     
     let action = crearNuevaNoticia ? 'addNoticia' : 'updateNoticia';
     const formData = new FormData();
-    formData.append("token", window.btoa(state.token));
+    formData.append("token", state.token);
     formData.append("action", action);    
     formData.append("titulo", titulo);
     formData.append("contenido", cuerpo);
     formData.append("imagen", imagen);
     formData.append("autor", autor);
-    formData.append("usuario", window.btoa(state.usuario));
+    formData.append("usuario", state.usuario);
     formData.append("crearNuevaNoticia", crearNuevaNoticia);
     formData.append("id_noticias", id_noticiasSeleccionada);
 
@@ -67,6 +70,15 @@ export default function NoticiasAdmin() {
         },
       });      
       
+
+    
+      if(response.data.ERROR != ''){
+        debugger
+        toast.error(response.data.error)
+        throw new Error(response.data.error);
+        
+      }
+
       await handleCloseModal();
       const nuevaNoticia = response.data;//Noticia modificada o nueva
       if(crearNuevaNoticia){
@@ -78,8 +90,10 @@ export default function NoticiasAdmin() {
         noticiasAD.map((noticia)=>{
           if(noticia.id_noticias === id_noticiasSeleccionada){
             noticiasTemp.push(nuevaNoticia)
+            toast.success('Nueva noticia agregada');
           }else{
             noticiasTemp.push(noticia)
+            toast.success('Noticia modificada correctamente');
           }
           
         })
@@ -88,7 +102,10 @@ export default function NoticiasAdmin() {
       
       
     } catch (error) {
-      console.error(error);
+      debugger
+      console.log(error);
+      //toast.error(error);
+      
     }
   };
 
@@ -96,9 +113,9 @@ export default function NoticiasAdmin() {
     //Actualizar estado de la noticia
     try {
       const formData = new FormData();
-      formData.append("token", window.btoa(state.token));
+      formData.append("token", state.token);
       formData.append("action", 'updateEstado');    
-      formData.append("usuario", window.btoa(state.usuario));      
+      formData.append("usuario", state.usuario);      
       formData.append("estado", estado);
       formData.append("id_noticia", id);
 
@@ -121,9 +138,9 @@ export default function NoticiasAdmin() {
         }
       });
       setNoticiasAD(noticiasTemp)
-      
+      toast.success('Noticia modificada correctamente');
     } catch (error) {
-      console.error(error);
+      console.log(error)     
     }
   };
 
@@ -132,13 +149,13 @@ export default function NoticiasAdmin() {
     try {
       const response = await axios.get(`${state.url}noticias.php`, {
         params: { 
-          token: window.btoa(state.token),
+          token:  window.btoa(state.token),
           action: 'getNoticias',
-          usuario: window.btoa(state.usuario),
+          usuario:  window.btoa(state.usuario),
           ni: ni,
           nf: nf, },
       });
-      
+      debugger
       const noticias = response.data.data;
       if(noticias.length>0){
         if(vermas){
@@ -147,12 +164,14 @@ export default function NoticiasAdmin() {
           setNoticiasAD(noticias); 
         }
         setNi(ni+2)
-        setNf(nf+2)
+        setNf(nf)
       }
-            
 
+    toast.success('Carga completa') 
     } catch (error) {
-      console.error(error);
+      console.log(error)      
+      manejeadorError(error)
+    
     }
   };
 

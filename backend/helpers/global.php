@@ -54,6 +54,7 @@ class _Global_
     //function validate token 2 days
     public static function validateToken($token,$usuario,$db){
         $res = '';
+        
         //$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         try {
             $stmt = $db->prepare("SELECT * FROM Token_Usuarios 
@@ -63,8 +64,10 @@ class _Global_
             $stmt->bindParam(':token', $token);
             $stmt->execute();
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            
             if ($result) {
                 $res = 'Token valido';
+                //$res = 'Token invalido';
                 return $res;
             } else {
                 $res = 'Token invalido';
@@ -73,11 +76,10 @@ class _Global_
                 $stmt->bindParam(':id_token', $token);
                 $ok = $stmt->execute();
                 if ($ok) {
-                    $res = 'Exito';
+                    $res = 'Token invalido';
                   
                 } else {
-                    $res = 'Error no actualizo tokens';
-                    
+                    $res = 'Error no actualizo tokens';                    
                 }                
             }
             return $res;

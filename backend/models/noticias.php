@@ -3,7 +3,7 @@
 header('Access-Control-Allow-Origin: *');
 header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
 header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');
-error_log("productos.php");
+
 session_start();
 
 require_once '../helpers/global.php';
@@ -12,7 +12,8 @@ require_once '../helpers/global.php';
 if (isset($_POST['action'])) {
     $action = $_POST['action'];
     //convertir $_POST a objeto
-    $dataObject = (object) $_POST;   
+    $dataObject = (object) $_POST; 
+     
 } else if(isset($_GET['action'])){
     //si no se encuentra action en las opciones POST se toma el valor de action de las opciones GET
     $action = $_GET['action'];    
@@ -68,7 +69,7 @@ switch($action){
 
 function addNoticia($db, $dataObject){
     //print("<pre>".print_r($_FILES,true)."</pre>");
-    $pruebas = true;
+    $pruebas = false;
     try{
         //Validate Token
         $res = array();
@@ -139,7 +140,7 @@ function addNoticia($db, $dataObject){
 
 function updateNoticia($db, $dataObject, $idNoticia) {
     //print("<pre>".print_r($_FILES,true)."</pre>");
-    $pruebas = true;
+    $pruebas = false;
     try{
         //Validate Token
         $res = array();
@@ -212,16 +213,16 @@ function getNoticias($db, $dataObject) {
     try {
       $ni = $dataObject->ni;
       $nf = $dataObject->nf;
-
+      
       //Validate Token     
       $res['token_validation'] = _Global_::validateToken($dataObject->token, $dataObject->usuario, $db);
 
 
-      if ($res['token_validation'] !== 'Token valido' and !$pruebas) {
-          throw new Exception($res['token_validation']);
+      if ($res['token_validation'] !== 'Token valido' and !$pruebas) {       
+        throw new Exception($res['token_validation']);
       } 
   
-      $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+      //$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
       $sql = "SELECT id_noticias, titulo, COALESCE(DATE_FORMAT(fecha_publicacion, '%d/%m/%Y'), DATE_FORMAT(NOW(), '%d/%m/%Y')) AS fecha_publicacion,
         contenido,
         autor, imagen, estado 
@@ -236,7 +237,7 @@ function getNoticias($db, $dataObject) {
       
       $res['data'] = $data;
       $res['comentario'] = 'Consulta exitosa';
-    } catch (PDOException $e) {
+    } catch (Exception $e) {
       $res['ERROR'] = 'ERROR';
       $res['comentario'] = 'Error al realizar la consulta: ' . $e->getMessage();
     }
@@ -244,16 +245,17 @@ function getNoticias($db, $dataObject) {
     return json_encode($res);
 }
 
-function updateEstado($db, $dataObject) {
+function updateEstado(PDO $db, $dataObject) {
     try {
       $idNoticia = $dataObject->id_noticia;
       $estado = $dataObject->estado;
       $fechaPublicacion = date("d/m/Y");
-      $pruebas = true;
+      $pruebas = false;
 
+      
       //Validate Token     
       $res['token_validation'] = _Global_::validateToken($dataObject->token, $dataObject->usuario, $db);
-
+      
       if ($res['token_validation'] !== 'Token valido' and !$pruebas) {
           throw new Exception($res['token_validation']);
       } 
@@ -269,7 +271,7 @@ function updateEstado($db, $dataObject) {
       $res['comentario'] = "Estado actualizado correctamente.";
       $res['fecha'] = $fechaPublicacion;
       return json_encode($res);
-    } catch (PDOException $e) {
+    } catch (Exception $e) {
       $res['ERROR'] = 'ERROR';
       $res['comentario'] = "Error al actualizar el estado: " . $e->getMessage();
       return json_encode($res);

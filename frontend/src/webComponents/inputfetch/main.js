@@ -29,6 +29,7 @@ const InputUC3G = async ()=>{
 
             this.functionPostSend = ''
             this.autoCloseModal=0
+            this.functionError = ''
             
         }
 
@@ -128,9 +129,12 @@ const InputUC3G = async ()=>{
                     break; 
                     
                     case 'ERROR':
-                        this.classList.add('inputfetch-ERROR')
-                        
+                        debugger
+                        this.classList.add('inputfetch-ERROR')                        
                         this.value = this.valorAnterior
+                        if(this.functionError != ''){
+                            this.functionError()
+                        }
                         console.log(error)
                     break;
                 
