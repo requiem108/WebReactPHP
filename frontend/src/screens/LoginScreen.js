@@ -7,21 +7,40 @@ import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
 import { Helmet } from 'react-helmet-async';
 import Axios from 'axios';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Store } from '../Store';
+import { useCookies } from 'react-cookie';
+
+
+
 
 
 export default function LoginScreen() {
+    
     const navigate = useNavigate();
-    //const { search } = useLocation();
-    //const redirectInUrl = new URLSearchParams(search).get('redirect');
+    const {state, dispatch: ctxDispatch} = useContext(Store);  
+    const [cookies, setCookie] = useCookies(['tokenmas']); 
+    
+    
+    useEffect(() => {       
+        //Validate exist token in cooky
+        if(state.token === ''){
+            debugger
+            if(cookies.tokenmas !== undefined){
+                let tokenc = cookies.tokenmas
+                ctxDispatch({ type: 'SET_TOKEN', payload: tokenc.token });
+                ctxDispatch({ type: 'SET_USUARIO', payload: tokenc.usuario });
+                navigate('/admin');
+            }                        
+        }
+    }, []);
     
 
     const [usuario, setUsuario] = useState('');
     const [password, setPassword] = useState('');
     const [mensaje, setMensaje] = useState('');
     
-    const {state, dispatch: ctxDispatch} = useContext(Store);
+ 
 
     const submitHandler = async (e) => {
         e.preventDefault();
@@ -34,7 +53,9 @@ export default function LoginScreen() {
             });
             debugger
             if(data.comentario === 'Exito'){
+                setCookie('tokenmas', JSON.stringify({token:data.token,usuario:usuario}), { path: '/' });
                 ctxDispatch({ type: 'SET_TOKEN', payload: data.token });
+                ctxDispatch({ type: 'SET_USUARIO', payload: usuario });
                 navigate('/admin');
             }else{                
                 setMensaje(data.comentario);
@@ -52,7 +73,7 @@ export default function LoginScreen() {
             <Helmet>
                 <title>Login</title>
             </Helmet>
-            <h1 className="my-3 text-center">Administrador</h1>  
+            <h1 className="my-3 text-center">Administrador MAS MAS</h1>  
             <Link to="/"><i className="fas fa-home">Ir a la pagina web</i></Link>     
             <Form onSubmit={submitHandler}>
                 <Form.Group className="mb-3" controlId="usuario">

@@ -3,9 +3,7 @@
 
  import '../assets/css/AdminScreen.css'
  import { useEffect,useState } from "react";
-
- import { useSelector, useDispatch } from 'react-redux'
-
+ 
 
  import { Store} from '../Store';
  import { useContext } from 'react';
@@ -16,18 +14,22 @@
  import {Routes, Route} from 'react-router-dom'
  import Container from 'react-bootstrap/esm/Container';
 
+ import HomeAdmin from '../componentsAdmin/HomeAdmin';
  import UsuariosAdmin from '../componentsAdmin/UsuariosAdmin';
  import LaboratoriosAdmin from '../componentsAdmin/LaboratoriosAdmin';
  import ProductosAdmin from '../componentsAdmin/ProductosAdmin';
  import NoticiasAdmin from '../componentsAdmin/NoticiasAdmin';
  import { useNavigate } from 'react-router-dom';
 
+ import 'react-toastify/dist/ReactToastify.css';
+ import { useCookies } from 'react-cookie';
  
 
  export default function AdminScreen(){
 
     const navigate = useNavigate();
     const {state, dispatch: ctxDispatch} = useContext(Store);   
+    const [cookies, setCookie, removeCookie] = useCookies(['tokenmas']);
     
     useEffect(() => {       
         //Validate exist token in store
@@ -44,13 +46,16 @@
 
         const fetchData = async () => {
             try {
-                //Obtener las opciones de sidebar
-                const {data} = await Axios.post(`${state.url}usuarios.php`, {
-                    action: 'getPantallas',
-                    usuario: state.usuario,
-                    token: state.token,
-                })
-              setItems(data);
+
+                if(items.length === 0){
+                    //Obtener las opciones de sidebar
+                    const {data} = await Axios.post(`${state.url}usuarios.php`, {
+                        action: 'getPantallas',
+                        usuario: state.usuario,
+                        token: state.token,
+                    })
+                    setItems(data);
+                }
 
             } catch (error) {
               console.error(error);
@@ -73,17 +78,27 @@
         console.log('activateOpcion'+e);
         setMostrar(false)
     }
+
+    const Salir = ()=>{
+        debugger        
+        // Para eliminar la cookie
+        removeCookie('tokenmas');
+        ctxDispatch({ type: 'SET_TOKEN', payload: '' });
+        ctxDispatch({ type: 'SET_USUARIO', payload: '' });
+        navigate('/login'); 
+    }
    
     return(
         <div>         
            
-            <AppBarHead setMostrar={setMostrar}/>           
+            <AppBarHead setMostrar={setMostrar} Salir={Salir}/>           
 
             <div className='d-flex mt-0'> 
                 <AppSideBar mostrar={mostrar} opciones={opciones} activateOpcion={activateOpcion} setMostrar={setMostrar}/> 
                 <Container className='sm-col-12'>
-                    <h1>Admin</h1>
+                   
                     <Routes>
+                        <Route path='/' element={<HomeAdmin/>} />
                         <Route path='/usuarios' element={<UsuariosAdmin/>} />
                         <Route path='/laboratorios' element={<LaboratoriosAdmin/>} />
                         <Route path='/productos' element={<ProductosAdmin/>} />

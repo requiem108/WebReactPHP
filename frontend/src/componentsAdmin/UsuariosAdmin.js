@@ -1,6 +1,6 @@
 import React from 'react';
 import Axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+
 import { useEffect,useContext } from 'react';
 import { Store } from '../Store';
 
@@ -94,6 +94,7 @@ export default function UsuariosAdmin() {
     }, [])
 
     const cargarUsuarios = async()=>{
+      
       const JSONTable = getJsonTable();
       const tablaUC3G = document.querySelector('tabla-uc3g');
       tablaUC3G.data_personalizada = [
@@ -122,9 +123,9 @@ export default function UsuariosAdmin() {
         document.querySelectorAll('mas-admin-usuarios').forEach((element) => {
           element.url = `${state.url}usuarios.php`
         })
-        //toast.error('Usuario agregado correctamente') 
+        toast.success('Usuario agregado correctamente') 
       } catch (err) {
-        //toast.error(getError(err));
+        toast.error(getError(err));
       }
     }
      

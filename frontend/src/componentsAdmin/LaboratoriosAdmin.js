@@ -6,6 +6,7 @@ import Axios from 'axios';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 import '../webComponents/tabla/main.js?v=4'
 import '../webComponents/tabla/css/tabla.css?v=5'
@@ -16,10 +17,11 @@ import '../webComponents/selectfetch/main.js?v=4'
 
 export default function LaboratoriosAdmin() {
 
+    const navigate = useNavigate();
     const {state, dispatch: ctxDispatch} = useContext(Store);
     //validamos si el token esta vacion regresa a login
     if(state.token === ''){
-       // navigate('/login');
+      navigate('/login');
     }
 
     const getJsonTable = () => {
@@ -78,7 +80,7 @@ export default function LaboratoriosAdmin() {
         tablaUC3G.url = `${state.url}laboratorios.php`
         await tablaUC3G.setEstructuraJson(JSONTable,true) 
         tablaUC3G.functionSuccess = ()=>{addEventsBotones()}    
-        toast.error('Carga completa') 
+        toast.success('Carga completa') 
     }
 
     const addEventsBotones = async()=>{
@@ -96,12 +98,11 @@ export default function LaboratoriosAdmin() {
           token: state.token,
         });
         
-        //toast.success('Usuario agregado correctamente')      
+        toast.success('Laboratorio agregado correctamente')      
         await tablaUC3G.filtrar()       
-        tablaUC3G.functionSuccess = ()=>{addEventsBotones()}  
-        //toast.error('Usuario agregado correctamente') 
+        tablaUC3G.functionSuccess = ()=>{addEventsBotones()}          
       } catch (err) {
-        //toast.error(getError(err));
+        toast.error(err);
       }
     }
 
@@ -120,12 +121,12 @@ export default function LaboratoriosAdmin() {
               idLaboratorios: e.target.dataset.id
             });
             
-            //toast.success('Usuario agregado correctamente')      
+            toast.success('Laboratorio eliminado')      
             await tablaUC3G.filtrar()       
             tablaUC3G.functionSuccess = ()=>{addEventsBotones()}  
-            //toast.error('Usuario agregado correctamente') 
+            
           } catch (err) {
-            //toast.error(getError(err));
+            toast.error(err);
           }
         })
       })

@@ -20,6 +20,7 @@ import ProductsScreen from './screens/ProductsScreen';
 import SomosScreen from './screens/SomosScreen';
 
 import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 function App() {
@@ -81,7 +82,7 @@ function App() {
   return (
     
     <BrowserRouter> 
-       <ToastContainer position="bottom-center" limit={1} />
+       
       { !srcAdmin.includes(window.location.pathname.substring(0,6))?       
         <div> 
         <div className="App">
@@ -93,7 +94,9 @@ function App() {
         </Container>
         </div>        
         :''}
- 
+ <div className="d-flex flex-column site-container">
+        <ToastContainer position="bottom-center" limit={1} />
+        </div>
       <main>       
 
         <Container fluid className='p-0 p-lg-2 main-container'>        

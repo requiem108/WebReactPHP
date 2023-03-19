@@ -18,9 +18,11 @@ import '../webComponents/inputfetch/main.js?v=4'
 import '../webComponents/inputfetch/css/inputfeth.css?v=4'
 import '../webComponents/selectfetch/main.js?v=4'
 import '../webComponents/textareafetch/main.js?v=4'
+import { useNavigate } from 'react-router-dom';
 
 export default function ProductosAdmin() {
 
+    const navigate = useNavigate();
     const {state, dispatch: ctxDispatch} = useContext(Store);
     const [urlImg, setUrlImg] = useState('');
     const [showModalImg, setShowModalImg] = useState(false);
@@ -28,13 +30,13 @@ export default function ProductosAdmin() {
 
     //validamos si el token esta vacion regresa a login
     if(state.token === ''){
-       // navigate('/login');
+      navigate('/login');
     }
     const getJsonTable = () => {
         var JSONTable = [
             {
                 titulo:` Descripcion corta`,
-                name:`descripcion_corta`,
+                name:`pr.descripcion_corta`,
                 orderable:true,
                 bOrder:`asc`,
                 search:[{tipo:`input`,value:``,type:`text`,properties:`style="width:70%;min-width:100px" class="tabla-filtrosAdm-uc3g"`}],
@@ -42,7 +44,7 @@ export default function ProductosAdmin() {
             },
             {
                 titulo:`Laboratorio`,
-                name:`nombre`,
+                name:`lab.nombre`,
                 orderable:true,
                 bOrder:`asc`,
                 search:[{tipo:`input`,value:``,type:`text`,properties:`style="width:70%;min-width:100px" class="tabla-filtrosAdm-uc3g"`}],
@@ -50,7 +52,7 @@ export default function ProductosAdmin() {
             },
             {
                 titulo:`Categoria`,
-                name:`descripcion_categoria`,
+                name:`ca.descripcion`,
                 orderable:false,
                 bOrder:`asc`,  
                 search:[{tipo:`input`,value:``,type:`text`,properties:`style="width:70%;min-width:100px" class="tabla-filtrosAdm-uc3g"`}],            
@@ -94,7 +96,7 @@ export default function ProductosAdmin() {
         tablaUC3G.url = `${state.url}productos.php`
         await tablaUC3G.setEstructuraJson(JSONTable,true) 
         tablaUC3G.functionSuccess = ()=>{addEventsBotones()}    
-        //toast.error('Carga completa') 
+        toast.success('Carga completa') 
     }
 
     const addEventsBotones = () => {
@@ -112,12 +114,12 @@ export default function ProductosAdmin() {
           token: state.token,
         });
         
-        //toast.success('Usuario agregado correctamente')      
+        toast.success('Usuario agregado correctamente')      
         await tablaUC3G.filtrar()       
         tablaUC3G.functionSuccess = ()=>{addEventsBotones()}  
         //toast.error('Usuario agregado correctamente') 
       } catch (err) {
-        //toast.error(getError(err));
+        toast.error(err);
       }
     }
 
@@ -159,9 +161,9 @@ export default function ProductosAdmin() {
           idProducto: e.target.dataset.id,
         });
         tablaUC3G.filtrar()
-        //toast.success('Producto eliminado correctamente')
+        toast.success('Producto eliminado correctamente')
       } catch (err) {
-        //toast.error(getError(err));
+        toast.error(err);
       }
     }
 

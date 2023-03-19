@@ -6,9 +6,13 @@ import {
     CHeaderToggler,    
     CHeaderNav
     } from '@coreui/react'
-    import { BsList } from "react-icons/bs";
+import Button from 'react-bootstrap/Button';
+import { BsList } from "react-icons/bs";
+import { Link } from 'react-router-dom';
 
 export default function AppBarHead(props) {
+
+    
     
     return (
         <CHeader position="sticky" className="mb-0">
@@ -22,7 +26,12 @@ export default function AppBarHead(props) {
                 
                     <CHeaderNav>
                         <CNavItem>
-                            Sistema de Administracion
+                            <Link to="/admin/">
+                                Sistema de Administracion
+                            </Link>  
+                            <Button onClick={props.Salir} className="btn btn-danger m-1">
+                                Salir
+                            </Button>                        
                         </CNavItem>
                     </CHeaderNav>
                 </CContainer>
