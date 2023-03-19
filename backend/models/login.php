@@ -47,18 +47,18 @@ function login($user, $password, $db){
     }     
    
     $res = array();
-    $stmt = $db->prepare("SELECT * FROM usuarios WHERE usuario = :usuario LIMIT 1");
+    $stmt = $db->prepare("SELECT * FROM usuarios WHERE usuario = :usuario and estado = 'A' LIMIT 1");
     $stmt->bindParam(':usuario', $user);   
     $stmt->execute();
     $result = $stmt->fetch(PDO::FETCH_ASSOC);    
-
+ 
     if ($result) {
         // validate password
         if ($password == $result['clave']) {
             // session variables
             $_SESSION['id'] = $result['id_usuario'];
             $_SESSION['usuario'] = $result['usuario'];
-            $_SESSION['token'] = _Global_::createWebToken();           
+            $_SESSION['token'] = _Global_::createWebToken($user);           
             $res['comentario'] = 'Exito';
             $res['token'] = $_SESSION['token'];
 

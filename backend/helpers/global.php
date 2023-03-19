@@ -7,8 +7,10 @@ class _Global_
     public static $url_models = 'http://localhost/TOM-A/backend/models/';
 
     //function to create a web token
-    public static function createWebToken(){
-        $token = bin2hex(random_bytes(32));
+    public static function createWebToken($usuario){
+        //$token = bin2hex(random_bytes(32));
+        require_once('../libs/JWT/jwtload.php');
+        $token = TokenGenerator::generarToken($usuario); // Llamada a la función estática "generarToken" de la clase "TokenGenerator"
         return $token;
     }
 
@@ -51,41 +53,40 @@ class _Global_
 
     //function validate token 2 days
     public static function validateToken($token,$usuario,$db){
-        $res = array();
+        $res = '';
+        //$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         try {
-            $stmt = $db->prepare("SELECT * FROM Token_Usuario 
-            WHERE token = :token 
-                AND id_usuario_fk = :usuario
+            $stmt = $db->prepare("SELECT * FROM Token_Usuarios 
+            WHERE token = :token                 
                 AND estado = 'A' 
-                AND fecha_creacion >= DATE_SUB(NOW(), INTERVAL 2 DAY) LIMIT 1");
-            $stmt->bindParam(':usuario', $usuario);
+                AND fecha_creacion >= DATE_SUB(NOW(), INTERVAL 2 DAY) LIMIT 1");            
             $stmt->bindParam(':token', $token);
             $stmt->execute();
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
             if ($result) {
-                $res['comentario'] = 'Token valido';
+                $res = 'Token valido';
                 return $res;
             } else {
-                $res['comentario'] = 'Token invalido';
+                $res = 'Token invalido';
                 
-                $stmt = $db->prepare("UPDATE Token_Usuario SET estado = 'I' WHERE id_token = :id_token");
+                $stmt = $db->prepare("UPDATE Token_Usuarios SET estado = 'I' WHERE id_token = :id_token");
                 $stmt->bindParam(':id_token', $token);
                 $ok = $stmt->execute();
                 if ($ok) {
-                    $res['comentario'] = 'Exito';
+                    $res = 'Exito';
                   
                 } else {
-                    $res['comentario'] = 'Error no actualizo tokens';
+                    $res = 'Error no actualizo tokens';
                     
                 }                
             }
             return $res;
         } catch (Exception $th) {
-            return $res['comentario'] = 'Error Token invalido';
+            return  'Token invalido';
         }
         
         
-    }
+    } 
 
     private static function changeStateToken($id_token,$db){
         $res = array();
@@ -111,7 +112,7 @@ class _Global_
         if ($ok) {
             return 'Tokens inactivados';           
         } else {
-            return 'Error al inactivar tokens';
+            return 'Error al inactivar tokens no se encontro ninguno';
         }     
     }
 

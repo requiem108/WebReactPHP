@@ -71,7 +71,7 @@ switch ($action) {
 
 /*---------------------------------FUNCIONES---------------------------------*/
 function getLaboratorios($db,$dataObject){
-    $pruebas = true;  
+    $pruebas = false;  
     try
     {
         //Validate Token
@@ -97,7 +97,7 @@ function getLaboratorios($db,$dataObject){
 }
 
 function addLaboratorio(PDO $db,$dataObject){
-    $pruebas = true;  
+    $pruebas = false;  
     try
     {
         //Validate Token
@@ -130,7 +130,7 @@ function addLaboratorio(PDO $db,$dataObject){
 }
 
 function actualizarNombre(PDO $db, $dataObject) {
-    $pruebas = true;
+    $pruebas = false;
     $id = $dataObject->dataid_lab;
     $nuevoNombre = $dataObject->value;
     $token = $dataObject->datatoken;
@@ -163,7 +163,7 @@ function actualizarNombre(PDO $db, $dataObject) {
 }
 
 function deleteLaboratorio($db,$dataObject){
-    $pruebas = true;  
+    $pruebas = false;  
     try
     {
         //Validate Token
@@ -196,7 +196,7 @@ function deleteLaboratorio($db,$dataObject){
 }
 
 function uploadImage($db,$dataObject){
-    $pruebas = true;
+    $pruebas = false;
     //print("<pre>".print_r($dataObject,true)."</pre>");  
     $nombreArchivo = 'LabID'.$dataObject->idLaboratorios;
     //print("<pre>".print_r($_FILES['file'],true)."</pre>");

@@ -68,7 +68,7 @@ switch($action){
 /*---------FUNCIONES----------------- */
 
 function addProducto(PDO $db,$dataObject){
-    $pruebas = true;  
+    $pruebas = false;  
     try
     {
         // Set the error mode to exceptions
@@ -119,7 +119,8 @@ function addProducto(PDO $db,$dataObject){
 }
 
 function getProductosAdmin($db,$dataObject){
-    $pruebas = true;  
+    $pruebas = false; 
+    
     try
     {
         //Validate Token
@@ -132,7 +133,8 @@ function getProductosAdmin($db,$dataObject){
         if ($res['token_validation'] !== 'Token valido' and !$pruebas) {
             throw new Exception($res['token_validation']);
         }        
-        $tipo = validarTipoUsuario($db,$dataObject->usuario);      
+        $tipo = validarTipoUsuario($db,$dataObject->usuario);
+             
         return listProductos($db,$tipo,$url_models,$dataObject);        
     }
     catch (Exception $e)
@@ -149,7 +151,7 @@ function actualizarProducto(PDO $db, $dataObject) {
   $campo = $dataObject->datadato;
   $valor = $dataObject->value;
  
-  $pruebas = true;
+  $pruebas = false;
   //depurar db
   //$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
   try {
@@ -187,10 +189,10 @@ function actualizarProducto(PDO $db, $dataObject) {
 }
 
 function uploadImage($db,$dataObject){
-  $pruebas = true;
-  //print("<pre>".print_r($dataObject,true)."</pre>");  
+  $pruebas = false;
+  //print("<pre>".print_r($dataObject,false)."</pre>");  
   $nombreArchivo = 'proID'.$dataObject->idProducto;
-  //print("<pre>".print_r($_FILES['file'],true)."</pre>");
+  //print("<pre>".print_r($_FILES['file'],false)."</pre>");
   $rutaIMG = '../images/imgProductos/';
 
   try
@@ -206,7 +208,7 @@ function uploadImage($db,$dataObject){
 
       //Verifica que el directorio exista
       if (!file_exists($rutaIMG)) {
-          mkdir($rutaIMG, 0777, true);
+          mkdir($rutaIMG, 0777, false);
       }
 
       //Se guarda la imagen en el servidor
@@ -239,7 +241,7 @@ function uploadImage($db,$dataObject){
 
 function eliminarProducto(PDO $db, $dataObject) {
   $idProducto = $dataObject->idProducto;
-  $pruebas = true;
+  $pruebas = false;
   //depurar db
   $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
   try {
@@ -297,6 +299,7 @@ function listProductos($db, $tipo, $url_models, $dataObject) {
 
     // --- FILTRADO POR COLUMNA --- //
     $ColumnasFiltro = $_GET['columns'];
+    
     $sWhere = "where pr.estado = 'A' and lab.estado = 'A'";
     foreach($ColumnasFiltro as $IdColumna => $aColumna){
       if(isset($aColumna['searchable']) and $aColumna['searchable'] == 'true' and  $aColumna['search']['value'] != ''){
@@ -375,7 +378,7 @@ function listProductos($db, $tipo, $url_models, $dataObject) {
         $row=array();   
        
         
-       //$tipo = false;
+      
         if($tipo){
           //Administrador
           $descripcion_corta = '<input data-datadato="descripcion_corta" data-dataidusertoken="'.$usuarioToken.'" data-datatoken="'.$token.'" data-dataid_producto="'.$Fila['IDPRODUCTO'].'"  style="width:80%;display:block;margin:auto;" is="input-uc3g" maxlength="20" url="'.$url_models.'productos.php" action="actualizarProducto" docode type="text" value="'.$Fila['DESCRIPCION_CORTA'].'"/>';

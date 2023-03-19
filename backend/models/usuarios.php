@@ -74,7 +74,8 @@ switch ($action) {
 
 /*----------------------------------FUNCTIONS----------------------------------*/
 function getUsuarios($db,$dataObject){
-    $pruebas = true;  
+    $pruebas = false;  
+    
     try
     {
         //Validate Token
@@ -84,7 +85,7 @@ function getUsuarios($db,$dataObject){
         //variable con la url global
         $url_models = _Global_::$url_models;
 
-        if ($res['token_validation'] !== 'Token valido' and !$pruebas) {
+        if ($res['token_validation'] !== 'Token valido' and !$pruebas) {         
             throw new Exception($res['token_validation']);
         }        
         $tipo = validarTipoUsuario($db,$dataObject->usuario);      
@@ -100,7 +101,7 @@ function getUsuarios($db,$dataObject){
 }
 
 function addUser($db,$dataObject){
-    $pruebas = true; 
+    $pruebas = false; 
      
     try
     {
@@ -144,7 +145,7 @@ function addUser($db,$dataObject){
 function update_usuarios($db,$dataObject){
   //print("<pre>".print_r($dataObject,true)."</pre>");
   $res = array();
-  $pruebas = true;
+  $pruebas = false;
   $campo = $dataObject->datadato;
   $valor = $dataObject->value;
   $id_usuario = $dataObject->dataid_usuario;
@@ -155,8 +156,8 @@ function update_usuarios($db,$dataObject){
     try {
       //Validate Token
       $res['token_validation'] = _Global_::validateToken($token, $usuarioToken, $db);
-      if ($res['token_validation']['comentario'] === 'Token valido' and !$pruebas) {
-        throw new Exception($res['Token invalido']);
+      if ($res['token_validation'] !== 'Token valido' and !$pruebas) {
+        throw new Exception($res['token_validation']);
       } 
 
       $stmt = $db->prepare("UPDATE Usuarios SET $campo = :valor WHERE id_usuario = :id_usuario");
@@ -172,7 +173,7 @@ function update_usuarios($db,$dataObject){
 }
 
 function deleteUser($db,$dataObject){
-  $pruebas = true; 
+  $pruebas = false; 
     //print("<pre>".print_r($dataObject,true)."</pre>"); 
   try
   {
