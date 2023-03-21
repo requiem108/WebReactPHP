@@ -84,7 +84,7 @@ export default function LaboratoriosAdmin({manejeadorError}) {
     }
 
     const addEventsBotones = async(respuesta)=>{
-      debugger
+      //debugger
       if(respuesta.ERROR === 'ERROR'){
         manejeadorError(respuesta.error)
       }else{
@@ -113,7 +113,7 @@ export default function LaboratoriosAdmin({manejeadorError}) {
           usuario: state.usuario,
           token: state.token,
         });
-        debugger
+        //debugger
         if(data.error !==''){
           throw new Error(data.error)
         }
@@ -164,7 +164,7 @@ export default function LaboratoriosAdmin({manejeadorError}) {
 
     //funcion para subir imagenes con Axios
     const subirImagen = async (e) => {
-      debugger
+      //debugger
       const tablaUC3G = document.querySelector('tabla-uc3g');
       const file = e.target.files[0];
       const formData = new FormData();

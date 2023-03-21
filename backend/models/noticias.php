@@ -63,6 +63,13 @@ switch($action){
         echo updateEstado($db, $dataObject);
         $db=null;
         break;
+
+    case 'getNoticiasWeb':
+        require_once("../helpers/conn.php");
+        $db = Conexion::Conectar();
+        echo getNoticiasWeb($db, $dataObject);
+        $db=null;
+        break;
 }
 
 /**FUNCIONES INDICE */
@@ -276,7 +283,43 @@ function updateEstado(PDO $db, $dataObject) {
       $res['comentario'] = "Error al actualizar el estado: " . $e->getMessage();
       return json_encode($res);
     }
-  }
+}
+
+function getNoticiasWeb($db, $dataObject) {
+    $res = array();
+    $res['ERROR'] = '';
+    $res['comentario'] = '';
+    $pruebas = true;
+ 
+    try {
+      $ni = $dataObject->ni;
+      $nf = $dataObject->nf;    
+  
+      //$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+      $sql = "SELECT id_noticias, titulo, COALESCE(DATE_FORMAT(fecha_publicacion, '%d/%m/%Y'), DATE_FORMAT(NOW(), '%d/%m/%Y')) AS fecha_publicacion,
+        contenido,
+        autor, imagen, estado 
+      FROM noticias 
+      where estado = 'p'
+      ORDER BY id_noticias DESC 
+      LIMIT $ni, $nf"
+      ;
+
+      $stmt = $db->prepare($sql);
+      $stmt->execute();
+  
+      $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+      
+      $res['data'] = $data;
+      $res['comentario'] = 'Consulta exitosa';
+    } catch (Exception $e) {
+      $res['ERROR'] = 'ERROR';
+      $res['comentario'] = 'Error al realizar la consulta: ' . $e->getMessage();
+    }
+  
+    return json_encode($res);
+}
+
   
 
 

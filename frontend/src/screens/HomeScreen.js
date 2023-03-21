@@ -12,6 +12,7 @@ import { BsChevronRight,BsFillBugFill } from "react-icons/bs";
 import { Link } from 'react-router-dom';
 
 import ContactoScreen from './ContactoScreen.js';
+import SlideLaboratorios from '../components/SlideLaboratorios';
 
 
 export default  function HomeScreen({setMarcar}) {
@@ -38,9 +39,9 @@ export default  function HomeScreen({setMarcar}) {
                 </Container>
             </Container> 
 
-            <Container className="homeB-container" fluid>
+            <Container className="homeB-container p-0" fluid>
                 <h2>Laboratorios</h2>
-                <SlideHomeLaboratorios/>
+                <SlideLaboratorios/>
             </Container>   
 
             <Container className="homeA-container" fluid>

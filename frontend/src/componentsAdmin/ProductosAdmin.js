@@ -175,7 +175,7 @@ export default function ProductosAdmin({manejeadorError}) {
 
     //funcion para subir imagenes con Axios
     const subirImagen = async (e) => {
-      debugger
+      //debugger
       const tablaUC3G = document.querySelector('tabla-uc3g');
       const file = e.target.files[0];
       const formData = new FormData();

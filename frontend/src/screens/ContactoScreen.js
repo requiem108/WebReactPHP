@@ -30,7 +30,7 @@ export default function ContactoScreen(){
                 </Row>
                 <Row className='d-flex justify-content-around p-md-4'>
                     <Col sm={12}>                    
-                        <h2 className='text-center mt-2'>Contactanos</h2>
+                        <h2 className='text-center mt-2'>Contactános</h2>
                     </Col>
                     <Col sm={12} md={4} className="contacto-detalles ">
                         <div>
@@ -43,7 +43,7 @@ export default function ContactoScreen(){
                         </div>
                         <div>
                             <div>
-                                <p>Telefono: 461 614 40 60</p>
+                                <p>Teléfono: 461 614 40 60</p>
                             </div>
                             <BsFillTelephoneFill/>
                         </div>

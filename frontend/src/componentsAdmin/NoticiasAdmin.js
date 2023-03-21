@@ -73,7 +73,7 @@ export default function NoticiasAdmin({manejeadorError}) {
 
     
       if(response.data.ERROR != ''){
-        debugger
+        //debugger
         toast.error(response.data.error)
         throw new Error(response.data.error);
         
@@ -102,7 +102,7 @@ export default function NoticiasAdmin({manejeadorError}) {
       
       
     } catch (error) {
-      debugger
+      //debugger
       console.log(error);
       //toast.error(error);
       
@@ -127,7 +127,7 @@ export default function NoticiasAdmin({manejeadorError}) {
 
       //actualizar noticiasAD
       let noticiasTemp = []
-      debugger
+      //debugger
       noticiasAD.map((noticia)=>{
         if(noticia.id_noticias === id){
           noticia.estado = estado
@@ -155,7 +155,7 @@ export default function NoticiasAdmin({manejeadorError}) {
           ni: ni,
           nf: nf, },
       });
-      debugger
+      //debugger
       const noticias = response.data.data;
       if(noticias.length>0){
         if(vermas){

@@ -44,7 +44,7 @@ export default function AppFooterWeb(){
                 </Row>
                 <Row className="position-relative footer-web-sl d-flex justify-content-around flex-wrap align-items-center">
                     <Col xs={12} md={3} className="d-flex justify-content-center mt-3" >
-                        <h1>LOGO</h1>
+                        <img src="/images/Home/LOGO_MAS.png" width={200} alt='logo'/>
                         <Link to="/admin">
                             <BsFillGearFill className="position-absolute bottom-0 start-0 m-2"/>
                         </Link> 
