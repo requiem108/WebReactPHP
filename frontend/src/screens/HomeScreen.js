@@ -26,7 +26,7 @@ export default  function HomeScreen({setMarcar}) {
             <Container className="homeA-container d-flex flex-wrap justify-content-center">
                 <Container className="col-12 col-sm-4 d-flex justify-content-center p-2">
                     <div className="homeA-productE-circle"></div>
-                    <img src="/images/Home/product-example.png" alt="prducto-ejemplo" className="homeA-productE"/>
+                    <img src="images/Home/product-example.png" alt="prducto-ejemplo" className="homeA-productE"/>
                 </Container>
                 <Container className="col-12 col-sm-6 d-flex flex-column justify-content-center">
                     <h2>¡Tenemos los Mejores</h2>
@@ -39,41 +39,16 @@ export default  function HomeScreen({setMarcar}) {
                 </Container>
             </Container> 
 
-            <Container className="homeB-container p-0" fluid>
+            <Container className="homeB-container p-0 mb-5" fluid>
                 <h2>Laboratorios</h2>
                 <SlideLaboratorios/>
-            </Container>   
-
-            <Container className="homeA-container" fluid>
-                
-               <Row>
-                    <Col sm={12} className="d-flex flex-column justify-content-center">
-                        <h2 className="col-12 text-center">Clasificacion de Producto</h2>
-                    </Col>
-                    <Col className="col-12  d-flex flex-wrap justify-content-evenly p-2">
-                        <div className="homeA-clasificacion m-2">
-                            <div>
-                                <BsFillBugFill/>
-                            </div>                            
-                            <h3>Maiz</h3>
-                        </div>
-                        <div className="homeA-clasificacion m-2">
-                            <div>
-                                <BsFillBugFill/>
-                            </div>                            
-                            <h3>Brocoli</h3>
-                        </div>
-                        <div className="homeA-clasificacion m-2">
-                            <div>
-                                <BsFillBugFill/>
-                            </div>                            
-                            <h3>Lechuga</h3>
-                        </div>
-                    </Col>
-               </Row>
-            </Container> 
+            </Container>              
             
-            <ContactoScreen/>           
+            <Container className="p-0 mb-5" fluid>
+                <h2 className='text-center mt-2'>Contactános</h2>
+                <ContactoScreen formvisible={false}/>   
+            </Container>
+                    
 
           
         </div>

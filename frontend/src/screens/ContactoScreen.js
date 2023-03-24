@@ -10,7 +10,7 @@ import { BsFillGeoAltFill,BsFillTelephoneFill,BsGlobe,BsStopwatch } from "react-
 
 import ReCAPTCHA from "react-google-recaptcha";
 
-export default function ContactoScreen(){
+export default function ContactoScreen({formvisible = true}){
 
     const recaptchaRef = (value)=>{
         console.log(value);
@@ -28,61 +28,67 @@ export default function ContactoScreen(){
                     </iframe>
                     </Col>
                 </Row>
-                <Row className='d-flex justify-content-around p-md-4'>
-                    <Col sm={12}>                    
-                        <h2 className='text-center mt-2'>Contactános</h2>
-                    </Col>
-                    <Col sm={12} md={4} className="contacto-detalles ">
-                        <div>
-                            <div className=''>
-                                <p>Carretera Celaya-Salamanca Km2</p>
-                                <p>Las Fuentes Bajio de las Americas,</p>
-                                <p>38040 Celaya Gto.</p>
-                            </div>
-                            <BsFillGeoAltFill className=''/>
-                        </div>
-                        <div>
+              
+                    {formvisible? 
+                      <Row className='d-flex justify-content-around p-md-4'>
+                        <Col sm={12}>                    
+                            <h2 className='text-center mt-2'>Contactános</h2>
+                        </Col>
+                        <Col sm={12} md={4} className="contacto-detalles ">
                             <div>
-                                <p>Teléfono: 461 614 40 60</p>
+                                <div className=''>
+                                    <p>Carretera Celaya-Salamanca Km2</p>
+                                    <p>Las Fuentes Bajio de las Americas,</p>
+                                    <p>38040 Celaya Gto.</p>
+                                </div>
+                                <BsFillGeoAltFill className=''/>
                             </div>
-                            <BsFillTelephoneFill/>
-                        </div>
-                        <div>
                             <div>
-                                <a>https://miSitio.com</a>
+                                <div>
+                                    <p>Teléfono: 461 614 40 60</p>
+                                </div>
+                                <BsFillTelephoneFill/>
                             </div>
-                            <BsGlobe/>
-                        </div>
-                        <div>
                             <div>
-                                <p>9:00 am - 7:00pm</p>
+                                <div>
+                                    <a>https://miSitio.com</a>
+                                </div>
+                                <BsGlobe/>
                             </div>
-                            <BsStopwatch/>
-                        </div>
-                    </Col>
-                    <Col sm={12} md={6} className="m-2 d-flex flex-column align-items-center">
-                        <Form className='contacto-formulario col-10'>                       
-                            <Form.Group className="mb-3">                            
-                                <Form.Control name='nombre' type="input" placeholder="Nombre" />
-                            </Form.Group>
-                            <Form.Group className="mb-3">                            
-                                <Form.Control name='email' type="email" placeholder="Email" />
-                            </Form.Group>
-                            <Form.Group className="mb-3">
-                                <Form.Control name='telefono' type="input" placeholder="Telefono" />
-                            </Form.Group>
-                            <Form.Group className="mb-3">
-                                <Form.Control name='mensaje' as="textarea" rows={3} placeholder="Mensaje" />
-                            </Form.Group>
-                            <ReCAPTCHA
-                                sitekey="Your client site key"
-                                onChange={recaptchaRef}
-                                className=' recaptcha'
-                            />
-                            <Button className="btn-primary" type="submit">Contactar</Button>                        
-                        </Form>                        
-                    </Col>
-                </Row>
+                            <div>
+                                <div>
+                                    <p>9:00 am - 7:00pm</p>
+                                </div>
+                                <BsStopwatch/>
+                            </div>
+                        </Col>
+                        <Col sm={12} md={6} className="m-2 d-flex flex-column align-items-center">
+                            <Form className='contacto-formulario col-10'>                       
+                                <Form.Group className="mb-3">                            
+                                    <Form.Control name='nombre' type="input" placeholder="Nombre" />
+                                </Form.Group>
+                                <Form.Group className="mb-3">                            
+                                    <Form.Control name='email' type="email" placeholder="Email" />
+                                </Form.Group>
+                                <Form.Group className="mb-3">
+                                    <Form.Control name='telefono' type="input" placeholder="Telefono" />
+                                </Form.Group>
+                                <Form.Group className="mb-3">
+                                    <Form.Control name='mensaje' as="textarea" rows={3} placeholder="Mensaje" />
+                                </Form.Group>
+                                <ReCAPTCHA
+                                    sitekey="Your client site key"
+                                    onChange={recaptchaRef}
+                                    className=' recaptcha'
+                                />
+                                <Button className="btn-primary" type="submit">Contactar</Button>                        
+                            </Form>                        
+                        </Col>
+                      </Row>
+                        :''
+                    }
+                    
+                
             </Container>
         </div>
     )

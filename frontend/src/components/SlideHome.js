@@ -9,7 +9,7 @@ function SlideHome() {
         <Carousel.Item >
           <img
             className="d-block w-100 img-slide"
-            src="/images/imgSlideHome/slide01.webp"
+            src="images/imgSlideHome/slide01.jpg"
             alt="First slide"
           />
           <Carousel.Caption className="">
@@ -22,7 +22,7 @@ function SlideHome() {
         <Carousel.Item>
           <img
             className="d-block w-100 img-slide"
-            src="/images/imgSlideHome/slide02.jpg"
+            src="images/imgSlideHome/slide02.jpg"
             alt="Second slide"
           />
 
@@ -37,7 +37,7 @@ function SlideHome() {
         <Carousel.Item>
           <img
             className="d-block w-100 img-slide"
-            src="/images/imgSlideHome/slide03.jpg"
+            src="images/imgSlideHome/slide03.jpg"
             alt="Third slide"
           />
 

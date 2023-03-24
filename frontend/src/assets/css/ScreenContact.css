@@ -12,7 +12,7 @@
     /*Eliminar si no aprueban el form*/
     margin: 0;
     background: rgb(66,161,112);
-    background: linear-gradient(270deg, rgba(66,161,112,1) 0%, rgba(92,206,147,1) 50%, rgba(92,206,147,1) 100%);
+    background: linear-gradient(270deg, rgb(216, 218, 217) 0%, rgb(241, 243, 242) 50%, rgb(241, 243, 242) 100%);
 }
 
 .contacto-detalles div{
@@ -34,25 +34,25 @@
 
 .contacto-detalles div div p,
 .contacto-detalles div div a{
+    font-style: unset;
+    color: unset;
     text-decoration: none;
     text-decoration-color: none !important;
     font-size: 1rem;
     font-weight: bold;
-    color: var(--mas-grey);
+    color: var(--mas-berdeB);
     margin: 0;
     text-align: start;
     width: 100%;
 
     /*Eliminar si no aprueban el form*/
-    color: var(--mas-blanco)!important;
-    font-weight: 600;
+    color: var(--mas-berdeB);
+    font-weight: bold;
 }
 
 .contacto-detalles svg{
-    color: var(--mas-berde);  
-
-     /*Eliminar si no aprueban el form*/
-     color: var(--mas-blanco);
+    color: var(--mas-berdeB); 
+    
 }
 
 @media (max-width: 768px){ 

@@ -31,6 +31,10 @@ switch ($action) {
         echo getLaboratorios('../images/Laboratorios');             
     break;
 
+    case 'getCategorias':                     
+        echo getLaboratorios('../images/Categorias');             
+    break;
+
    
     
     default:

@@ -26,7 +26,7 @@ export default function AppBarHeadWeb({setMostrar,opciones,marcar,setMarcar}) {
                     
                         <CHeaderNav className="col-3 d-md-flex">
                             <CNavItem>
-                                <img src="images/Home/MAS_COLOR.png" width={200} alt="logo" className="logo" />
+                                <img src="/images/Home/MAS_COLOR.png" width={200} alt="logo" className="logo" />
                             </CNavItem>
                         </CHeaderNav>
                             

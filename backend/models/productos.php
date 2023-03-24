@@ -42,6 +42,13 @@ switch($action){
         echo getProductosAdmin($db, $dataObject);
         $db=null;
         break;
+
+    case 'getProductosWeb':
+        require_once("../helpers/conn.php");
+        $db = Conexion::Conectar();
+        echo getProductosWeb($db, $dataObject);
+        $db=null;
+        break;
     
     case 'actualizarProducto':      
         require_once("../helpers/conn.php");
@@ -145,6 +152,25 @@ function getProductosAdmin($db,$dataObject){
     }
        
     return json_encode($res);
+}
+
+function getProductosWeb($db,$dataObject){
+  $pruebas = false; 
+  
+  try
+  {      
+      //variable con la url global
+      //$url_models = _Global_::$url_models;   
+      return listProductosWeb($db);        
+  }
+  catch (Exception $e)
+  {
+     $res['ERROR'] = 'ERROR';
+     $res['error'] = $e->getMessage();
+     $res['data_usuario'] = array();
+  }
+     
+  return json_encode($res);
 }
 
 function actualizarProducto(PDO $db, $dataObject) {
@@ -422,6 +448,180 @@ function listProductos($db, $tipo, $url_models, $dataObject) {
       
       //var_dump($output);
       return json_encode($output);
+}
+
+function listProductosWe($db) {
+  $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+  $sQuery = "SELECT * from productos";
+  $stmt = $db->prepare($sQuery);
+  $stmt->execute();
+  $nrows = $stmt->fetchColumn(); 
+  print("<pre>".print_r($nrows,true)."</pre>");
+}
+
+function listProductosWeb($db) {
+  
+  $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+   
+      
+  // --- CAMPOS QUE SE USAN PARA FILTRADO DE INFORMACION (importa el orden, deve coincidir con la tabla) --- //
+  $aColumnas = array(    
+    'pr.DESCRIPCION_CORTA',             
+    'lab.NOMBRE as LABORATORIO',      
+    'pr.DESCRIPCION',
+    'ca.DESCRIPCION as CATEGORIA',
+    'pr.IDPRODUCTO',
+    'lab.IDLABORATORIOS',
+    'ca.IDCATEGORIA',
+    'pr.IMAGEN',
+  );
+  $sIndexColumn = "pr.IDPRODUCTO"; // --- CAMPO QUE SE USA COMO INDICE PARA LA TABLA --- //
+  // --- NOMBRE DE LA TABLA PRINCIPAL SOBRE LA QUE SE CONTARAN LOS REGISTROS --- //
+  $sTable = "from productos pr
+  inner join laboratorios lab on pr.idLaboratorios_fk = lab.idLaboratorios
+  inner join categorias_productos_pertenece cpp on pr.idProducto = cpp.idProducto_fk
+  inner join categorias ca on cpp.idCategoria_fk = ca.idCategoria";      
+
+  // --- PAGINACION --- //
+  $sLimit = "";
+  if( isset( $_GET['start'] ) && $_GET['length'] != '-1' ){
+    $sLimit = "LIMIT ".intval( $_GET['length'] )." offset ".intval( $_GET['start']);
+  }
+
+  // --- FILTRADO POR COLUMNA --- //
+  $ColumnasFiltro = $_GET['columns'];
+  
+  $sWhere = "where pr.estado = 'A' and lab.estado = 'A'";
+  foreach($ColumnasFiltro as $IdColumna => $aColumna){
+    if(isset($aColumna['searchable']) and $aColumna['searchable'] == 'true' and  $aColumna['search']['value'] != ''){
+      if( $sWhere == "" ){
+        $sWhere = "where ";
+      }else{
+        $sWhere .= " and ";
+      }
+      /* FILTRAR POR TIPO DE DATO AUTOMATICAMENTE */
+      if(is_numeric($aColumna['search']['value'])){
+        $sWhere .= $aColumna['name']." <= '".$aColumna['search']['value']."'";
+      } else {
+        if (DateTime::createFromFormat('Y-m-d H:i:s', $aColumna['search']['value']) !== FALSE) {
+          // it's a date
+          $sWhere .= $aColumnas[$IdColumna]." = to_date('".$aColumna['search']['value']."','dd/mm/yyyy')";
+        } else {
+          $sWhere .= "upper(".$aColumna['name'].") like upper('%".$aColumna['search']['value']."%')";
+        }
+      }
+    }
+  }
+
+  // --- ORDENAMIENTO --- //
+  $sOrder = "";
+  if( isset( $_GET['order'][0]['column'] ) ){
+    $sOrder = "order by ".$aColumnas[$_GET['order'][0]['column']]." ".$_GET['order'][0]['dir'];
+  }
+
+  // --- CANTIDAD TOTAL DE REGISTROS --- //
+  $sQuery = " select count(*) $sTable";
+  $stmt = $db->prepare($sQuery);
+  $stmt->execute();
+  $iTotal = $stmt->fetchColumn();   
+  
+  
+  // --- CANTIDAD TOTAL DE REGISTROS RECUPERADOS --- //
+  $sQuery = "
+    select count($sIndexColumn) 
+    $sTable  
+    $sWhere
+  ";
+  $stmt = $db->prepare($sQuery);
+  $stmt->execute();
+  $nrows = $stmt->fetchColumn();  
+ 
+  // --- CONTENIDO A RECUPERAR --- //
+  /* BUILD QUERY DINAMICALLY */
+  $Sel = "";
+  foreach($aColumnas as $Indice => $Columna){
+   
+      $Sel .= " $Columna, ";
+    
+  }
+ 
+
+  $sQuery = "SELECT
+        $Sel
+        $sIndexColumn as IDTAG
+      $sTable       
+      $sWhere
+      $sOrder
+      $sLimit
+    ";
+  //$results=$db->Execute($sQuery);
+  $stmt = $db->prepare($sQuery);
+  $stmt->execute();
+  $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+  // --- DETALLE DE REGISTROS MOSTRADOS --- //
+  $output = array(
+      "iTotalRecords" => $iTotal,
+      "iTotalDisplayRecords" => $nrows,
+      "aaData" => array()
+    );    
+  
+    //$urlImagen = $_SERVER['SCRIPT_FILENAME'].'../images/';
+    // Obtener el protocolo (HTTP o HTTPS)
+    $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
+
+    // Obtener el nombre del host
+    $host = $_SERVER['HTTP_HOST'];
+
+    // Obtener la ruta del archivo en ejecución relativa al directorio raíz del documento
+    $relativePath = $_SERVER['SCRIPT_NAME'];
+
+    // Construir la URL completa
+    $urlImagen = $protocol . $host . $relativePath . '/../../images/';
+
+    //echo "URL completa del archivo en ejecución: " . $fullUrl;
+
+    foreach ($result as $Fila) {
+      $row=array();      
+    
+     
+      //Auxiliar
+      $descripcion_corta = '<span class="" title="">'.$Fila['DESCRIPCION_CORTA'].'</span>';
+      $selectLaboratorios = '<span class="" title="">'.$Fila['LABORATORIO'].'</span>';
+      $selectCategorias = '<span class="" title="">
+      <img width="20px" class="producto-categoria-fila" src="'.$urlImagen.'Categorias/'.strtolower($Fila['CATEGORIA']).'.png" alt="categoria">
+      '.$Fila['CATEGORIA'].'
+      </span>';
+      $descripcion_ = '<span class="" title="">'.$Fila['DESCRIPCION'].'</span>';
+      
+      $botones = '';
+      $img_producto = $Fila['IMAGEN'] != ''?'      
+        <img 
+        class="producto-img-btn"
+        data-title="'.$Fila['DESCRIPCION_CORTA'].'"
+        data-img="'.$urlImagen.'imgProductos/'.$Fila['IMAGEN'].'"
+        src="'.$urlImagen.'Home/ojito.png" width="30px" alt="ojito" >
+      ':'';   
+      
+      $botones='
+        <div class="d-md-flex flex-column-reverse justify-content-center align-items-center tabla-admin-botones">  
+                    
+            '.$img_producto.'    
+            
+        </div>';     
+
+       
+      $row[] = '<span style="text-aling:center;" class="" title="">'.$descripcion_corta.'</span>'; 
+      $row[] = '<span class="">'.$selectLaboratorios.'</span>';  
+      $row[] = '<span class="contenedor-btn" title="">'.$selectCategorias.'</span>';
+      $row[] = '<span class="contenedor-btn" title="">'.$descripcion_.'</span>';
+      $row[] = '<span class="contenedor-btn" title="">'.$botones.'</span>';
+
+      $output['aaData'][] = $row;
+    }
+    
+    //var_dump($output);
+    return json_encode($output);
 }
 
 function validarTipoUsuario($conexion, $usuario) {  

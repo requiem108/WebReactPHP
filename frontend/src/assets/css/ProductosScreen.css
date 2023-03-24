@@ -1,0 +1,123 @@
+.Productos-bordeSuperior{
+    /*border-top: 2px solid var(--mas-amarilloB);*/
+}
+
+
+.Productos-contenedorImagenes{
+    border-bottom: 16px solid var(--mas-amarilloB);
+}
+
+.Productos-contenedorImagenes{
+    display: flex;
+    justify-content: space-around;
+    margin:5px;
+}
+
+.Productos-contenedorImagenes img{
+    max-width: 100px;    
+}
+
+/*TABLA*/
+.Productos-espacioComponente tabla-uc3g{
+    border: none;
+    box-shadow: none;  
+}
+
+.Productos-espacioComponente tabla-uc3g table{
+    border: none;
+    box-shadow: none;
+    border-collapse: collapse;
+    border: none;
+   
+}
+
+.Productos-espacioComponente tabla-uc3g table thead tr{
+    border-style: unset !important;
+    background-color: var(--mas-berde) !important;
+}
+
+.Productos-espacioComponente tabla-uc3g th{
+    background-color: var(--mas-berde);    
+    color: var(--mas-blanco);
+    margin: 0;
+    border-style: unset!important;
+    border: var(--mas-berde) solid 1px !important;
+}
+
+.Productos-espacioComponente tabla-uc3g th p{
+    background-color: unset !important;
+}
+
+.Productos-espacioComponente tabla-uc3g tr:nth-child(1) th:nth-child(1){
+    /*background-color: brown;*/
+    border:none !important;
+    border-radius: 10px 0 0 0;
+    
+}
+.Productos-espacioComponente tabla-uc3g tr:nth-child(1) th:nth-child(5){
+    /*background-color: brown;*/
+    border:none !important;
+    border-radius: 0px 10px 0 0;
+    
+}
+.Productos-espacioComponente tabla-uc3g tr:nth-child(2) th:nth-child(1){
+    /*background-color: brown;*/
+    border:none !important;
+    border-radius: 0 0 0 10px;
+    
+}
+.Productos-espacioComponente tabla-uc3g tr:nth-child(2) th:nth-child(5){
+    /*background-color: brown;*/
+    border:none !important;
+    border-radius: 0 0 10px 0px;
+    
+}
+
+.Productos-espacioComponente tabla-uc3g input{
+    background-color: var(--mas-berdeB) !important;
+    color: var(--mas-blanco)!important;
+    min-height: 25px;
+}
+
+.Productos-espacioComponente tabla-uc3g td{
+    border-style: none !important;
+    border:none;
+    background-color: var(--mas-blanco)!important;
+    color:var(--mas-greyB);
+    padding: 0px 15px!important;
+ }
+
+.Productos-espacioComponente .tabla-uc3g-boton-search{
+    background: var(--mas-berdeB);
+    border:solid var(--mas-berdeB) 1px;
+    color:var(--mas-greyL)
+}
+
+.Productos-espacioComponente .tabla-uc3g-fila-btn-mas{
+    background: var(--mas-berdeB);
+    padding: 10px;
+    color: var(--mas-greyL);
+    border:solid var(--mas-berdeB) 1px;
+}
+
+.Productos-espacioComponente .producto-img-btn{
+    display: block;
+    margin: auto;
+    cursor: pointer;
+    max-width: 30px;
+}
+
+.Productos-espacioComponente .producto-img-btn:hover{
+    filter: invert(1);
+}
+
+.producto-categoria-fila{
+    max-width: 20px!important;
+}
+
+ @media screen and (max-width: 768px) {
+
+    .Productos-espacioComponente tabla-uc3g th{
+        border-radius: unset !important;
+    }
+ }

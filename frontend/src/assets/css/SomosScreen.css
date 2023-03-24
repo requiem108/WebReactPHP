@@ -1,0 +1,52 @@
+.somos-text-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+.somos-text-container h2 {
+    color:var(--mas-berde)
+}
+
+.somos-text-container p {
+    font-weight: bold;
+    max-width: 450px;
+}
+
+.somos-nhistoria {
+    color: var(--mas-blanco);
+}
+
+.somos-img{
+    max-width: 270px;
+    display: block;
+    margin: auto;
+}
+  
+  .underlined {
+    text-decoration: underline;
+  }
+  
+  .half-container {
+    width: 50%;
+  }
+
+  .somos-textob div{
+    min-width: 250px;
+    width: 100%;
+    max-width: 450px;
+  }
+
+  .somos-textob p{
+    width: 100%;
+  }
+  
+  @media (min-width: 768px) {
+    .img-fluid {
+      margin-bottom: 1rem;
+    }
+
+    .somos-textob div{        
+        width: 100%;
+      }
+  }
