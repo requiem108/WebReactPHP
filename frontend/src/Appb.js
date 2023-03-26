@@ -21,7 +21,13 @@ import SomosScreen from './screens/SomosScreen';
 
 import { ToastContainer } from 'react-toastify';
 
-import WebLayout from './components/WebLayout';
+function AdminLayout({ children }) {
+  return (
+    <Container fluid className='p-0 p-lg-2 main-container'>
+      {children}
+    </Container>
+  );
+}
 
 function App() {
   //estados
@@ -34,7 +40,7 @@ function App() {
   //console.log(window.location.pathname.substring(0,6))
 
   useEffect(() => {
-  
+    debugger
       if (mostrar) {      
         
       }
@@ -79,25 +85,25 @@ function App() {
     
         
     };
-    
+    debugger
     return (
-        <HashRouter>
-          <ToastContainer position="bottom-center" limit={1} />
-          <Routes>
-            <Route path="/" element={<WebLayout mostrar={mostrar} setMostrar={setMostrar} opciones={opciones} marcar={marcar} setMarcar={setMarcar}><HomeScreen /></WebLayout>} />
-            <Route path="/somos" element={<WebLayout mostrar={mostrar} setMostrar={setMostrar} opciones={opciones} marcar={marcar} setMarcar={setMarcar}><SomosScreen /></WebLayout>} />
-            <Route path="/productos" element={<WebLayout mostrar={mostrar} setMostrar={setMostrar} opciones={opciones} marcar={marcar} setMarcar={setMarcar}><ProductsScreen /></WebLayout>} />
-            <Route path="/noticias" element={<WebLayout mostrar={mostrar} setMostrar={setMostrar} opciones={opciones} marcar={marcar} setMarcar={setMarcar}><NoticiasScreen /></WebLayout>} />
-            <Route path="/contacto" element={<WebLayout mostrar={mostrar} setMostrar={setMostrar} opciones={opciones} marcar={marcar} setMarcar={setMarcar}><ContactoScreen /></WebLayout>} />
-    
-            <Route path="/login" element={<LoginScreen />} />
-            <Route path="/admin/*" element={<AdminScreen />} />
-    
-            {/* Redireccionar rutas desconocidas al Home */}
-            
-          </Routes>
-        </HashRouter>
-      );
-}
+      <HashRouter>
+        <ToastContainer position="bottom-center" limit={1} />
+        <Routes>
+          <Route path="/" element={<HomeScreen />} />
+          <Route path="/somos" element={<SomosScreen />} />
+          <Route path="/productos" element={<ProductsScreen />} />
+          <Route path="/noticias" element={<NoticiasScreen />} />
+          <Route path="/contacto" element={<ContactoScreen />} />
+  
+          <Route path="/login" element={<AdminLayout><LoginScreen /></AdminLayout>} />
+          <Route path="/admin/*" element={<AdminLayout><AdminScreen /></AdminLayout>} />
+  
+          {/* Redireccionar rutas desconocidas al Home */}
+          <Route path="*" element={<HomeScreen />} />
+        </Routes>
+      </HashRouter>
+    );
+  }
 
 export default App;

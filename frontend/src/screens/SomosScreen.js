@@ -30,7 +30,7 @@ export default function SomosScreen() {
                     región Bajío.
                   <br/>
                   <br/>
-                  <h4>Política de Calidad</h4>
+                  <span className='fs-4'>Política de Calidad</span>
                   “Ofrecer a nuestros subdistribuidores, empresas agrícolas y 
                   público en general, los productos para el mejor rendimiento
                    de sus cultivos y control de plagas agrícolas y urbanas, 
@@ -41,7 +41,7 @@ export default function SomosScreen() {
                 </div>
                 <div className="half-container p-2 p-md-4">
                   <p className="text-justify">
-                    <h4>Alcance del SGC</h4>
+                    <span className='fs-4'>Alcance del SGC</span>
                     «Comercialización de: productos insecticidas, fertilizantes,
                      fungicidas, coadyuvantes, rodenticidas, herbicidas,
                       reguladores de crecimiento, inoculantes, semillas, equipos

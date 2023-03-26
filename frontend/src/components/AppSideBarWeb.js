@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import '../assets/css/AppSideBarWeb.css'
 
 import { CSidebar,
@@ -10,13 +10,25 @@ import { CSidebar,
     CNavGroup
     } from '@coreui/react'
     import {useNavigate} from 'react-router-dom'
+    import { Link } from 'react-router-dom';
 
 export default function AppSideBarWeb(props) {
     const navigate = useNavigate();
+      
+    useEffect(() => {        
     
+        handleVisibleChange(props.mostrar);
+    }, [props.mostrar, props.setMostrar]);
 
+    function handleVisibleChange(visible) {
+        props.setMostrar(visible);
+    }
+    
+//debugger
     return (
-        <CSidebar className="sidebar-light"  visible={props.mostrar} onVisibleChange= {(visible)=>{props.setMostrar(visible)}}>
+        <CSidebar className="sidebar-light"
+          visible={props.mostrar} 
+          onVisibleChange={(visible) => handleVisibleChange(visible)}>
             <CSidebarBrand>
                 <img src="images/Home/MAS_COLOR.png" width={100} alt="logo" className="logo" />
             </CSidebarBrand>
@@ -27,15 +39,16 @@ export default function AppSideBarWeb(props) {
                         
                         if(item.tipo === 'link'){
                             
-                            return <CNavItem key={`${item.id}-nav`} href="#" 
-                                    className={props.marcar === item.texto? 'sidebar-light-active':''}
-                                    onClick={()=>{
-                                        props.setMarcar(item.texto);
-                                        props.setMostrar(false)
-                                        navigate(`${item.link}`)
-                                        }}>
-                                    {item.texto}
-                                </CNavItem>
+                            return <div key={`${item.id}-nav`}
+                            className={`nav-item ${props.marcar === item.texto ? 'sidebar-light-active' : ''} m-2 mt-3`}
+                            onClick={() => {
+                                props.setMarcar(item.texto);
+                                props.setMostrar(false)
+                            }}>
+                            <Link to={item.link}>
+                                {item.texto}
+                            </Link>
+                        </div>
                         }
                         if(item.tipo === 'group'){
                             return(
