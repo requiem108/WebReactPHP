@@ -30,7 +30,7 @@ export default function SomosScreen() {
                     región Bajío.
                   <br/>
                   <br/>
-                  <span className='fs-4'>Política de Calidad</span>
+                  <span className='fs-4'>Política de Calidad</span><br/>
                   “Ofrecer a nuestros subdistribuidores, empresas agrícolas y 
                   público en general, los productos para el mejor rendimiento
                    de sus cultivos y control de plagas agrícolas y urbanas, 

@@ -31,9 +31,9 @@ export default function HomeAdmin(){
             <Col md={6} lg={3}>
             <Card bg={'secondary'} key={'secondary'} text={'white'} className="mb-2" style={{ height: '200px' }}>
                 <Card.Body>
-                <Card.Title>Laboratorios</Card.Title>
+                <Card.Title>Marcas propias</Card.Title>
                 <Card.Text>
-                    Actualiza la información de los laboratorios asociados a nuestra plataforma.
+                    Actualiza la información de las marcas propias asociados a nuestra plataforma.
                 </Card.Text>
                 </Card.Body>
             </Card>

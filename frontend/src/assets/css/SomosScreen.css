@@ -5,16 +5,24 @@
     align-items: center;
   }
 .somos-text-container h2 {
-    color:var(--mas-berde)
+    color:var(--mas-berde);
+    font-family: 'vag_texto', sans-serif !important;
+    font-weight: normal!important;
 }
 
 .somos-text-container p {
-    font-weight: bold;
-    max-width: 450px;
+  font-family: 'lato_texto', sans-serif;  
+  font-weight: bold;
+  max-width: 450px;
 }
 
 .somos-nhistoria {
     color: var(--mas-blanco);
+}
+
+.somos-nhistoria h3{
+  font-family: 'vag_texto', sans-serif !important;
+  font-weight: normal!important;
 }
 
 .somos-img{
@@ -39,6 +47,8 @@
 
   .somos-textob p{
     width: 100%;
+    font-family: 'lato_texto', sans-serif;
+    font-weight: bold;
   }
   
   @media (min-width: 768px) {

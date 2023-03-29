@@ -16,6 +16,40 @@ VARIABLES
   --mas-red:#e55353;
   --mas-redB:#c43c3c;
 }
+
+/*FUENTES*/
+@font-face {
+  font-family: 'bebas_texto';
+  src: url('/src/assets/fonts/bebas_neue/BebasNeue-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'lato_texto';
+  src: url('/src/assets/fonts/Lato2OFL/Lato-Light.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'vag_texto';
+  src: url('/src/assets/fonts/vagrounded_bt/VAGRoundedBT.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+body p{
+  font-family: 'lato_texto', sans-serif !important;  
+  font-weight: bold !important;
+}
+
+body h2 {
+  /*font-family: 'bebas_textog', sans-serif;*/
+  font-family: 'vag_texto', sans-serif !important;
+  font-weight: 300 !important;
+}
+
 .App {
   text-align: center;
 }

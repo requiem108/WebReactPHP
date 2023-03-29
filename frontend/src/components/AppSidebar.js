@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 
 import { CSidebar,
     CSidebarBrand,
@@ -9,9 +9,12 @@ import { CSidebar,
     CNavGroup
     } from '@coreui/react'
 import {useNavigate} from 'react-router-dom'
+import { Link } from 'react-router-dom';
 
 export default function AppSideBar(props) {
     const navigate = useNavigate();
+
+  
     
 
     return (
@@ -23,13 +26,16 @@ export default function AppSideBar(props) {
                     props.opciones.items.map((item)=>{
                         
                         if(item.tipo === 'link'){
-                            return <CNavItem key={`${item.id}-nav`} href="#" 
-                            onClick={()=>{
+                            return <div key={`${item.id}-nav`}
+                            className={`nav-item ${props.marcar === item.texto ? 'sidebar-light-active' : ''} m-2 mt-3`}
+                            onClick={() => {                                
+                                
                                 props.activateOpcion()
-                                navigate(`${item.link}`)
-                                }
-                            }
-                            >{item.texto}</CNavItem>
+                            }}>
+                            <Link className="p-2" to={item.link} style={{textDecoration: 'none',color: 'inherit',} }>
+                                {item.texto}
+                            </Link>
+                        </div>
                         }
                         if(item.tipo === 'group'){
                             return(

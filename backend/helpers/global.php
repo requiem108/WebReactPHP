@@ -9,9 +9,21 @@ class _Global_
     //function to create a web token
     public static function createWebToken($usuario){
         //$token = bin2hex(random_bytes(32));
-        require_once('../libs/JWT/jwtload.php');
+        /*require_once('../libs/JWT/jwtload.php');
         $token = TokenGenerator::generarToken($usuario); // Llamada a la función estática "generarToken" de la clase "TokenGenerator"
-        return $token;
+        return $token;*/
+        $caracteres = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $cadenaAleatoria = '';
+        $max = strlen($caracteres) - 1;
+        
+        for ($i = 0; $i < 20; $i++) {
+            $cadenaAleatoria .= $caracteres[rand(0, $max)];
+        }
+
+        $fechaActual = date('Y-m-d H:i:s');
+        $cadenaConFecha = $cadenaAleatoria . $fechaActual;
+
+        return $cadenaConFecha;
     }
 
     //function to check the number of login attempts

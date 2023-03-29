@@ -26,7 +26,8 @@ export default function AppBarHeadWeb({setMostrar,opciones,marcar,setMarcar}) {
                     
                         <CHeaderNav className="col-3 d-md-flex">
                             <CNavItem>
-                                <img src="/images/Home/MAS_COLOR.png" width={200} alt="logo" className="logo" />
+                                <img src="/images/Home/MAS_COLOR.png" width={200} alt="logo" className="logo" />                      
+                                
                             </CNavItem>
                         </CHeaderNav>
                             
@@ -37,7 +38,7 @@ export default function AppBarHeadWeb({setMostrar,opciones,marcar,setMarcar}) {
                                     <CNavItem>
                                         <Link to={opcion.link} 
                                             onClick={() => setMarcar(opcion.texto)}
-                                            className={marcar === opcion.texto? 'header-nav-a-selected':''}>
+                                            className={`${marcar === opcion.texto? 'header-nav-a-selected':''} p-2`}>
                                                 {opcion.texto}
                                         </Link> 
                                     </CNavItem>
@@ -45,7 +46,14 @@ export default function AppBarHeadWeb({setMostrar,opciones,marcar,setMarcar}) {
                             ))
                         }   
                         </div> 
-                    </CContainer>    
+                        
+                    </CContainer> 
+
+                    <CHeaderNav className="col-3 d-md-flex">
+                            <CNavItem>                                                     
+                                <img src="/images/Home/MAS_COLOR.png" width={100} alt="logo" className="logo d-block d-md-none" />
+                            </CNavItem>
+                        </CHeaderNav>   
                     
                 </CContainer>
             </CHeader>

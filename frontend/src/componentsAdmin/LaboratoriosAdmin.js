@@ -35,7 +35,7 @@ export default function LaboratoriosAdmin({manejeadorError}) {
                 width:`5%`         
             },
             {
-                titulo:`Laboratorio`,
+                titulo:`Marca`,
                 name:`nombre`,
                 orderable:true,
                 bOrder:`asc`,
@@ -191,9 +191,9 @@ export default function LaboratoriosAdmin({manejeadorError}) {
   return (
     <Card className='p-1 m-1 admin '>
         <Card.Header className='d-flex justify-content-around flex-wrap'>
-          <h5>Laboratorios Administrador</h5> 
+          <h5>Marcas Administrador</h5> 
           <Button onClick={addLaboratorio} className="btn">
-            Agregar Laboratorio
+            Agregar Marca
           </Button>
         </Card.Header>
         <Card.Body>                       

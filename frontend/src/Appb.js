@@ -86,24 +86,54 @@ function App() {
         
     };
     debugger
-    return (
-      <HashRouter>
-        <ToastContainer position="bottom-center" limit={1} />
-        <Routes>
-          <Route path="/" element={<HomeScreen />} />
-          <Route path="/somos" element={<SomosScreen />} />
-          <Route path="/productos" element={<ProductsScreen />} />
-          <Route path="/noticias" element={<NoticiasScreen />} />
-          <Route path="/contacto" element={<ContactoScreen />} />
-  
-          <Route path="/login" element={<AdminLayout><LoginScreen /></AdminLayout>} />
-          <Route path="/admin/*" element={<AdminLayout><AdminScreen /></AdminLayout>} />
-  
-          {/* Redireccionar rutas desconocidas al Home */}
-          <Route path="*" element={<HomeScreen />} />
-        </Routes>
-      </HashRouter>
-    );
-  }
+  return (
+    
+    <HashRouter> 
+       <ToastContainer position="bottom-center" limit={1} />
+      { !srcAdmin.includes(window.location.pathname.substring(0,6))?       
+        <div> 
+          <div className="App">
+            <i className="fas fa-chevron-circle-down"></i>
+            <AppBarHeadWeb setMostrar={setMostrar} opciones={opciones} marcar={marcar} setMarcar={setMarcar}/> 
+          </div> 
+          <Container className='d-md-none'>
+            <AppSideBarWeb mostrar={mostrar} setMostrar={setMostrar} opciones={opciones} marcar={marcar} setMarcar={setMarcar}/>
+          </Container>
+          
+          <main> 
+            <Container fluid className='p-0 p-lg-2 main-container'>        
+              <Routes>
+                <Route path="/" element={<HomeScreen setMarcar={setMarcar}/>} />
+                <Route path="/somos" element={<SomosScreen/>} />
+                <Route path="/productos" element={<ProductsScreen/>} />
+                <Route path="/noticias" element={<NoticiasScreen/>} /> 
+                <Route path="/contacto" element={<ContactoScreen/>} />                  
+              </Routes>
+            </Container> 
+          </main> 
+
+          <Container className='' fluid>
+            <AppFooterWeb />         
+          </Container>
+        </div>
+
+        :
+ 
+      <main>      
+
+        <Container fluid className='p-0 p-lg-2 main-container'>        
+          <Routes>   
+            <Route path="/" element={<LoginScreen />} />                   
+            <Route path="/login" element={<LoginScreen />} />   
+            <Route path="/admin/*" element={<AdminScreen />} />                           
+          </Routes>
+        </Container>     
+          
+      </main>   
+      }
+    </HashRouter>
+   
+  );
+}
 
 export default App;

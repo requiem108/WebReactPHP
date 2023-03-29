@@ -11,9 +11,13 @@ import NoticiasScreen from "./screens/NoticiasScreen";
 import ContactoScreen from "./screens/ContactoScreen";
 import '@coreui/coreui/dist/css/coreui.min.css'
 
-import AppBarHeadWeb from './components/AppBarHeadWeb';
-import AppSideBarWeb from './components/AppSideBarWeb';
-import AppFooterWeb from './components/AppFooterWeb';
+import HomeAdmin from './componentsAdmin/HomeAdmin';
+import UsuariosAdmin from './componentsAdmin/UsuariosAdmin';
+import LaboratoriosAdmin from './componentsAdmin/LaboratoriosAdmin';
+import ProductosAdmin from './componentsAdmin/ProductosAdmin';
+import NoticiasAdmin from './componentsAdmin/NoticiasAdmin';
+
+
 
 import { useEffect,useState } from "react";
 import ProductsScreen from './screens/ProductsScreen';
@@ -84,14 +88,19 @@ function App() {
         <HashRouter>
           <ToastContainer position="bottom-center" limit={1} />
           <Routes>
-            <Route path="/" element={<WebLayout mostrar={mostrar} setMostrar={setMostrar} opciones={opciones} marcar={marcar} setMarcar={setMarcar}><HomeScreen /></WebLayout>} />
+            <Route path="/" index element={<WebLayout mostrar={mostrar} setMostrar={setMostrar} opciones={opciones} marcar={marcar} setMarcar={setMarcar}><HomeScreen /></WebLayout>} />
             <Route path="/somos" element={<WebLayout mostrar={mostrar} setMostrar={setMostrar} opciones={opciones} marcar={marcar} setMarcar={setMarcar}><SomosScreen /></WebLayout>} />
             <Route path="/productos" element={<WebLayout mostrar={mostrar} setMostrar={setMostrar} opciones={opciones} marcar={marcar} setMarcar={setMarcar}><ProductsScreen /></WebLayout>} />
             <Route path="/noticias" element={<WebLayout mostrar={mostrar} setMostrar={setMostrar} opciones={opciones} marcar={marcar} setMarcar={setMarcar}><NoticiasScreen /></WebLayout>} />
             <Route path="/contacto" element={<WebLayout mostrar={mostrar} setMostrar={setMostrar} opciones={opciones} marcar={marcar} setMarcar={setMarcar}><ContactoScreen /></WebLayout>} />
     
             <Route path="/login" element={<LoginScreen />} />
-            <Route path="/admin/*" element={<AdminScreen />} />
+            
+            <Route path='/admin' element={<AdminScreen><HomeAdmin/></AdminScreen>} />
+            <Route path='/admin/usuarios' element={<AdminScreen><UsuariosAdmin/></AdminScreen>} />
+            <Route path='/admin/marcas' element={<AdminScreen><LaboratoriosAdmin/></AdminScreen>} />
+            <Route path='/admin/productos' element={<AdminScreen><ProductosAdmin/></AdminScreen>} />
+            <Route path='/admin/noticias' element={<AdminScreen><NoticiasAdmin/></AdminScreen>} />
     
             {/* Redireccionar rutas desconocidas al Home */}
             

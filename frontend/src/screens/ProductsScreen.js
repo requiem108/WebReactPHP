@@ -134,7 +134,7 @@ export default function  ProductsScreen() {
         {archivos.map((archivo, indice) => (
           <Col  key={indice} className="d-flex justify-content-center flex-column align-items-center ">
             <Image src={`${state.url}../images/Categorias/${archivo}`} thumbnail />
-            <p>{archivo.split('.')[0].charAt(0).toUpperCase()+archivo.split('.')[0].slice(1)}</p>
+            <p className={`productos-categorias-text pct${indice}`}>{archivo.split('.')[0].charAt(0).toUpperCase()+archivo.split('.')[0].slice(1)}</p>
           </Col>
         ))}
       </Row>

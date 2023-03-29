@@ -16,7 +16,9 @@ export default function WebLayout({ children, mostrar, setMostrar, opciones, mar
         <AppSideBarWeb mostrar={mostrar} setMostrar={setMostrar} opciones={opciones} marcar={marcar} setMarcar={setMarcar} />
       </Container>
 
-      {children}
+      <Container fluid className='p-0 p-lg-2 main-container'> 
+        {children}
+      </Container>
 
       <Container className='' fluid>
         <AppFooterWeb />

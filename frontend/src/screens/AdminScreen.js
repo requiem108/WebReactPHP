@@ -14,11 +14,7 @@
  import {Routes, Route} from 'react-router-dom'
  import Container from 'react-bootstrap/esm/Container';
 
- import HomeAdmin from '../componentsAdmin/HomeAdmin';
- import UsuariosAdmin from '../componentsAdmin/UsuariosAdmin';
- import LaboratoriosAdmin from '../componentsAdmin/LaboratoriosAdmin';
- import ProductosAdmin from '../componentsAdmin/ProductosAdmin';
- import NoticiasAdmin from '../componentsAdmin/NoticiasAdmin';
+ 
  import { useNavigate } from 'react-router-dom';
 
  import 'react-toastify/dist/ReactToastify.css';
@@ -26,7 +22,7 @@
  import { toast } from 'react-toastify';
  
 
- export default function AdminScreen(){
+ export default function AdminScreen({children}){
 
     const navigate = useNavigate();
     const {state, dispatch: ctxDispatch} = useContext(Store);   
@@ -97,6 +93,8 @@
         }
     }
    
+    const childrenWithProps = React.cloneElement(children, { manejeadorError });
+
     return(
         <div>         
            
@@ -104,15 +102,8 @@
 
             <div className='d-flex mt-0'> 
                 <AppSideBar mostrar={mostrar} opciones={opciones} activateOpcion={activateOpcion} setMostrar={setMostrar}/> 
-                <Container className='sm-col-12'>
-                   
-                    <Routes>
-                        <Route path='/' element={<HomeAdmin manejeadorError={manejeadorError}/>} />
-                        <Route path='/usuarios' element={<UsuariosAdmin manejeadorError={manejeadorError}/>} />
-                        <Route path='/laboratorios' element={<LaboratoriosAdmin manejeadorError={manejeadorError}/>} />
-                        <Route path='/productos' element={<ProductosAdmin manejeadorError={manejeadorError}/>} />
-                        <Route path='/noticias' element={<NoticiasAdmin manejeadorError={manejeadorError}/>} />
-                    </Routes>
+                <Container className='sm-col-12'>                   
+                   {childrenWithProps}
                 </Container>
             </div>
 
@@ -121,3 +112,15 @@
         
     )
  }
+
+
+ /*
+ <Routes>
+                        <Route path='/' element={<HomeAdmin manejeadorError={manejeadorError}/>} />
+                        <Route path='/usuarios' element={<UsuariosAdmin manejeadorError={manejeadorError}/>} />
+                        <Route path='/laboratorios' element={<LaboratoriosAdmin manejeadorError={manejeadorError}/>} />
+                        <Route path='/productos' element={<ProductosAdmin manejeadorError={manejeadorError}/>} />
+                        <Route path='/noticias' element={<NoticiasAdmin manejeadorError={manejeadorError}/>} />
+                    </Routes>
+
+ */

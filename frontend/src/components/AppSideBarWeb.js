@@ -45,7 +45,7 @@ export default function AppSideBarWeb(props) {
                                 props.setMarcar(item.texto);
                                 props.setMostrar(false)
                             }}>
-                            <Link to={item.link}>
+                            <Link className="p-2" to={item.link}>
                                 {item.texto}
                             </Link>
                         </div>
