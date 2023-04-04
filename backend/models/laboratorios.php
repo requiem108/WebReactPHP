@@ -110,7 +110,7 @@ function addLaboratorio(PDO $db,$dataObject){
             throw new Exception($res['token_validation']);
         }  
         
-        $stmt = $db->prepare("INSERT INTO Laboratorios (nombre, estado, logo) 
+        $stmt = $db->prepare("INSERT INTO laboratorios (nombre, estado, logo) 
         VALUES (:nombre, :estado, :logo)");    
       
         $stmt->execute(array(            
@@ -149,7 +149,7 @@ function actualizarNombre(PDO $db, $dataObject) {
         }
 
         $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $stmt = $db->prepare("UPDATE Laboratorios SET nombre = :nuevo_nombre WHERE idLaboratorios = :id");
+        $stmt = $db->prepare("UPDATE laboratorios SET nombre = :nuevo_nombre WHERE idlaboratorios = :id");
         $stmt->bindParam(":nuevo_nombre", $nuevoNombre);
         $stmt->bindParam(":id", $id);
         $ok = $stmt->execute();        
@@ -177,7 +177,7 @@ function deleteLaboratorio($db,$dataObject){
             throw new Exception($res['token_validation']);
         }  
         
-        $stmt = $db->prepare("DELETE FROM Laboratorios WHERE idLaboratorios = :id");    
+        $stmt = $db->prepare("DELETE FROM laboratorios WHERE idlaboratorios = :id");    
       
         $stmt->execute(array(            
             ':id' => $dataObject->idLaboratorios,            
@@ -227,7 +227,7 @@ function uploadImage($db,$dataObject){
         }
         
         //se guarda la ruta de la imagen en la base de datos
-        $stmt = $db->prepare("UPDATE Laboratorios SET logo = :logo WHERE idLaboratorios = :id");    
+        $stmt = $db->prepare("UPDATE laboratorios SET logo = :logo WHERE idlaboratorios = :id");    
       
         $stmt->execute(array(            
             ':id' => $dataObject->idLaboratorios,            
@@ -252,7 +252,7 @@ function uploadImage($db,$dataObject){
 function validarTipoUsuario($conexion, $usuario) {  
   
     // Validar si el usuario es administrador o auxiliar utilizando una consulta preparada
-    $stmt = $conexion->prepare("SELECT estado FROM Usuarios WHERE usuario = :usuario AND tipo = 'ADMINISTRADOR'");
+    $stmt = $conexion->prepare("SELECT estado FROM usuarios WHERE usuario = :usuario AND tipo = 'ADMINISTRADOR'");
     $stmt->execute(array(':usuario' => $usuario));
   
     // Obtener el resultado de la consulta
@@ -269,14 +269,14 @@ function validarTipoUsuario($conexion, $usuario) {
 function listLaboratorios($db, $tipo, $url_models, $token, $usuarioToken) {
     // --- CAMPOS QUE SE USAN PARA FILTRADO DE INFORMACION (importa el orden, deve coincidir con la tabla) --- //
     $aColumnas = array(    
-      'F.NOMBRE',             
-      'F.ESTADO',      
-      'F.LOGO',
-      'F.IDLABORATORIOS',
+        'f.nombre',             
+        'f.estado',      
+        'f.logo',
+        'f.idlaboratorios',
     );
-    $sIndexColumn = "IDLABORATORIOS"; // --- CAMPO QUE SE USA COMO INDICE PARA LA TABLA --- //
+    $sIndexColumn = "idlaboratorios"; // --- CAMPO QUE SE USA COMO INDICE PARA LA TABLA --- //
     // --- NOMBRE DE LA TABLA PRINCIPAL SOBRE LA QUE SE CONTARAN LOS REGISTROS --- //
-    $sTable = "from LABORATORIOS F";      
+    $sTable = "from laboratorios f";      
 
     // --- PAGINACION --- //
     $sLimit = "";
@@ -286,7 +286,7 @@ function listLaboratorios($db, $tipo, $url_models, $token, $usuarioToken) {
 
     // --- FILTRADO POR COLUMNA --- //
     $ColumnasFiltro = $_GET['columns'];
-    $sWhere = "Where idLaboratorios <> 0 ";
+    $sWhere = "Where idlaboratorios <> 0 ";
     foreach($ColumnasFiltro as $IdColumna => $aColumna){
       if(isset($aColumna['searchable']) and $aColumna['searchable'] == 'true' and  $aColumna['search']['value'] != ''){
         if( $sWhere == "" ){
@@ -322,7 +322,8 @@ function listLaboratorios($db, $tipo, $url_models, $token, $usuarioToken) {
 
     // --- CANTIDAD TOTAL DE REGISTROS RECUPERADOS --- //
     $sQuery = "
-      select count($sIndexColumn)   
+      select count($sIndexColumn)
+      $sTable
       $sWhere
     ";
     $stmt = $db->prepare($sQuery);
@@ -361,52 +362,49 @@ function listLaboratorios($db, $tipo, $url_models, $token, $usuarioToken) {
         "aaData" => array()
       );
 
-      foreach ($result as $Fila) {
-        $row=array();   
+      foreach ($result as $fila) {
+        $row = array();   
         
-        $estado = $Fila['ESTADO'] == 'A'? 'Activo' : 'Inactivo';
-  
-        $usuario_c='TEST';
-        if($tipo){
-          //Administrador
-          $nombre_c = '<input data-datadato="usuario" data-dataidusertoken="'.$usuarioToken.'" data-datatoken="'.$token.'" data-dataid_lab="'.$Fila['IDLABORATORIOS'].'"  style="width:80%;display:block;margin:auto;" is="input-uc3g" maxlength="20" url="'.$url_models.'laboratorios.php" action="actualizarNombre" docode type="text" value="'.$Fila['NOMBRE'].'"/>';
-          $estado_c = '<select data-datadato="estado" data-dataidusertoken="'.$usuarioToken.'" data-datatoken="'.$token.'" data-dataid_lab="'.$Fila['IDLABORATORIOS'].'"  style="width:80%;display:block;margin:auto;" is="select-uc3g" url="'.$url_models.'laboratorios.php" action="update_laboratorios" docode>
-                          <option value="A" '.($Fila['ESTADO'] == 'A'? 'selected' : '').'>Activo</option>
-                          <option value="I" '.($Fila['ESTADO'] == 'I'? 'selected' : '').'>Inactivo</option>
+        $estado = $fila['estado'] == 'A' ? 'Activo' : 'Inactivo';
+    
+        $usuario_c = 'TEST';
+        if($tipo) {
+            //Administrador
+            $nombre_c = '<input data-datadato="usuario" data-dataidusertoken="'.$usuarioToken.'" data-datatoken="'.$token.'" data-dataid_lab="'.$fila['idlaboratorios'].'"  style="width:80%;display:block;margin:auto;" is="input-uc3g" maxlength="20" url="'.$url_models.'laboratorios.php" action="actualizarNombre" docode type="text" value="'.$fila['nombre'].'"/>';
+            $estado_c = '<select data-datadato="estado" data-dataidusertoken="'.$usuarioToken.'" data-datatoken="'.$token.'" data-dataid_lab="'.$fila['idlaboratorios'].'"  style="width:80%;display:block;margin:auto;" is="select-uc3g" url="'.$url_models.'laboratorios.php" action="update_laboratorios" docode>
+                            <option value="A" '.($fila['estado'] == 'A' ? 'selected' : '').'>Activo</option>
+                            <option value="I" '.($fila['estado'] == 'I' ? 'selected' : '').'>Inactivo</option>
                         </select>'; 
-         
-          $logoArray =  explode(".", $Fila['LOGO']); 
-          $inputlogo = '<input type="file" accept="image/*" name="file" id="file" class="inputfile form-control admin-Lab-logo" data-id="'.$Fila['IDLABORATORIOS'].'" data-accion="logo" data-url="'.$url_models.'laboratorios.php" data-token="'.$token.'" data-idusertoken="'.$usuarioToken.'"/>';         
-          if(count($logoArray) == 1){
-            //  echo 'Vacio';
-              $logo = '<div class="d-flex flex-column">
-                <p>Sin logo agregado</p>
-                '.$inputlogo.'
-              </div>';
-          }else{
-            //echo 'No vacio';
-            $logo = '<div class="d-flex flex-column align-items-center bg-dark" style"min-height:75px">
-              <img src="../images/imgLogos/'.$Fila['LOGO'].'?V='.mt_rand().'" style="width:100px;">
-              '.$inputlogo.'
-            </div>';
-          }                 
+            
+            $logoArray =  explode(".", $fila['logo']); 
+            $inputlogo = '<input type="file" accept="image/*" name="file" id="file" class="inputfile form-control admin-Lab-logo" data-id="'.$fila['idlaboratorios'].'" data-accion="logo" data-url="'.$url_models.'laboratorios.php" data-token="'.$token.'" data-idusertoken="'.$usuarioToken.'"/>';         
+            if(count($logoArray) == 1) {
+                $logo = '<div class="d-flex flex-column">
+                    <p>Sin logo agregado</p>
+                    '.$inputlogo.'
+                </div>';
+            } else {
+                $logo = '<div class="d-flex flex-column align-items-center bg-dark" style"min-height:75px">
+                    <img src="../images/imgLogos/'.$fila['logo'].'?V='.mt_rand().'" style="width:100px;">
+                    '.$inputlogo.'
+                </div>';
+            }                 
            
-          $botones='
-            <div class="d-md-flex justify-content-center tabla-admin-botones">                
-                <button data-id="'.$Fila['IDLABORATORIOS'].'" style="width:33px;" class="btn btn-danger rounded-pill admin-Lab-eliminar">X</button>
-            </div>';
-        }else{
-          //Auxiliar
-          $nombre_c = '<span class="" title="">'.$Fila['NOMBRE'].'</span>';
-          $estado_c = '<span class="" title="">'.$estado.'</span>';  //Estado no se coloca pero se deja por si se requiere       
-          $logo = '<div>'.$Fila['LOGO']==''?'Sin logo agregado':'<img src="../images/imgLogos/'.$Fila['LOGO'].'">'.'</div>';
-          
-          $botones='<div></div>';
+            $botones = '
+                <div class="d-md-flex justify-content-center tabla-admin-botones">                
+                    <button data-id="'.$fila['idlaboratorios'].'" style="width:33px;" class="btn btn-danger rounded-pill admin-Lab-eliminar">X</button>
+                </div>';
+        } else {
+            //Auxiliar
+            $nombre_c = '<span class="" title="">'.$fila['nombre'].'</span>';
+            $estado_c = '<span class="" title="">'.$estado.'</span>';  //Estado no se coloca pero se deja por si se requiere       
+            $logo = '<div>'.$fila['logo'] == '' ? 'Sin logo agregado' : '<img src="../images/imgLogos/'.$fila['logo'].'">'.'</div>';
+            
+            $botones = '<div></div>';
         }
-  
-        
-        $row[] = '<span style="text-aling:center;" class="" title="">'.$Fila['IDLABORATORIOS'].'</span>'; 
-        $row[] = '<span class="">'.$nombre_c.'</span>';  
+    
+        $row[] = '<span style="text-aling:center;" class="" title="">'.$fila['idlaboratorios'].'</span>'; 
+        $row[] = '<span class="">'.$nombre_c.'</span>'; 
         $row[] = '<span class="contenedor-btn" title="">'.$logo.'</span>';
         $row[] = '<span class="contenedor-btn" title="">'.$botones.'</span>';
   

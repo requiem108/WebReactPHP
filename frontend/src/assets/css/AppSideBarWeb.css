@@ -9,15 +9,23 @@
 
 .sidebar-light .nav-item a{
     font-weight: bold;
-    color: var(--mas-azul)
+    text-decoration: none;
+    /*color: var(--mas-azul);*/
+    color: var(--mas-negro);
+    font-family: 'Roboto', sans-serif;
+    font-size: 14px;    
 }
 
 .sidebar-light .nav-item a:hover{
     
-    color: var(--mas-berde)
+    /*color: var(--mas-berde);*/
+    color: var(--mas-negro);
+    font-weight: bold;
 }
 
-.sidebar-light .nav-item .sidebar-light-active{
+.sidebar-light-active{
     
-    color: var(--mas-berde)
+    /*color: var(--mas-berde);*/
+    color: var(--mas-berde);
+    font-weight: bold;
 }

@@ -22,11 +22,11 @@ export default function AppBarHeadWeb({setMostrar,opciones,marcar,setMarcar}) {
                     >
                        <BsList/>
                     </CHeaderToggler>
-                    <CContainer className="col-12 d-none d-md-flex d-flex justify-content-between m-0">
+                    <CContainer fluid className="col-12 d-none d-md-flex d-flex justify-content-between m-0">
                     
                         <CHeaderNav className="col-3 d-md-flex">
                             <CNavItem>
-                                <img src="/images/Home/MAS_COLOR.png" width={200} alt="logo" className="logo" />                      
+                                <img src="/images/Home/MAS_COLOR.png" width={120} alt="logo" className="logo m-2" />                      
                                 
                             </CNavItem>
                         </CHeaderNav>
@@ -39,7 +39,7 @@ export default function AppBarHeadWeb({setMostrar,opciones,marcar,setMarcar}) {
                                         <Link to={opcion.link} 
                                             onClick={() => setMarcar(opcion.texto)}
                                             className={`${marcar === opcion.texto? 'header-nav-a-selected':''} p-2`}>
-                                                {opcion.texto}
+                                                {opcion.texto.toUpperCase()}
                                         </Link> 
                                     </CNavItem>
                                 </CHeaderNav>
@@ -49,11 +49,11 @@ export default function AppBarHeadWeb({setMostrar,opciones,marcar,setMarcar}) {
                         
                     </CContainer> 
 
-                    <CHeaderNav className="col-3 d-md-flex">
-                            <CNavItem>                                                     
-                                <img src="/images/Home/MAS_COLOR.png" width={100} alt="logo" className="logo d-block d-md-none" />
-                            </CNavItem>
-                        </CHeaderNav>   
+                    <CHeaderNav className="col-3 d-flex justify-content-end">
+                        <CNavItem>                                                     
+                            <img src="/images/Home/MAS_COLOR.png" width={80} alt="logo" className="logo d-block d-md-none m-1" />
+                        </CNavItem>
+                    </CHeaderNav>   
                     
                 </CContainer>
             </CHeader>

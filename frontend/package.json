@@ -26,8 +26,8 @@
     "web-vitals": "^2.1.4"
   },
  
-  "proxi":"http://www.localhost/TOM-A/backend/",
-  "homepage": "./",
+ 
+  "homepage": "https://tom-a.000webhostapp.com/",
   "scripts": {
     "start": "react-scripts start --openssl-legacy-provider",
     "build": "react-scripts build",

@@ -90,7 +90,7 @@ function addProducto(PDO $db,$dataObject){
             throw new Exception($res['token_validation']);
         }  
         
-        $stmt = $db->prepare("INSERT INTO Productos (idLaboratorios_fk, nombre, descripcion, descripcion_corta, estado, imagen) 
+        $stmt = $db->prepare("INSERT INTO productos (idlaboratorios_fk, nombre, descripcion, descripcion_corta, estado, imagen) 
         VALUES (:idLaboratorios_fk,:nombre,:descripcion,:descripcion_corta, :estado, :imagen)");    
       
         $stmt->execute(array(    
@@ -193,12 +193,12 @@ function actualizarProducto(PDO $db, $dataObject) {
 
     if ($campo === "categoria") {
       // Actualizar la categoría en la tabla Categorias_Producto_Pertenece
-      $stmt = $db->prepare("UPDATE Categorias_Productos_Pertenece SET idCategoria_fk = :categoria WHERE idProducto_fk = :idProducto");
+      $stmt = $db->prepare("UPDATE categorias_productos_pertenece SET idcategoria_fk = :categoria WHERE idproducto_fk = :idProducto");
       $stmt->execute(array(':categoria' => $valor, ':idProducto' => $idProducto));
       $mensaje = "La categoría del producto con ID $idProducto ha sido actualizada correctamente.";
     } else {
       // Actualizar el campo en la tabla Productos
-      $stmt = $db->prepare("UPDATE Productos SET $campo = :valor WHERE idProducto = :idProducto");
+      $stmt = $db->prepare("UPDATE productos SET $campo = :valor WHERE idproducto = :idProducto");
       $stmt->execute(array(':valor' => $valor, ':idProducto' => $idProducto));
       $mensaje = "El campo '$campo' del producto con ID $idProducto ha sido actualizado correctamente.";
     }
@@ -245,7 +245,7 @@ function uploadImage($db,$dataObject){
       }
       
       //se guarda la ruta de la imagen en la base de datos
-      $stmt = $db->prepare("UPDATE Productos SET imagen = :imagen WHERE idProducto = :id");    
+      $stmt = $db->prepare("UPDATE productos SET imagen = :imagen WHERE idProducto = :id");    
     
       $stmt->execute(array(            
           ':id' => $dataObject->idProducto,            
@@ -281,7 +281,7 @@ function eliminarProducto(PDO $db, $dataObject) {
     } 
 
     // Eliminar el producto de la tabla Productos
-    $stmt = $db->prepare("UPDATE Productos set estado = 'I' WHERE idProducto = :idProducto");
+    $stmt = $db->prepare("UPDATE productos set estado = 'I' WHERE idProducto = :idProducto");
     $stmt->execute(array(':idProducto' => $idProducto));
 
     $res['ERROR'] = '';
@@ -302,21 +302,21 @@ function listProductos($db, $tipo, $url_models, $dataObject) {
     $usuarioToken = $dataObject->usuario;    
     // --- CAMPOS QUE SE USAN PARA FILTRADO DE INFORMACION (importa el orden, deve coincidir con la tabla) --- //
     $aColumnas = array(    
-      'pr.DESCRIPCION_CORTA',             
-      'lab.NOMBRE as LABORATORIO',      
-      'pr.DESCRIPCION',
-      'ca.DESCRIPCION as CATEGORIA',
-      'pr.IDPRODUCTO',
-      'lab.IDLABORATORIOS',
-      'ca.IDCATEGORIA',
-      'pr.IMAGEN',
-    );
-    $sIndexColumn = "pr.IDPRODUCTO"; // --- CAMPO QUE SE USA COMO INDICE PARA LA TABLA --- //
-    // --- NOMBRE DE LA TABLA PRINCIPAL SOBRE LA QUE SE CONTARAN LOS REGISTROS --- //
-    $sTable = "from productos pr
-    inner join laboratorios lab on pr.idLaboratorios_fk = lab.idLaboratorios
-    inner join categorias_productos_pertenece cpp on pr.idProducto = cpp.idProducto_fk
-    inner join categorias ca on cpp.idCategoria_fk = ca.idCategoria";      
+    'pr.descripcion_corta',             
+    'lab.nombre as laboratorio',      
+    'pr.descripcion',
+    'ca.descripcion as categoria',
+    'pr.idproducto',
+    'lab.idlaboratorios',
+    'ca.idcategoria',
+    'pr.imagen',
+  );
+  $sIndexColumn = "pr.idproducto"; // --- CAMPO QUE SE USA COMO INDICE PARA LA TABLA --- //
+  // --- NOMBRE DE LA TABLA PRINCIPAL SOBRE LA QUE SE CONTARAN LOS REGISTROS --- //
+  $sTable = "FROM productos pr
+  INNER JOIN laboratorios lab ON pr.idlaboratorios_fk = lab.idlaboratorios
+  INNER JOIN categorias_productos_pertenece cpp ON pr.idproducto = cpp.idproducto_fk
+  INNER JOIN categorias ca ON cpp.idcategoria_fk = ca.idcategoria";       
 
     // --- PAGINACION --- //
     $sLimit = "";
@@ -363,7 +363,8 @@ function listProductos($db, $tipo, $url_models, $dataObject) {
 
     // --- CANTIDAD TOTAL DE REGISTROS RECUPERADOS --- //
     $sQuery = "
-      select count($sIndexColumn)   
+      select count($sIndexColumn)
+      $sTable
       $sWhere
     ";
     $stmt = $db->prepare($sQuery);
@@ -401,42 +402,39 @@ function listProductos($db, $tipo, $url_models, $dataObject) {
       );    
     
 
-      foreach ($result as $Fila) {
-        $row=array();   
-       
-        
-      
-        if($tipo){
-          //Administrador
-          $descripcion_corta = '<input data-datadato="descripcion_corta" data-dataidusertoken="'.$usuarioToken.'" data-datatoken="'.$token.'" data-dataid_producto="'.$Fila['IDPRODUCTO'].'"  style="width:80%;display:block;margin:auto;" is="input-uc3g" maxlength="20" url="'.$url_models.'productos.php" action="actualizarProducto" docode type="text" value="'.$Fila['DESCRIPCION_CORTA'].'"/>';
-          
-          //--OBTENERMOS LOS LABORATIOS EN UN SELECT---//
-          $selectLaboratorios = getSelectLaboratorios($db, $Fila['LABORATORIO'],$url_models,$usuarioToken,$token,$Fila['IDPRODUCTO']);
-
-          //--OBTENERMOS LAS CATEGORIAS EN UN SELECT---//
-          $selectCategorias = getSelectCategorias($db, $Fila['CATEGORIA'],$url_models,$usuarioToken,$token,$Fila['IDPRODUCTO']);
-
-          $descripcion_ = '<textarea rows="3" data-datadato="descripcion" data-dataidusertoken="'.$usuarioToken.'" data-datatoken="'.$token.'" data-dataid_producto="'.$Fila['IDPRODUCTO'].'"  style="width:80%;display:block;margin:auto;" is="textarea-uc3g" maxlength="120" url="'.$url_models.'productos.php" action="actualizarProducto" docode >'.$Fila['DESCRIPCION'].'</textarea>';
-          $img_producto = $Fila['IMAGEN'] != ''?'<button data-title="'.$Fila['DESCRIPCION_CORTA'].'" data-img="../images/imgProductos/'.$Fila['IMAGEN'].'" class="btn btn-primary admin-products-img">Ver imagen</button>':'';   
-           
-          $botones='
-            <div class="d-md-flex flex-column-reverse justify-content-center align-items-center tabla-admin-botones">  
-                <input type="file" accept="image/*" name="file" id="file" class="inputfile form-control admin-productos-img" data-id="'.$Fila['IDPRODUCTO'].'" data-accion="logo" data-token="'.$token.'" data-idusertoken="'.$usuarioToken.'"/>          
-                '.$img_producto.'
-                
-                <button data-id="'.$Fila['IDPRODUCTO'].'" style="width:33px;" class="btn btn-danger rounded-pill admin-productos-eliminar">X</button>
-            </div>';
-        }else{
-          //Auxiliar
-          $descripcion_corta = '<span class="" title="">'.$Fila['DESCRIPCION_CORTA'].'</span>';
-          $selectLaboratorios = '<span class="" title="">'.$Fila['LABORATORIO'].'</span>';
-          $selectCategorias = '<span class="" title="">'.$Fila['CATEGORIA'].'</span>';
-          $descripcion_ = '<span class="" title="">'.$Fila['DESCRIPCION'].'</span>';
-          
-          $botones='<div></div>';
+      foreach ($result as $fila) {
+        $row = array();
+    
+        if ($tipo) {
+            // Administrador
+            $descripcion_corta = '<input data-datadato="descripcion_corta" data-dataidusertoken="'.$usuarioToken.'" data-datatoken="'.$token.'" data-dataid_producto="'.$fila['idproducto'].'"  style="width:80%;display:block;margin:auto;" is="input-uc3g" maxlength="20" url="'.$url_models.'productos.php" action="actualizarProducto" docode type="text" value="'.$fila['descripcion_corta'].'"/>';
+    
+            //--OBTENERMOS LOS LABORATIOS EN UN SELECT---//
+            $selectLaboratorios = getSelectLaboratorios($db, $fila['laboratorio'], $url_models, $usuarioToken, $token, $fila['idproducto']);
+    
+            //--OBTENERMOS LAS CATEGORIAS EN UN SELECT---//
+            $selectCategorias = getSelectCategorias($db, $fila['categoria'], $url_models, $usuarioToken, $token, $fila['idproducto']);
+    
+            $descripcion_ = '<textarea rows="3" data-datadato="descripcion" data-dataidusertoken="'.$usuarioToken.'" data-datatoken="'.$token.'" data-dataid_producto="'.$fila['idproducto'].'"  style="width:80%;display:block;margin:auto;" is="textarea-uc3g" maxlength="120" url="'.$url_models.'productos.php" action="actualizarProducto" docode >'.$fila['descripcion'].'</textarea>';
+            $img_producto = $fila['imagen'] != '' ? '<button data-title="'.$fila['descripcion_corta'].'" data-img="../images/imgProductos/'.$fila['imagen'].'" class="btn btn-primary admin-products-img">Ver imagen</button>' : '';   
+    
+            $botones = '
+                <div class="d-md-flex flex-column-reverse justify-content-center align-items-center tabla-admin-botones">  
+                    <input type="file" accept="image/*" name="file" id="file" class="inputfile form-control admin-productos-img" data-id="'.$fila['idproducto'].'" data-accion="logo" data-token="'.$token.'" data-idusertoken="'.$usuarioToken.'"/>          
+                    '.$img_producto.'
+                    
+                    <button data-id="'.$fila['idproducto'].'" style="width:33px;" class="btn btn-danger rounded-pill admin-productos-eliminar">X</button>
+                </div>';
+        } else {
+            // Auxiliar
+            $descripcion_corta = '<span class="" title="">'.$fila['descripcion_corta'].'</span>';
+            $selectLaboratorios = '<span class="" title="">'.$fila['laboratorio'].'</span>';
+            $selectCategorias = '<span class="" title="">'.$fila['categoria'].'</span>';
+            $descripcion_ = '<span class="" title="">'.$fila['descripcion'].'</span>';
+    
+            $botones = '<div></div>';
         }
-  
-        
+    
         $row[] = '<span style="text-aling:center;" class="" title="">'.$descripcion_corta.'</span>'; 
         $row[] = '<span class="">'.$selectLaboratorios.'</span>';  
         $row[] = '<span class="contenedor-btn" title="">'.$selectCategorias.'</span>';
@@ -465,22 +463,23 @@ function listProductosWeb($db) {
    
       
   // --- CAMPOS QUE SE USAN PARA FILTRADO DE INFORMACION (importa el orden, deve coincidir con la tabla) --- //
+   // --- CAMPOS QUE SE USAN PARA FILTRADO DE INFORMACION (importa el orden, deve coincidir con la tabla) --- //
   $aColumnas = array(    
-    'pr.DESCRIPCION_CORTA',             
-    'lab.NOMBRE as LABORATORIO',      
-    'pr.DESCRIPCION',
-    'ca.DESCRIPCION as CATEGORIA',
-    'pr.IDPRODUCTO',
-    'lab.IDLABORATORIOS',
-    'ca.IDCATEGORIA',
-    'pr.IMAGEN',
+    'pr.descripcion_corta',             
+    'lab.nombre as laboratorio',      
+    'pr.descripcion',
+    'ca.descripcion as categoria',
+    'pr.idproducto',
+    'lab.idlaboratorios',
+    'ca.idcategoria',
+    'pr.imagen',
   );
-  $sIndexColumn = "pr.IDPRODUCTO"; // --- CAMPO QUE SE USA COMO INDICE PARA LA TABLA --- //
+  $sIndexColumn = "pr.idproducto"; // --- CAMPO QUE SE USA COMO INDICE PARA LA TABLA --- //
   // --- NOMBRE DE LA TABLA PRINCIPAL SOBRE LA QUE SE CONTARAN LOS REGISTROS --- //
-  $sTable = "from productos pr
-  inner join laboratorios lab on pr.idLaboratorios_fk = lab.idLaboratorios
-  inner join categorias_productos_pertenece cpp on pr.idProducto = cpp.idProducto_fk
-  inner join categorias ca on cpp.idCategoria_fk = ca.idCategoria";      
+  $sTable = "FROM productos pr
+  INNER JOIN laboratorios lab ON pr.idlaboratorios_fk = lab.idlaboratorios
+  INNER JOIN categorias_productos_pertenece cpp ON pr.idproducto = cpp.idproducto_fk
+  INNER JOIN categorias ca ON cpp.idcategoria_fk = ca.idcategoria";    
 
   // --- PAGINACION --- //
   $sLimit = "";
@@ -581,25 +580,25 @@ function listProductosWeb($db) {
 
     //echo "URL completa del archivo en ejecución: " . $fullUrl;
 
-    foreach ($result as $Fila) {
+    foreach ($result as $fila) {
       $row=array();      
     
      
       //Auxiliar
-      $descripcion_corta = '<span class="" title="">'.$Fila['DESCRIPCION_CORTA'].'</span>';
-      $selectLaboratorios = '<span class="" title="">'.$Fila['LABORATORIO'].'</span>';
+      $descripcion_corta = '<span class="" title="">'.$fila['descripcion_corta'].'</span>';
+      $selectLaboratorios = '<span class="" title="">'.$fila['laboratorio'].'</span>';
       $selectCategorias = '<span class="" title="">
-      <img width="20px" class="producto-categoria-fila" src="'.$urlImagen.'Categorias/'.strtolower($Fila['CATEGORIA']).'.png" alt="categoria">
-      '.$Fila['CATEGORIA'].'
+      <img width="20px" class="producto-categoria-fila" src="'.$urlImagen.'Categorias/'.strtolower($fila['categoria']).'.png" alt="categoria">
+      '.$fila['categoria'].'
       </span>';
-      $descripcion_ = '<span class="" title="">'.$Fila['DESCRIPCION'].'</span>';
+      $descripcion_ = '<span class="" title="">'.$fila['descripcion'].'</span>';
       
       $botones = '';
-      $img_producto = $Fila['IMAGEN'] != ''?'      
+      $img_producto = $fila['imagen'] != ''?'      
         <img 
         class="producto-img-btn"
-        data-title="'.$Fila['DESCRIPCION_CORTA'].'"
-        data-img="'.$urlImagen.'imgProductos/'.$Fila['IMAGEN'].'"
+        data-title="'.$fila['descripcion_corta'].'"
+        data-img="'.$urlImagen.'imgProductos/'.$fila['imagen'].'"
         src="'.$urlImagen.'Home/ojito.png" width="30px" alt="ojito" >
       ':'';   
       
@@ -609,7 +608,7 @@ function listProductosWeb($db) {
             '.$img_producto.'    
             
         </div>';     
-
+    
        
       $row[] = '<span style="text-aling:center;" class="" title="">'.$descripcion_corta.'</span>'; 
       $row[] = '<span class="">'.$selectLaboratorios.'</span>';  
@@ -627,7 +626,7 @@ function listProductosWeb($db) {
 function validarTipoUsuario($conexion, $usuario) {  
   
   // Validar si el usuario es administrador o auxiliar utilizando una consulta preparada
-  $stmt = $conexion->prepare("SELECT estado FROM Usuarios WHERE usuario = :usuario AND tipo = 'ADMINISTRADOR'");
+  $stmt = $conexion->prepare("SELECT estado FROM usuarios WHERE usuario = :usuario AND tipo = 'ADMINISTRADOR'");
   $stmt->execute(array(':usuario' => $usuario));
 
   // Obtener el resultado de la consulta
@@ -644,7 +643,7 @@ function validarTipoUsuario($conexion, $usuario) {
 function getSelectLaboratorios(PDO $db, $nombreL, $url_models,$usuarioToken,$token,$idProducto) {
   $laboratorios = array();
   try {
-      $stmt = $db->prepare("SELECT idLaboratorios, nombre FROM Laboratorios WHERE estado = 'A'");
+      $stmt = $db->prepare("SELECT idlaboratorios, nombre FROM laboratorios WHERE estado = 'A'");
       $stmt->execute();
       $laboratorios = $stmt->fetchAll(PDO::FETCH_ASSOC);
   } catch (Exception $e) {
@@ -652,9 +651,9 @@ function getSelectLaboratorios(PDO $db, $nombreL, $url_models,$usuarioToken,$tok
   }
 
   
-  $select = "<select name='laboratorio' is='select-uc3g' data-datadato='idLaboratorios_fk' url='".$url_models."productos.php' data-dataidusertoken='".$usuarioToken."' data-datatoken='".$token."' data-dataid_producto='".$idProducto."' action='actualizarProducto'>";
+  $select = "<select name='laboratorio' is='select-uc3g' data-datadato='idlaboratorios_fk' url='".$url_models."productos.php' data-dataidusertoken='".$usuarioToken."' data-datatoken='".$token."' data-dataid_producto='".$idProducto."' action='actualizarProducto'>";
   foreach ($laboratorios as $lab) {
-      $id = $lab['idLaboratorios'];
+      $id = $lab['idlaboratorios'];
       $nombre = $lab['nombre'];
       $selected = $nombreL == $nombre ? 'selected' : '';
       $select .= "<option value='$id' $selected>$nombre</option>";

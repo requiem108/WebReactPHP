@@ -21,7 +21,7 @@ export default function  ProductsScreen() {
   const [archivos, setArchivos] = useState([]);
   const [urlImg, setUrlImg] = useState('');
   const [showModalImg, setShowModalImg] = useState(false);
-    const [title, setTitle] = useState('');
+  const [title, setTitle] = useState('');
   const {state, dispatch: ctxDispatch} = useContext(Store);
 
   const getJsonTable = () => {

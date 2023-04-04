@@ -13,6 +13,7 @@ if (isset($_POST['action'])) {
     $action = $_POST['action'];
     //convertir $_POST a objeto
     $dataObject = (object) $_POST; 
+    
      
 } else if(isset($_GET['action'])){
     //si no se encuentra action en las opciones POST se toma el valor de action de las opciones GET
@@ -32,8 +33,11 @@ if (isset($_POST['action'])) {
     $dataObject = json_decode($JSONData);
     $action = $dataObject->action;
 }
-
-
+/*print("<pre>GET".print_r($_GET,true)."</pre>");
+print("<pre>POST".print_r($_POST,true)."</pre>");
+print("<pre>FILE".print_r($_FILES,true)."</pre>");
+echo "post_max_size: " . ini_get("post_max_size") . "<br>";
+echo'Test1'.$action;*/
 switch($action){
 
     case 'addNoticia':
@@ -78,6 +82,7 @@ function addNoticia($db, $dataObject){
     //print("<pre>".print_r($_FILES,true)."</pre>");
     $pruebas = false;
     try{
+       
         //Validate Token
         $res = array();
         $res['token_validation'] = _Global_::validateToken($dataObject->token, $dataObject->usuario, $db);
@@ -90,14 +95,14 @@ function addNoticia($db, $dataObject){
         //Insertar noticia
         $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $db->beginTransaction();
-        $sql = "INSERT INTO noticias (titulo, contenido, autor, estado) VALUES (:titulo, :contenido, :autor, 'b')";
+        $sql = "INSERT INTO noticias (titulo, contenido, autor, estado, imagen) VALUES (:titulo, :contenido, :autor, 'b', '')";
         $stmt = $db->prepare($sql);
         $stmt->bindParam(':titulo', $dataObject->titulo);
         $stmt->bindParam(':contenido', $dataObject->contenido);
         $stmt->bindParam(':autor', $dataObject->autor);
         $stmt->execute();
         $idNoticia = $db->lastInsertId();
-        
+      
         if($idNoticia > 0){
             $res['idNoticia'] = $idNoticia;
             $res['titulo'] = $dataObject->titulo;
@@ -326,4 +331,3 @@ function getNoticiasWeb($db, $dataObject) {
 
 
   /* FUNCIONES APOYO */
-

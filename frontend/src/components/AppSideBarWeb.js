@@ -46,7 +46,7 @@ export default function AppSideBarWeb(props) {
                                 props.setMostrar(false)
                             }}>
                             <Link className="p-2" to={item.link}>
-                                {item.texto}
+                                {item.texto.toUpperCase()}
                             </Link>
                         </div>
                         }

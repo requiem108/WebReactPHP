@@ -15,6 +15,7 @@ VARIABLES
   --mas-amarilloB:#f9b115;
   --mas-red:#e55353;
   --mas-redB:#c43c3c;
+  --mas-negro:#38312d;
 }
 
 /*FUENTES*/
@@ -100,7 +101,7 @@ a {
 
 
 .main-container{
-  max-width: 1000px !important;  
+  /*max-width: 1000px !important;  */
 }
 
 @media (min-width: 1000px) {

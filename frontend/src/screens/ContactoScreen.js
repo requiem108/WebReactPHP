@@ -5,6 +5,11 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
+import axios from 'axios';
+import { toast } from 'react-toastify';
+import { Store } from '../Store';
+import { useContext } from 'react';
+
 
 import { BsFillGeoAltFill,BsFillTelephoneFill,BsGlobe,BsStopwatch } from "react-icons/bs";
 
@@ -12,10 +17,28 @@ import ReCAPTCHA from "react-google-recaptcha";
 
 export default function ContactoScreen({formvisible = true}){
 
+    const {state, dispatch: ctxDispatch} = useContext(Store);
+
     const recaptchaRef = (value)=>{
         console.log(value);
     }
 
+    
+    //funcion para mandar datos de contacto al servidor
+    const sendContacto = (e) =>{
+        e.preventDefault();
+        try {
+            const data = new FormData(e.target);
+            const respuesta = axios.post(`${state.url}contacto.php`,data); 
+            if(respuesta == null && respuesta.ERROR == 'ERROR'){
+                throw new Error('Error al enviar el correo intentelo mas tarde');
+            }
+            toast.success('Mensaje enviado')
+        } catch (error) {
+            toast.error(error.message);
+        } 
+        
+    }
    
 
     return(
@@ -63,7 +86,7 @@ export default function ContactoScreen({formvisible = true}){
                             </div>
                         </Col>
                         <Col sm={12} md={6} className="m-2 d-flex flex-column align-items-center">
-                            <Form className='contacto-formulario col-10'>                       
+                            <Form className='contacto-formulario col-10' onSubmit={sendContacto}>                       
                                 <Form.Group className="mb-3">                            
                                     <Form.Control name='nombre' type="input" placeholder="Nombre" />
                                 </Form.Group>

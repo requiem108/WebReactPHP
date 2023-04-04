@@ -75,20 +75,22 @@ switch ($action) {
 /*----------------------------------FUNCTIONS----------------------------------*/
 function getUsuarios($db,$dataObject){
     $pruebas = false;  
+    //$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     
     try
     {
         //Validate Token
         $res = array();
         $res['token_validation'] = _Global_::validateToken($dataObject->token, $dataObject->usuario, $db);
-
+        
         //variable con la url global
         $url_models = _Global_::$url_models;
 
         if ($res['token_validation'] !== 'Token valido' and !$pruebas) {         
             throw new Exception($res['token_validation']);
         }        
-        $tipo = validarTipoUsuario($db,$dataObject->usuario);      
+        $tipo = validarTipoUsuario($db,$dataObject->usuario); 
+       
         return listUsuarios($db,$tipo,$url_models,$dataObject->token,$dataObject->usuario);        
     }
     catch (Exception $e)
@@ -122,7 +124,7 @@ function addUser($db,$dataObject){
 
         $tipo = isset($dataObject->tipo) ? $dataObject->tipo : 'AUXILIAR';
 
-        $stmt = $db->prepare("INSERT INTO Usuarios (clave, usuario, fecha, estado, tipo) VALUES (:clave, :usuario, :fecha, :estado, :tipo)");
+        $stmt = $db->prepare("INSERT INTO usuarios (clave, usuario, fecha, estado, tipo) VALUES (:clave, :usuario, :fecha, :estado, :tipo)");
         $stmt->execute(array(
           ':clave' => $clave,
           ':usuario' => 'nuevo usuario',
@@ -146,7 +148,7 @@ function addUser($db,$dataObject){
 function update_usuarios($db,$dataObject){
   //print("<pre>".print_r($dataObject,true)."</pre>");
   $res = array();
-  $pruebas = false;
+  $pruebas = true;
   $campo = $dataObject->datadato;
   $valor = $dataObject->value;
   $id_usuario = $dataObject->dataid_usuario;
@@ -161,7 +163,7 @@ function update_usuarios($db,$dataObject){
         throw new Exception($res['token_validation']);
       } 
 
-      $stmt = $db->prepare("UPDATE Usuarios SET $campo = :valor WHERE id_usuario = :id_usuario");
+      $stmt = $db->prepare("UPDATE usuarios SET $campo = :valor WHERE id_usuario = :id_usuario");
       $stmt->bindParam(':valor', $valor);
       $stmt->bindParam(':id_usuario', $id_usuario);
       $stmt->execute();
@@ -188,7 +190,7 @@ function deleteUser($db,$dataObject){
       
       echo $id_usuario = $dataObject->id;
 
-      $stmt = $db->prepare("DELETE FROM Usuarios WHERE id_usuario = :id_usuario");
+      $stmt = $db->prepare("DELETE FROM usuarios WHERE id_usuario = :id_usuario");
       $stmt->bindParam(':id_usuario', $id_usuario);
       $stmt->execute();
 
@@ -255,16 +257,16 @@ function getPantallas($db, $dataObject) {
 function listUsuarios($db,$tipo,$url_models,$token,$usuarioToken){     
 
     // --- CAMPOS QUE SE USAN PARA FILTRADO DE INFORMACION (importa el orden, deve coincidir con la tabla) --- //
-    $aColumnas = array(    
-      'U.USUARIO',             
-      'U.ESTADO',      
-      'U.TIPO',
-      'U.CLAVE', 
-      'U.ID_USUARIO'
+   $aColumnas = array(    
+      'u.usuario',             
+      'u.estado',      
+      'u.tipo',
+      'u.clave', 
+      'u.id_usuario'
     );
-    $sIndexColumn = "ID_USUARIO";
+    $sIndexColumn = "id_usuario";
     // --- NOMBRE DE LA TABLA PRINCIPAL SOBRE LA QUE SE CONTARAN LOS REGISTROS --- //
-    $sTable = "from USUARIOS U";      
+    $sTable = "from usuarios u";      
 
     // --- PAGINACION --- //
     $sLimit = "";
@@ -312,7 +314,8 @@ function listUsuarios($db,$tipo,$url_models,$token,$usuarioToken){
 
     // --- CANTIDAD TOTAL DE REGISTROS RECUPERADOS --- //
     $sQuery = "
-      select count($sIndexColumn)   
+      select count($sIndexColumn) 
+      $sTable
       $sWhere
     ";
     $stmt = $db->prepare($sQuery);
@@ -351,34 +354,34 @@ function listUsuarios($db,$tipo,$url_models,$token,$usuarioToken){
     );
 
     // --- SALIDA DE CONTENIDO GENERADO --- //
-    foreach ($result as $Fila) {
+    foreach ($result as $fila) {
       $row=array();   
       
-      $estado = $Fila['ESTADO'] == 'A'? 'Activo' : 'Inactivo';
+      $estado = $fila['estado'] == 'a'? 'Activo' : 'Inactivo';
 
-      $usuario_c='TEST';
+      $usuario_c='test';
       if($tipo){
-        //Administrador
-        $usuario_c = '<input data-datadato="usuario"  data-datatoken="'.$token.'" data-dataid_usuario="'.$Fila['ID_USUARIO'].'" data-dataidusertoken="'.$usuarioToken.'" class="mas-admin-usuarios" style="width:80%;display:block;margin:auto;" is="input-uc3g" maxlength="20" url="'.$url_models.'usuarios.php" action="update_usuarios" docode type="text" value="'.$Fila['USUARIO'].'"/>';
-        $estado_c = '<select data-datadato="estado" data-datatoken="'.$token.'" data-dataid_usuario="'.$Fila['ID_USUARIO'].'" data-dataidusertoken="'.$usuarioToken.'" class="mas-admin-usuarios" style="width:80%;display:block;margin:auto;" is="select-uc3g" url="'.$url_models.'usuarios.php" action="update_usuarios" docode>
-                        <option value="A" '.($Fila['ESTADO'] == 'A'? 'selected' : '').'>Activo</option>
-                        <option value="I" '.($Fila['ESTADO'] == 'I'? 'selected' : '').'>Inactivo</option>
+        //administrador
+        $usuario_c = '<input data-datadato="usuario"  data-datatoken="'.$token.'" data-dataid_usuario="'.$fila['id_usuario'].'" data-dataidusertoken="'.$usuarioToken.'" class="mas-admin-usuarios" style="width:80%;display:block;margin:auto;" is="input-uc3g" maxlength="20" url="'.$url_models.'usuarios.php" action="update_usuarios" docode type="text" value="'.$fila['usuario'].'"/>';
+        $estado_c = '<select data-datadato="estado" data-datatoken="'.$token.'" data-dataid_usuario="'.$fila['id_usuario'].'" data-dataidusertoken="'.$usuarioToken.'" class="mas-admin-usuarios" style="width:80%;display:block;margin:auto;" is="select-uc3g" url="'.$url_models.'usuarios.php" action="update_usuarios" docode>
+                        <option value="A" '.($fila['estado'] == 'a'? 'selected' : '').'>Activo</option>
+                        <option value="I" '.($fila['estado'] == 'i'? 'selected' : '').'>Inactivo</option>
                       </select>';
-        $tipo_c = '<select data-dataidusertoken="'.$usuarioToken.'" data-datadato="tipo" data-datatoken="'.$token.'" data-dataid_usuario="'.$Fila['ID_USUARIO'].'" class="mas-admin-usuarios" style="width:80%;display:block;margin:auto;" is="select-uc3g" url="'.$url_models.'usuarios.php" action="update_usuarios" docode>
-                        <option value="A" '.($Fila['TIPO'] == 'ADMINISTRADOR'? 'selected' : '').'>Administrador</option>
-                        <option value="U" '.($Fila['TIPO'] == 'AUXILIAR'? 'selected' : '').'>Auxiliar</option>
+        $tipo_c = '<select data-dataidusertoken="'.$usuarioToken.'" data-datadato="tipo" data-datatoken="'.$token.'" data-dataid_usuario="'.$fila['id_usuario'].'" class="mas-admin-usuarios" style="width:80%;display:block;margin:auto;" is="select-uc3g" url="'.$url_models.'usuarios.php" action="update_usuarios" docode>
+                        <option value="ADMINISTRADOR" '.($fila['tipo'] == 'ADMINISTRADOR'? 'selected' : '').'>Administrador</option>
+                        <option value="AUXILIAR" '.($fila['tipo'] == 'AUXILIAR'? 'selected' : '').'>Auxiliar</option>
                       </select>';
-        $botones='<div class="d-md-flex justify-content-center tabla-admin-botones"><button data-id="'.$Fila['ID_USUARIO'].'" style="width:33px;" class="btn btn-danger rounded-pill admin-user-eliminar">X</button></div>';
+        $botones='<div class="d-md-flex justify-content-center tabla-admin-botones"><button data-id="'.$fila['id_usuario'].'" style="width:33px;" class="btn btn-danger rounded-pill admin-user-eliminar">X</button></div>';
       }else{
-        //Auxiliar
-        $usuario_c = '<span class="" title="">'.$Fila['USUARIO'].'</span>';
+        //auxiliar
+        $usuario_c = '<span class="" title="">'.$fila['usuario'].'</span>';
         $estado_c = '<span class="" title="">'.$estado.'</span>';
-        $tipo_c = '<span class="" title="">'.$Fila['TIPO'].'</span>';
+        $tipo_c = '<span class="" title="">'.$fila['tipo'].'</span>';
         $botones='<div></div>';
       }
 
       $row[] = $usuario_c;
-      $row[] = '<span style="text-aling:center;" class="" title="">'.$Fila['CLAVE'].'</span>';
+      $row[] = '<span style="text-aling:center;" class="" title="">'.$fila['clave'].'</span>';
       //$row[] = '<span class="" title="">'.$dataAvance['avance'].'%</span>';
       $row[] = '<span class="">'.$estado_c.'</span>';
       $row[] = '<span class="contenedor-btn" title="">'.$tipo_c.'</span>';
@@ -393,8 +396,9 @@ function listUsuarios($db,$tipo,$url_models,$token,$usuarioToken){
 
 function validarTipoUsuario($conexion, $usuario) {  
   
+ 
   // Validar si el usuario es administrador o auxiliar utilizando una consulta preparada
-  $stmt = $conexion->prepare("SELECT estado FROM Usuarios WHERE usuario = :usuario AND tipo = 'ADMINISTRADOR'");
+  $stmt = $conexion->prepare("SELECT estado FROM usuarios WHERE usuario = :usuario AND tipo = 'ADMINISTRADOR'");
   $stmt->execute(array(':usuario' => $usuario));
 
   // Obtener el resultado de la consulta
@@ -409,7 +413,7 @@ function validarTipoUsuario($conexion, $usuario) {
 }
 
 function getUserById($db, $id_usuario) {
-  $query = "SELECT * FROM Usuarios WHERE id_usuario = :id_usuario";
+  $query = "SELECT * FROM usuarios WHERE id_usuario = :id_usuario";
   $stmt = $db->prepare($query);
   $stmt->bindParam(':id_usuario', $id_usuario);
   $stmt->execute();

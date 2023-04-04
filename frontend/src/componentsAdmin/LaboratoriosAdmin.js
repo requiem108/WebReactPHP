@@ -84,7 +84,7 @@ export default function LaboratoriosAdmin({manejeadorError}) {
     }
 
     const addEventsBotones = async(respuesta)=>{
-      //debugger
+      //debugger      
       if(respuesta.ERROR === 'ERROR'){
         manejeadorError(respuesta.error)
       }else{

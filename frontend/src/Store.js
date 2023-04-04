@@ -6,8 +6,8 @@ export const Store = createContext();
 
 
 const initialState = {
-  url: 'http://localhost/TOM-A/backend/models/',
-  //url: 'https://tom-a.000webhostapp.com/models/',
+  //url: 'http://localhost/TOM-A/backend/models/',
+  url: 'https://tom-a.000webhostapp.com/models/',
   token:'',
   usuario: '',
 }
